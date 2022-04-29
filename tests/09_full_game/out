@@ -1,0 +1,1127 @@
+Welcome to the magical OOP1 Maze!!!
+Card Flip Counter:   0
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+║██████████████       ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███S██████████       ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████   F             T   ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║                                   ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║                                   ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║                                   ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████   S                 ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+Possible move: up
+ >  > Card Flip Counter:   1
+Possible move: right
+ > Card Flip Counter:   1
+Possible move: right
+ > Card Flip Counter:   2
+Possible move: down
+ > Card Flip Counter:   2
+Possible move: down
+ > Card Flip Counter:   3
+Possible move: left
+ > Card Flip Counter:   3
+Possible move: left
+ > Card Flip Counter:   4
+Possible move: up
+ > Card Flip Counter:   5
+Possible move: right
+ > Card Flip Counter:   5
+Possible move: right
+ > Card Flip Counter:   5
+Possible move: right
+ > Card Flip Counter:   5
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+║██████████████       ██████████████║███████              ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███S██████████       ██████████████║███A███          M   ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║███████              ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║              ███████          █   ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████          T          ███████║              ███████          █   ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║              ███████          █   ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║                                   ║               \   /        ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║                                   ║                | |     F   ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║                                   ║               /   \        ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║█████████████████████       ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████          S          ███████║█████████████████████       ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║█████████████████████       ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║SSSSSSS                     ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║S     S                 M   ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║SSSSSSS                     ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+Possible move: right
+ >  > Card Flip Counter:   6
+Possible move: down
+ > Card Flip Counter:   6
+Possible move: down
+ > Card Flip Counter:   6
+Possible move: down
+ > Card Flip Counter:   6
+Possible move: down
+ > Card Flip Counter:   6
+Possible move: down
+ > Card Flip Counter:   6
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+║██████████████       ██████████████║███████              ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███S██████████       ██████████████║███A███          M   ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║███████              ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║              ███████          █   ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║              ███████          █   ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║              ███████          █   ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║                                   ║               \   /        ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║                                   ║                | |         ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║                                   ║               /   \        ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║█████████████████████       ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║█████████████████████   F   ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║█████████████████████       ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║SSSSSSS                     ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║S     S                 M   ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║SSSSSSS                     ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+║██████████████       ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███B██████████   T   ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████              ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████          S   ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████              ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████       ███████              ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████       ███████              ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████       ███████              ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████  / \  ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████ |   | ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████  \ /  ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+Possible move: down
+ > Card Flip Counter:   6
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+║██████████████       ██████████████║███████              ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███S██████████       ██████████████║███A███          M   ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║███████              ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║              ███████          █   ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║              ███████          █   ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║              ███████          █   ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║                                   ║               \   /        ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║                                   ║                | |         ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║                                   ║               /   \        ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║█████████████████████       ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║█████████████████████   F   ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║█████████████████████       ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║SSSSSSS                     ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║S     S                     ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║SSSSSSS                     ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+║██████████████       ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███B██████████   T   ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████              ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████          S   ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████              ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████       ███████              ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████       ███████              ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████       ███████              ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████  / \  ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████ |   | ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████  \ /  ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+Possible move: down
+ >  > Card Flip Counter:   7
+Possible move: left
+ > Card Flip Counter:   7
+Possible move: left
+ > Card Flip Counter:   8
+Possible move: up
+ > Card Flip Counter:   8
+Possible move: up
+ > Card Flip Counter:   9
+Possible move: right
+ > Card Flip Counter:  10
+Possible move: down
+ > Card Flip Counter:  10
+Possible move: down
+ > Card Flip Counter:  10
+Possible move: down
+ > Card Flip Counter:  11
+Possible move: left
+ > Card Flip Counter:  11
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+║██████████████       ██████████████║███████              ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███S██████████       ██████████████║███A███          M   ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║███████              ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║              ███████          █   ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║              ███████          █   ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║              ███████          █   ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║                                   ║               \   /        ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║                                   ║                | |     F   ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║                                   ║               /   \        ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║█████████████████████       ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║█████████████████████       ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║█████████████████████       ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║SSSSSSS                     ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║S     S                     ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║SSSSSSS                     ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+║██████████████       ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███B██████████       ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████              ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████          T   ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████              ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████       ███████              ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████       ███████              ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████       ███████              ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████   S                 ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████  / \  ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████ |   | ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████  \ /  ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+Possible move: left
+ > Card Flip Counter:   6
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+║██████████████       ██████████████║███████              ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███S██████████       ██████████████║███A███          M   ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║███████              ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║              ███████          █   ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║              ███████          █   ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║              ███████          █   ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║                                   ║                            ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║                                   ║                 F          ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║                                   ║                            ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║█████████████████████       ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║█████████████████████       ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║█████████████████████       ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║SSSSSSS                     ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║S     S                     ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║SSSSSSS                     ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+║██████████████       ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███B██████████       ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████              ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████          T   ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████              ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████       ███████              ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████       ███████              ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████       ███████              ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████   S                 ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████  / \  ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████ |   | ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████  \ /  ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+Possible move: left
+ >  > Card Flip Counter:   6
+Possible move: left
+ > Card Flip Counter:   6
+Possible move: left
+ > Card Flip Counter:   7
+Possible move: up
+ > Card Flip Counter:   7
+Possible move: up
+ > Card Flip Counter:   7
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+║██████████████       ██████████████║███████              ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███S██████████       ██████████████║███A███   F      M   ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║███████              ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║              ███████          █   ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║              ███████          █   ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║              ███████          █   ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║                                   ║                            ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║                                   ║                            ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║                                   ║                            ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║█████████████████████       ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║█████████████████████       ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║█████████████████████       ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║SSSSSSS                     ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║S     S                     ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║SSSSSSS                     ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+║██████████████       ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███B██████████       ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████              ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████   T          ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████              ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████       ███████              ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████       ███████              ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████       ███████              ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████   S                 ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████  / \  ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████ |   | ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████  \ /  ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+Possible move: up
+ > Card Flip Counter:   7
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+║██████████████       ██████████████║███████              ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███S██████████       ██████████████║███A███   F          ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║███████              ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║              ███████          █   ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║              ███████          █   ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║              ███████          █   ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║                                   ║                            ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║                                   ║                            ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║                                   ║                            ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║█████████████████████       ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║█████████████████████       ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║█████████████████████       ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║SSSSSSS                     ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║S     S                     ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║SSSSSSS                     ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+║██████████████       ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███B██████████       ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████              ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████   T          ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████              ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████       ███████              ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████       ███████              ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████       ███████              ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████   S                 ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████  / \  ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████ |   | ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████  \ /  ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+Possible move: up
+ >  > Card Flip Counter:   8
+Possible move: right
+ > Card Flip Counter:   8
+Possible move: right
+ > Card Flip Counter:   9
+Possible move: down
+ > Card Flip Counter:   9
+Possible move: down
+ > Card Flip Counter:   9
+Possible move: down
+ > Card Flip Counter:   9
+Possible move: down
+ > Card Flip Counter:  10
+Possible move: left
+ > Card Flip Counter:  11
+Possible move: up
+ > Card Flip Counter:  12
+Possible move: right
+ > Card Flip Counter:  12
+Possible move: right
+ > Card Flip Counter:  13
+Possible move: down
+ > Card Flip Counter:  14
+Possible move: left
+ > Card Flip Counter:  15
+Possible move: up
+ > Card Flip Counter:  15
+Possible move: up
+ > Card Flip Counter:  16
+Possible move: right
+ > Card Flip Counter:  16
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+║██████████████       ██████████████║███████              ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███S██████████       ██████████████║███A███              ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║███████              ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║              ███████          █   ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║              ███████          █   ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║              ███████          █   ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║                                   ║                            ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║                                   ║          F                 ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║                                   ║                            ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║█████████████████████       ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║█████████████████████       ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║█████████████████████       ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║SSSSSSS                     ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║S     S                     ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║SSSSSSS                     ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+║██████████████       ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███B██████████       ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████              ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████              ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████              ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████       ███████              ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████       ███████   T          ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████       ███████              ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████  / \  ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████ | S | ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████  \ /  ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+Possible move: right
+ > Card Flip Counter:  16
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+║██████████████       ██████████████║███████              ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███S██████████       ██████████████║███A███              ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║███████              ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║              ███████          █   ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║              ███████          █   ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║              ███████          █   ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║                                   ║                            ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║                                   ║          F                 ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║                                   ║                            ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║█████████████████████       ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║█████████████████████       ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║█████████████████████       ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║SSSSSSS                     ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║S     S                     ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║SSSSSSS                     ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+║██████████████       ██████████████║███████       █████████████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███B██████████       ██████████████║███C███████████████████████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║███████       █████████████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████              ██████████████║                            ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████              ██████████████║                            ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████              ██████████████║                            ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████       ███████              ║       ██████████████              ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████       ███████          T   ║       ██████████████              ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████       ███████              ║       ██████████████              ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║                     ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║                     ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║                     ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████  / \  ██████████████║██████████████       TTTTTTT███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████ | S | ██████████████║██████████████       T     T███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████  \ /  ██████████████║██████████████       TTTTTTT███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+Possible move: right
+ > Card Flip Counter:  16
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+║██████████████       ██████████████║███████              ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███S██████████       ██████████████║███A███              ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║███████              ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║              ███████          █   ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║              ███████          █   ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║              ███████          █   ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║                                   ║                            ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║                                   ║          F                 ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║                                   ║                            ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║█████████████████████       ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║█████████████████████       ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║█████████████████████       ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║SSSSSSS                     ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║S     S                     ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║SSSSSSS                     ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+║██████████████       ██████████████║███████       █████████████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███B██████████       ██████████████║███C███████████████████████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║███████       █████████████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████              ██████████████║                            ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████              ██████████████║                            ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████              ██████████████║                            ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████       ███████              ║       ██████████████              ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████       ███████              ║   T   ██████████████              ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████       ███████              ║       ██████████████              ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║                     ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║                     ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║                     ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████  / \  ██████████████║██████████████       TTTTTTT███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████ | S | ██████████████║██████████████       T     T███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████  \ /  ██████████████║██████████████       TTTTTTT███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+Possible move: right
+ > Card Flip Counter:  16
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+║██████████████       ██████████████║███████              ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███S██████████       ██████████████║███A███              ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║███████              ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║              ███████          █   ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║              ███████          █   ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║              ███████          █   ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║                                   ║                            ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║                                   ║          F                 ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║                                   ║                            ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║█████████████████████       ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║█████████████████████       ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║█████████████████████       ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║SSSSSSS                     ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║S     S                     ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║SSSSSSS                     ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+║██████████████       ██████████████║███████       █████████████████████║███████████████████████████████████║
+║███B██████████       ██████████████║███C███████████████████████████████║███L███████████████████████████████║
+║██████████████       ██████████████║███████       █████████████████████║███████████████████████████████████║
+║███████              ██████████████║                            ███████║███████$$$$$$$       $$$$$$$███████║
+║███████              ██████████████║                            ███████║███████$     $       $     $███████║
+║███████              ██████████████║                            ███████║███████$$$$$$$       $$$$$$$███████║
+║███████       ███████              ║       ██████████████              ║███████                     ███████║
+║███████       ███████              ║   T   ██████████████              ║███████                     ███████║
+║███████       ███████              ║       ██████████████              ║███████                     ███████║
+║███████                     ███████║                     ██████████████║███████$$$$$$$       $$$$$$$███████║
+║███████                     ███████║                     ██████████████║███████$     $       $     $███████║
+║███████                     ███████║                     ██████████████║███████$$$$$$$       $$$$$$$███████║
+║██████████████       ██████████████║██████████████       TTTTTTT███████║███████████████████████████████████║
+║██████████████   S   ██████████████║██████████████       T     T███████║███████████████████████████████████║
+║██████████████       ██████████████║██████████████       TTTTTTT███████║███████████████████████████████████║
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+Possible move: right
+ >  > Card Flip Counter:  17
+Possible move: down
+ > Card Flip Counter:  18
+Possible move: left
+ > Card Flip Counter:  19
+Possible move: up
+ > Card Flip Counter:  19
+Possible move: up
+ > Card Flip Counter:  20
+Possible move: right
+ > Card Flip Counter:  20
+Possible move: right
+ > Card Flip Counter:  20
+Possible move: right
+ > Card Flip Counter:  20
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+║██████████████       ██████████████║███████              ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███S██████████       ██████████████║███A███              ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║███████              ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║              ███████          █   ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║              ███████          █   ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║              ███████          █   ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║                                   ║                            ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║                                   ║          F                 ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║                                   ║                            ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║█████████████████████       ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║█████████████████████       ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║█████████████████████       ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║SSSSSSS                     ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║S     S                     ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║SSSSSSS                     ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+║██████████████       ██████████████║███████       █████████████████████║███████████████████████████████████║
+║███B██████████       ██████████████║███C███       █████████████████████║███L███████████████████████████████║
+║██████████████       ██████████████║███████       █████████████████████║███████████████████████████████████║
+║███████              ██████████████║                            ███████║███████$$$$$$$       $$$$$$$███████║
+║███████              ██████████████║          T                 ███████║███████$     $       $     $███████║
+║███████              ██████████████║                            ███████║███████$$$$$$$       $$$$$$$███████║
+║███████       ███████              ║       ██████████████              ║███████                     ███████║
+║███████       ███████              ║       ██████████████              ║███████                     ███████║
+║███████       ███████              ║       ██████████████              ║███████                     ███████║
+║███████                     ███████║                     ██████████████║███████$$$$$$$       $$$$$$$███████║
+║███████                     ███████║                     ██████████████║███████$     $       $     $███████║
+║███████                     ███████║                     ██████████████║███████$$$$$$$       $$$$$$$███████║
+║██████████████       ██████████████║██████████████       TTTTTTT███████║███████████████████████████████████║
+║██████████████   S   ██████████████║██████████████       T     T███████║███████████████████████████████████║
+║██████████████       ██████████████║██████████████       TTTTTTT███████║███████████████████████████████████║
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+Possible move: right
+ >  > Card Flip Counter:  21
+Possible move: down
+ > Card Flip Counter:  22
+Possible move: left
+ > Card Flip Counter:  23
+Possible move: up
+ > Card Flip Counter:  23
+Possible move: up
+ > Card Flip Counter:  23
+Possible move: up
+ > Card Flip Counter:  24
+Possible move: right
+ > Card Flip Counter:  24
+Possible move: right
+ > Card Flip Counter:  24
+Possible move: right
+ > Card Flip Counter:  25
+Possible move: down
+ > Card Flip Counter:  26
+Possible move: left
+ > Card Flip Counter:  27
+Possible move: up
+ > Card Flip Counter:  27
+Possible move: up
+ > Card Flip Counter:  27
+Possible move: up
+ > Card Flip Counter:  27
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+║██████████████       ██████████████║███████              ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███S██████████       ██████████████║███A███              ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║███████              ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║              ███████              ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║              ███████   T          ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║              ███████              ║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║                                   ║                            ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║                                   ║          F                 ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║                                   ║                            ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║█████████████████████       ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║█████████████████████       ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║███████                     ███████║█████████████████████       ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║SSSSSSS                     ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║S     S                     ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║██████████████       ██████████████║SSSSSSS                     ███████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+║██████████████       ██████████████║███████       █████████████████████║███████████████████████████████████║
+║███B██████████       ██████████████║███C███       █████████████████████║███L███████████████████████████████║
+║██████████████       ██████████████║███████       █████████████████████║███████████████████████████████████║
+║███████              ██████████████║                            ███████║███████$$$$$$$       $$$$$$$███████║
+║███████              ██████████████║                            ███████║███████$     $       $     $███████║
+║███████              ██████████████║                            ███████║███████$$$$$$$       $$$$$$$███████║
+║███████       ███████              ║       ██████████████              ║███████                     ███████║
+║███████       ███████              ║       ██████████████              ║███████                     ███████║
+║███████       ███████              ║       ██████████████              ║███████                     ███████║
+║███████                     ███████║                     ██████████████║███████$$$$$$$       $$$$$$$███████║
+║███████                 S   ███████║                     ██████████████║███████$     $       $     $███████║
+║███████                     ███████║                     ██████████████║███████$$$$$$$       $$$$$$$███████║
+║██████████████       ██████████████║██████████████       TTTTTTT███████║███████████████████████████████████║
+║██████████████       ██████████████║██████████████       T     T███████║███████████████████████████████████║
+║██████████████       ██████████████║██████████████       TTTTTTT███████║███████████████████████████████████║
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+Possible move: up
+ >  > Card Flip Counter:  27
+Possible move: up
+ > Card Flip Counter:  28
+Possible move: right
+ > Card Flip Counter:  28
+Possible move: right
+ > Card Flip Counter:  29
+Possible move: down
+ > Card Flip Counter:  29
+Possible move: down
+ > Card Flip Counter:  30
+Possible move: left
+ > Card Flip Counter:  31
+Possible move: up
+ > Card Flip Counter:  31
+Possible move: up
+ > Card Flip Counter:  32
+Possible move: right
+ > Card Flip Counter:  32
+Possible move: right
+ > Card Flip Counter:  32
+Possible move: right
+ > Card Flip Counter:  33
+Possible move: down
+ > Card Flip Counter:  34
+Possible move: left
+ > Card Flip Counter:  35
+Possible move: up
+ > Card Flip Counter:  35
+Possible move: up
+ > Card Flip Counter:  35
+Possible move: up
+ > Card Flip Counter:  36
+Possible move: right
+ > Card Flip Counter:  36
+Possible move: right
+ > Card Flip Counter:  36
+Possible move: right
+ > Card Flip Counter:  36
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+║██████████████       ██████████████║███████              ██████████████║███████                            ║
+║███S██████████       ██████████████║███A███              ██████████████║███D███                            ║
+║██████████████       ██████████████║███████              ██████████████║███████                            ║
+║███████                     ███████║              ███████              ║              █████████████████████║
+║███████                     ███████║              ███████              ║          F   █████████████████████║
+║███████                     ███████║              ███████              ║              █████████████████████║
+║                                   ║                            ███████║              ███████FFFFFFF███████║
+║                                   ║                            ███████║              ███████F     F███████║
+║                                   ║                            ███████║              ███████FFFFFFF███████║
+║███████                     ███████║█████████████████████       ███████║███████                     ███████║
+║███████                     ███████║█████████████████████       ███████║███████                     ███████║
+║███████                     ███████║█████████████████████       ███████║███████                     ███████║
+║██████████████       ██████████████║SSSSSSS                     ███████║███████████████████████████████████║
+║██████████████       ██████████████║S     S   S             T   ███████║███████████████████████████████████║
+║██████████████       ██████████████║SSSSSSS                     ███████║███████████████████████████████████║
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+║██████████████       ██████████████║███████       █████████████████████║███████████████████████████████████║
+║███B██████████       ██████████████║███C███       █████████████████████║███L███████████████████████████████║
+║██████████████       ██████████████║███████       █████████████████████║███████████████████████████████████║
+║███████              ██████████████║                            ███████║███████$$$$$$$       $$$$$$$███████║
+║███████              ██████████████║                            ███████║███████$     $       $     $███████║
+║███████              ██████████████║                            ███████║███████$$$$$$$       $$$$$$$███████║
+║███████       ███████              ║       ██████████████              ║███████                     ███████║
+║███████       ███████              ║       ██████████████              ║███████                     ███████║
+║███████       ███████              ║       ██████████████              ║███████                     ███████║
+║███████                     ███████║                     ██████████████║███████$$$$$$$       $$$$$$$███████║
+║███████                     ███████║                     ██████████████║███████$     $       $     $███████║
+║███████                     ███████║                     ██████████████║███████$$$$$$$       $$$$$$$███████║
+║██████████████       ██████████████║██████████████       TTTTTTT███████║███████████████████████████████████║
+║██████████████       ██████████████║██████████████       T     T███████║███████████████████████████████████║
+║██████████████       ██████████████║██████████████       TTTTTTT███████║███████████████████████████████████║
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+Possible move: right
+ >  > Card Flip Counter:  37
+Possible move: down
+ > Card Flip Counter:  37
+Possible move: down
+ > Card Flip Counter:  38
+Possible move: left
+ > Card Flip Counter:  38
+Possible move: left
+ > Card Flip Counter:  38
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+║██████████████       ██████████████║███████              ██████████████║███████                            ║
+║███S██████████       ██████████████║███A███              ██████████████║███D███                            ║
+║██████████████       ██████████████║███████              ██████████████║███████                            ║
+║███████                     ███████║              ███████              ║              █████████████████████║
+║███████                     ███████║              ███████              ║              █████████████████████║
+║███████                     ███████║              ███████              ║              █████████████████████║
+║                                   ║                            ███████║              ███████FFFFFFF███████║
+║                                   ║                            ███████║              ███████F     F███████║
+║                                   ║                            ███████║              ███████FFFFFFF███████║
+║███████                     ███████║█████████████████████       ███████║███████                     ███████║
+║███████                     ███████║█████████████████████       ███████║███████   F                 ███████║
+║███████                     ███████║█████████████████████       ███████║███████                     ███████║
+║██████████████       ██████████████║SSSSSSS                     ███████║███████████████████████████████████║
+║██████████████       ██████████████║S  S  S                 T   ███████║███████████████████████████████████║
+║██████████████       ██████████████║SSSSSSS                     ███████║███████████████████████████████████║
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+║██████████████       ██████████████║███████       █████████████████████║███████████████████████████████████║
+║███B██████████       ██████████████║███C███       █████████████████████║███L███████████████████████████████║
+║██████████████       ██████████████║███████       █████████████████████║███████████████████████████████████║
+║███████              ██████████████║                            ███████║███████$$$$$$$       $$$$$$$███████║
+║███████              ██████████████║                            ███████║███████$     $       $     $███████║
+║███████              ██████████████║                            ███████║███████$$$$$$$       $$$$$$$███████║
+║███████       ███████              ║       ██████████████              ║███████                     ███████║
+║███████       ███████              ║       ██████████████              ║███████                     ███████║
+║███████       ███████              ║       ██████████████              ║███████                     ███████║
+║███████                     ███████║                     ██████████████║███████$$$$$$$       $$$$$$$███████║
+║███████                     ███████║                     ██████████████║███████$     $       $     $███████║
+║███████                     ███████║                     ██████████████║███████$$$$$$$       $$$$$$$███████║
+║██████████████       ██████████████║██████████████       TTTTTTT███████║███████████████████████████████████║
+║██████████████       ██████████████║██████████████       T     T███████║███████████████████████████████████║
+║██████████████       ██████████████║██████████████       TTTTTTT███████║███████████████████████████████████║
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+Possible move: left
+ >  > Card Flip Counter:  38
+Possible move: left
+ > Card Flip Counter:  39
+Possible move: up
+ > Card Flip Counter:  40
+Possible move: right
+ > Card Flip Counter:  40
+Possible move: right
+ > Card Flip Counter:  41
+Possible move: down
+ > Card Flip Counter:  41
+Possible move: down
+ > Card Flip Counter:  42
+Possible move: left
+ > Card Flip Counter:  42
+Possible move: left
+ > Card Flip Counter:  43
+Possible move: up
+ > Card Flip Counter:  43
+Possible move: up
+ > Card Flip Counter:  43
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+║██████████████       ██████████████║███████              ██████████████║███████                            ║
+║███S██████████       ██████████████║███A███              ██████████████║███D███                            ║
+║██████████████       ██████████████║███████              ██████████████║███████                            ║
+║███████                     ███████║              ███████              ║              █████████████████████║
+║███████                     ███████║              ███████              ║              █████████████████████║
+║███████                     ███████║              ███████              ║              █████████████████████║
+║                                   ║                            ███████║              ███████FFFFFFF███████║
+║                                   ║                            ███████║              ███████F  F  F███████║
+║                                   ║                            ███████║              ███████FFFFFFF███████║
+║███████                     ███████║█████████████████████       ███████║███████                     ███████║
+║███████                     ███████║█████████████████████       ███████║███████                     ███████║
+║███████                     ███████║█████████████████████       ███████║███████                     ███████║
+║██████████████       ██████████████║SSSSSSS                     ███████║███████████████████████████████████║
+║██████████████       ██████████████║S  S  S                     ███████║███████████████████████████████████║
+║██████████████       ██████████████║SSSSSSS                     ███████║███████████████████████████████████║
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+║██████████████       ██████████████║███████       █████████████████████║███████████████████████████████████║
+║███B██████████       ██████████████║███C███       █████████████████████║███L███████████████████████████████║
+║██████████████       ██████████████║███████       █████████████████████║███████████████████████████████████║
+║███████              ██████████████║                            ███████║███████$$$$$$$       $$$$$$$███████║
+║███████              ██████████████║   T                        ███████║███████$     $       $     $███████║
+║███████              ██████████████║                            ███████║███████$$$$$$$       $$$$$$$███████║
+║███████       ███████              ║       ██████████████              ║███████                     ███████║
+║███████       ███████              ║       ██████████████              ║███████                     ███████║
+║███████       ███████              ║       ██████████████              ║███████                     ███████║
+║███████                     ███████║                     ██████████████║███████$$$$$$$       $$$$$$$███████║
+║███████                     ███████║                     ██████████████║███████$     $       $     $███████║
+║███████                     ███████║                     ██████████████║███████$$$$$$$       $$$$$$$███████║
+║██████████████       ██████████████║██████████████       TTTTTTT███████║███████████████████████████████████║
+║██████████████       ██████████████║██████████████       T     T███████║███████████████████████████████████║
+║██████████████       ██████████████║██████████████       TTTTTTT███████║███████████████████████████████████║
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+Possible move: up
+ >  > Card Flip Counter:  44
+Possible move: right
+ > Card Flip Counter:  45
+Possible move: down
+ > Card Flip Counter:  45
+Possible move: down
+ > Card Flip Counter:  46
+Possible move: left
+ > Card Flip Counter:  47
+Possible move: up
+ > Card Flip Counter:  48
+Possible move: right
+ > Card Flip Counter:  48
+Possible move: right
+ > Card Flip Counter:  49
+Possible move: down
+ > Card Flip Counter:  49
+Possible move: down
+ > Card Flip Counter:  50
+Possible move: left
+ > Card Flip Counter:  51
+Possible move: up
+ > Card Flip Counter:  52
+Possible move: right
+ > Card Flip Counter:  52
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+║██████████████       ██████████████║███████              ██████████████║███████                            ║
+║███S██████████       ██████████████║███A███              ██████████████║███D███                            ║
+║██████████████       ██████████████║███████              ██████████████║███████                            ║
+║███████                     ███████║              ███████              ║              █████████████████████║
+║███████                     ███████║              ███████              ║              █████████████████████║
+║███████                     ███████║              ███████              ║              █████████████████████║
+║                                   ║                            ███████║              ███████FFFFFFF███████║
+║                                   ║                            ███████║              ███████F  F  F███████║
+║                                   ║                            ███████║              ███████FFFFFFF███████║
+║███████                     ███████║█████████████████████       ███████║███████                     ███████║
+║███████                     ███████║█████████████████████       ███████║███████                     ███████║
+║███████                     ███████║█████████████████████       ███████║███████                     ███████║
+║██████████████       ██████████████║SSSSSSS                     ███████║███████████████████████████████████║
+║██████████████       ██████████████║S  S  S                     ███████║███████████████████████████████████║
+║██████████████       ██████████████║SSSSSSS                     ███████║███████████████████████████████████║
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+║██████████████       ██████████████║███████       █████████████████████║███████████████████████████████████║
+║███B██████████       ██████████████║███C███       █████████████████████║███L███████████████████████████████║
+║██████████████       ██████████████║███████       █████████████████████║███████████████████████████████████║
+║███████              ██████████████║                            ███████║███████$$$$$$$       $$$$$$$███████║
+║███████              ██████████████║                            ███████║███████$     $       $     $███████║
+║███████              ██████████████║                            ███████║███████$$$$$$$       $$$$$$$███████║
+║███████       ███████              ║       ██████████████              ║███████                     ███████║
+║███████       ███████              ║       ██████████████              ║███████                     ███████║
+║███████       ███████              ║       ██████████████              ║███████                     ███████║
+║███████                     ███████║                     ██████████████║███████$$$$$$$       $$$$$$$███████║
+║███████                     ███████║                     ██████████████║███████$     $       $     $███████║
+║███████                     ███████║                     ██████████████║███████$$$$$$$       $$$$$$$███████║
+║██████████████       ██████████████║██████████████       TTTTTTT███████║███████████████████████████████████║
+║██████████████       ██████████████║██████████████   T   T     T███████║███████████████████████████████████║
+║██████████████       ██████████████║██████████████       TTTTTTT███████║███████████████████████████████████║
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+Possible move: right
+ > Card Flip Counter:  52
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+║██████████████       ██████████████║███████              ██████████████║███████                            ║
+║███S██████████       ██████████████║███A███              ██████████████║███D███                            ║
+║██████████████       ██████████████║███████              ██████████████║███████                            ║
+║███████                     ███████║              ███████              ║              █████████████████████║
+║███████                     ███████║              ███████              ║              █████████████████████║
+║███████                     ███████║              ███████              ║              █████████████████████║
+║                                   ║                            ███████║              ███████       ███████║
+║                                   ║                            ███████║              ███████   F   ███████║
+║                                   ║                            ███████║              ███████       ███████║
+║███████                     ███████║█████████████████████       ███████║███████                     ███████║
+║███████                     ███████║█████████████████████       ███████║███████                     ███████║
+║███████                     ███████║█████████████████████       ███████║███████                     ███████║
+║██████████████       ██████████████║                            ███████║███████████████████████████████████║
+║██████████████       ██████████████║   S                        ███████║███████████████████████████████████║
+║██████████████       ██████████████║                            ███████║███████████████████████████████████║
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+║██████████████       ██████████████║███████       █████████████████████║██████████████       ██████████████║
+║███B██████████       ██████████████║███C███       █████████████████████║███L██████████       ██████████████║
+║██████████████       ██████████████║███████       █████████████████████║██████████████       ██████████████║
+║███████              ██████████████║                            ███████║███████$$$$$$$       $$$$$$$███████║
+║███████              ██████████████║                            ███████║███████$     $       $     $███████║
+║███████              ██████████████║                            ███████║███████$$$$$$$       $$$$$$$███████║
+║███████       ███████              ║       ██████████████              ║                                   ║
+║███████       ███████              ║       ██████████████              ║                                   ║
+║███████       ███████              ║       ██████████████              ║                                   ║
+║███████                     ███████║                     ██████████████║███████$$$$$$$       $$$$$$$███████║
+║███████                     ███████║                     ██████████████║███████$     $       $     $███████║
+║███████                     ███████║                     ██████████████║███████$$$$$$$       $$$$$$$███████║
+║██████████████       ██████████████║██████████████              ███████║██████████████       ██████████████║
+║██████████████       ██████████████║██████████████          T   ███████║██████████████       ██████████████║
+║██████████████       ██████████████║██████████████              ███████║██████████████       ██████████████║
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+Possible move: right
+ >  > Card Flip Counter:  52
+Possible move: right
+ > Card Flip Counter:  53
+Possible move: down
+ > Card Flip Counter:  53
+Possible move: down
+ > Card Flip Counter:  53
+Possible move: down
+ > Card Flip Counter:  54
+Possible move: left
+ > Card Flip Counter:  54
+Possible move: left
+ > Card Flip Counter:  54
+Possible move: left
+ > Card Flip Counter:  55
+Possible move: up
+ > Card Flip Counter:  55
+Possible move: up
+ > Card Flip Counter:  55
+Possible move: up
+ > Card Flip Counter:  56
+Possible move: right
+ > Card Flip Counter:  56
+Possible move: right
+ > Card Flip Counter:  57
+Possible move: down
+ > Card Flip Counter:  57
+Possible move: down
+ > Card Flip Counter:  58
+Possible move: left
+ > Card Flip Counter:  58
+Possible move: left
+ > Card Flip Counter:  59
+Possible move: up
+ > Card Flip Counter:  59
+Possible move: up
+ > Card Flip Counter:  59
+Possible move: up
+ > Card Flip Counter:  60
+Possible move: right
+ > Card Flip Counter:  60
+Possible move: right
+ > Card Flip Counter:  60
+Possible move: right
+ > Card Flip Counter:  61
+Possible move: down
+ > Card Flip Counter:  61
+Possible move: down
+ > Card Flip Counter:  61
+Possible move: down
+ > Card Flip Counter:  61
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+║██████████████       ██████████████║███████              ██████████████║███████                            ║
+║███S██████████       ██████████████║███A███              ██████████████║███D███                            ║
+║██████████████       ██████████████║███████              ██████████████║███████                            ║
+║███████                     ███████║              ███████              ║              █████████████████████║
+║███████                     ███████║              ███████              ║          F   █████████████████████║
+║███████                     ███████║              ███████              ║              █████████████████████║
+║                                   ║                            ███████║              ███████       ███████║
+║                                   ║                            ███████║              ███████       ███████║
+║                                   ║                            ███████║              ███████       ███████║
+║███████                     ███████║█████████████████████       ███████║███████                     ███████║
+║███████                     ███████║█████████████████████       ███████║███████                     ███████║
+║███████                     ███████║█████████████████████       ███████║███████                     ███████║
+║██████████████       ██████████████║                            ███████║███████████████████████████████████║
+║██████████████       ██████████████║                            ███████║███████████████████████████████████║
+║██████████████       ██████████████║                            ███████║███████████████████████████████████║
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+║██████████████       ██████████████║███████       █████████████████████║██████████████       ██████████████║
+║███B██████████       ██████████████║███C███       █████████████████████║███L██████████       ██████████████║
+║██████████████       ██████████████║███████       █████████████████████║██████████████       ██████████████║
+║███████              ██████████████║                            ███████║███████$$$$$$$       $$$$$$$███████║
+║███████              ██████████████║                            ███████║███████$     $       $     $███████║
+║███████              ██████████████║                            ███████║███████$$$$$$$       $$$$$$$███████║
+║███████       ███████              ║       ██████████████              ║                                   ║
+║███████       ███████              ║       ██████████████   T          ║                                   ║
+║███████       ███████              ║       ██████████████              ║                                   ║
+║███████                     ███████║                     ██████████████║███████$$$$$$$       $$$$$$$███████║
+║███████                     ███████║                     ██████████████║███████$     $       $  S  $███████║
+║███████                     ███████║                     ██████████████║███████$$$$$$$       $$$$$$$███████║
+║██████████████       ██████████████║██████████████              ███████║██████████████       ██████████████║
+║██████████████       ██████████████║██████████████              ███████║██████████████       ██████████████║
+║██████████████       ██████████████║██████████████              ███████║██████████████       ██████████████║
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+Possible move: down
+ >  > Card Flip Counter:  62
+Possible move: left
+ > Card Flip Counter:  62
+Possible move: left
+ > Card Flip Counter:  63
+Possible move: up
+ > Card Flip Counter:  64
+Possible move: right
+ > Card Flip Counter:  64
+Possible move: right
+ > Card Flip Counter:  65
+Possible move: down
+ > Card Flip Counter:  65
+Possible move: down
+ > Card Flip Counter:  65
+Possible move: down
+ > Card Flip Counter:  65
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+║██████████████       ██████████████║███████              ██████████████║███████                            ║
+║███S██████████       ██████████████║███A███              ██████████████║███D███                            ║
+║██████████████       ██████████████║███████              ██████████████║███████                            ║
+║███████                     ███████║              ███████              ║              █████████████████████║
+║███████                     ███████║              ███████              ║              █████████████████████║
+║███████                     ███████║              ███████              ║              █████████████████████║
+║                                   ║                            ███████║              ███████       ███████║
+║                                   ║                            ███████║              ███████       ███████║
+║                                   ║                            ███████║              ███████       ███████║
+║███████                     ███████║█████████████████████       ███████║███████                     ███████║
+║███████                     ███████║█████████████████████       ███████║███████                     ███████║
+║███████                     ███████║█████████████████████       ███████║███████                     ███████║
+║██████████████       ██████████████║                            ███████║███████████████████████████████████║
+║██████████████       ██████████████║                        F   ███████║███████████████████████████████████║
+║██████████████       ██████████████║                            ███████║███████████████████████████████████║
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+║██████████████       ██████████████║███████       █████████████████████║██████████████       ██████████████║
+║███B██████████       ██████████████║███C███       █████████████████████║███L██████████       ██████████████║
+║██████████████       ██████████████║███████       █████████████████████║██████████████       ██████████████║
+║███████              ██████████████║                            ███████║███████$$$$$$$       $$$$$$$███████║
+║███████              ██████████████║                            ███████║███████$     $       $     $███████║
+║███████              ██████████████║                            ███████║███████$$$$$$$       $$$$$$$███████║
+║███████       ███████              ║       ██████████████              ║                                   ║
+║███████       ███████              ║       ██████████████              ║                                   ║
+║███████       ███████              ║       ██████████████              ║                                   ║
+║███████                     ███████║                     ██████████████║███████$$$$$$$       $$$$$$$███████║
+║███████                     ███████║                     ██████████████║███████$  T  $       $  S  $███████║
+║███████                     ███████║                     ██████████████║███████$$$$$$$       $$$$$$$███████║
+║██████████████       ██████████████║██████████████              ███████║██████████████       ██████████████║
+║██████████████       ██████████████║██████████████              ███████║██████████████       ██████████████║
+║██████████████       ██████████████║██████████████              ███████║██████████████       ██████████████║
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+Possible move: down
+ >  > Card Flip Counter:  66
+Possible move: left
+ > Card Flip Counter:  66
+Possible move: left
+ > Card Flip Counter:  67
+Possible move: up
+ > Card Flip Counter:  68
+Possible move: right
+ > Card Flip Counter:  69
+Possible move: down
+ > Card Flip Counter:  69
+Possible move: down
+ > Card Flip Counter:  70
+Possible move: left
+ > Card Flip Counter:  71
+Possible move: up
+ > Card Flip Counter:  72
+Possible move: right
+ > Card Flip Counter:  72
+Possible move: right
+ > Card Flip Counter:  73
+Possible move: down
+ > Card Flip Counter:  73
+Possible move: down
+ > Card Flip Counter:  74
+Possible move: left
+ > Card Flip Counter:  75
+Possible move: up
+ > Card Flip Counter:  76
+Possible move: right
+ > Card Flip Counter:  76
+Possible move: right
+ > Card Flip Counter:  77
+Possible move: down
+ > Card Flip Counter:  78
+Possible move: left
+ > Card Flip Counter:  79
+Possible move: up
+ > Card Flip Counter:  79
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+║██████████████       ██████████████║███████              ██████████████║███████                            ║
+║███S██████████       ██████████████║███A███              ██████████████║███D███                            ║
+║██████████████       ██████████████║███████              ██████████████║███████                            ║
+║███████                     ███████║              ███████              ║              █████████████████████║
+║███████                     ███████║              ███████              ║              █████████████████████║
+║███████                     ███████║              ███████              ║              █████████████████████║
+║                                   ║                            ███████║              ███████       ███████║
+║                                   ║                            ███████║              ███████       ███████║
+║                                   ║                            ███████║              ███████       ███████║
+║███████                     ███████║█████████████████████       ███████║███████                     ███████║
+║███████                     ███████║█████████████████████       ███████║███████                     ███████║
+║███████                     ███████║█████████████████████       ███████║███████                     ███████║
+║██████████████       ██████████████║                            ███████║███████████████████████████████████║
+║██████████████       ██████████████║                            ███████║███████████████████████████████████║
+║██████████████       ██████████████║                            ███████║███████████████████████████████████║
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+║██████████████       ██████████████║███████       █████████████████████║██████████████       ██████████████║
+║███B██████████       ██████████████║███C███       █████████████████████║███L██████████       ██████████████║
+║██████████████       ██████████████║███████       █████████████████████║██████████████       ██████████████║
+║███████              ██████████████║                            ███████║███████$$$$$$$       $$$$$$$███████║
+║███████              ██████████████║                            ███████║███████$     $       $     $███████║
+║███████              ██████████████║                            ███████║███████$$$$$$$       $$$$$$$███████║
+║███████       ███████              ║       ██████████████              ║                                   ║
+║███████       ███████              ║       ██████████████              ║          F                        ║
+║███████       ███████              ║       ██████████████              ║                                   ║
+║███████                     ███████║                     ██████████████║███████$$$$$$$       $$$$$$$███████║
+║███████                     ███████║                     ██████████████║███████$  T  $       $  S  $███████║
+║███████                     ███████║                     ██████████████║███████$$$$$$$       $$$$$$$███████║
+║██████████████       ██████████████║██████████████              ███████║██████████████       ██████████████║
+║██████████████       ██████████████║██████████████              ███████║██████████████       ██████████████║
+║██████████████       ██████████████║██████████████              ███████║██████████████       ██████████████║
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+Possible move: up
+ > Card Flip Counter:  79
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+║██████████████       ██████████████║███████              ██████████████║███████                            ║
+║███S██████████       ██████████████║███A███              ██████████████║███D███                            ║
+║██████████████       ██████████████║███████              ██████████████║███████                            ║
+║███████                     ███████║              ███████              ║              █████████████████████║
+║███████                     ███████║              ███████              ║              █████████████████████║
+║███████                     ███████║              ███████              ║              █████████████████████║
+║                                   ║                            ███████║              ███████       ███████║
+║                                   ║                            ███████║              ███████       ███████║
+║                                   ║                            ███████║              ███████       ███████║
+║███████                     ███████║█████████████████████       ███████║███████                     ███████║
+║███████                     ███████║█████████████████████       ███████║███████                     ███████║
+║███████                     ███████║█████████████████████       ███████║███████                     ███████║
+║██████████████       ██████████████║                            ███████║███████████████████████████████████║
+║██████████████       ██████████████║                            ███████║███████████████████████████████████║
+║██████████████       ██████████████║                            ███████║███████████████████████████████████║
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+║██████████████       ██████████████║███████       █████████████████████║██████████████       ██████████████║
+║███B██████████       ██████████████║███C███       █████████████████████║███L██████████       ██████████████║
+║██████████████       ██████████████║███████       █████████████████████║██████████████       ██████████████║
+║███████              ██████████████║                            ███████║███████$$$$$$$       $$$$$$$███████║
+║███████              ██████████████║                            ███████║███████$  F  $       $     $███████║
+║███████              ██████████████║                            ███████║███████$$$$$$$       $$$$$$$███████║
+║███████       ███████              ║       ██████████████              ║                                   ║
+║███████       ███████              ║       ██████████████              ║                                   ║
+║███████       ███████              ║       ██████████████              ║                                   ║
+║███████                     ███████║                     ██████████████║███████$$$$$$$       $$$$$$$███████║
+║███████                     ███████║                     ██████████████║███████$  T  $       $  S  $███████║
+║███████                     ███████║                     ██████████████║███████$$$$$$$       $$$$$$$███████║
+║██████████████       ██████████████║██████████████              ███████║██████████████       ██████████████║
+║██████████████       ██████████████║██████████████              ███████║██████████████       ██████████████║
+║██████████████       ██████████████║██████████████              ███████║██████████████       ██████████████║
+╬═══════════════════════════════════╬═══════════════════════════════════╬═══════════════════════════════════╬
+Possible move: up
+You win, congratulations! It took you 79 card flips to find the treasure.

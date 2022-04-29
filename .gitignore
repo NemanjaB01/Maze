@@ -1,0 +1,35 @@
+## IDE
+.idea/
+.vscode
+CMakeLists.txt
+*.code-workspace
+
+
+## build files
+build/
+tmp/
+valgrind_logs/
+cmake-build-*/
+result.*
+RESULT.*
+
+a2
+*.d
+*.o
+*.so
+*.out
+*.exe
+
+
+## OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+
+testreport.html
+board_test

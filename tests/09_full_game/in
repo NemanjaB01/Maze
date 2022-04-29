@@ -1,0 +1,196 @@
+map
+flip
+move s right
+flip
+move f down
+flip
+move t left
+flip
+flip
+move f right 3
+move f right 4
+map
+map
+flip
+move s down 1
+move s down 2
+move t down 4
+move f down
+map
+fight
+map
+flip
+move s left
+flip
+move f up
+flip
+flip
+move s down 2
+move t down
+flip
+map
+move f left
+map
+move f left
+move t left
+flip
+move f up 2
+map
+fight
+map
+flip
+move s right
+flip
+move t down 2
+move s down
+move f down 2
+flip
+flip
+flip
+move t right 2
+flip
+flip
+flip
+move t up
+flip
+map
+move t right
+move t right
+scry C right
+map
+flip
+flip
+flip
+move t up
+flip
+move t right
+unlock
+map
+map
+flip
+flip
+flip
+move s up
+move t up 2
+flip
+move t right 2
+move s right
+flip
+flip
+flip
+move t up 3
+unlock
+map
+map
+move s up
+flip
+move s right 2
+flip
+move t down 3
+flip
+flip
+move s up
+flip
+move f right 2
+move s right
+flip
+flip
+flip
+move s up 2
+move f up
+flip
+move f right 1
+move f right 2
+map
+map
+flip
+move f down 2
+flip
+move s left
+map
+map
+move t left 2
+flip
+flip
+move f right 2
+flip
+move t down 2
+flip
+move t left
+flip
+move f up
+map
+map
+flip
+flip
+move t down 2
+flip
+flip
+flip
+move t right 2
+flip
+move t down
+flip
+flip
+flip
+map
+move t right
+map
+move s right
+flip
+move f down
+move s down 2
+flip
+move t left
+move f left 2
+flip
+move f up
+move t up
+flip
+move s right 2
+flip
+move s down
+flip
+move t left 2
+flip
+move f up
+move t up 2
+flip
+move s right 5
+move t right 3
+flip
+move t down
+move s down
+map
+map
+flip
+move f left 3
+flip
+flip
+move t right 3
+flip
+move f down 3
+move t down
+map
+map
+flip
+move f left 2
+flip
+flip
+flip
+move f down 2
+flip
+flip
+flip
+move f right 2
+flip
+move f down
+flip
+flip
+flip
+move f right 3
+flip
+flip
+flip
+map
+move f up

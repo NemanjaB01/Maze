@@ -1,0 +1,142 @@
+# Testcase Structure:
+#    name: String, // The name of the testcase
+#    subname: Option<String>, // used for unittests later
+#    testcase_type: String, //Only IO supported now
+#    description: Option<String>, // optional description
+#    args: Option<String>, // command line arguments 
+#    cflags: Option<String>, // compile flags
+#    tags: Option<Tags>, // tags for unit tests
+#    in_file: Option<String>, // stdin file 
+#    exp_file: Option<String>, // stdout file
+#    in_string: Option<String>, // stdin string (in_file has higher priority)
+#    exp_string: Option<String>, // stdout string (out_file has higher priority)
+#    exp_retvar: Option<i32>, // optional expected status code
+#    timeout: Option<i32>, // timeout in seconds .. default is 5 sec
+#    env_vars:Option<String>, // optional environment parameters RAND_SEED=123,foo=bar
+
+[project_definition]
+binary_path = "a2"
+makefile_path = "."
+make_targets = ["all"]
+diff_table_width = 112
+
+[[testcases]]
+name = "EOF test"
+testcase_type = "OrdIO"
+description = "Quits the game with EOF"
+env_vars = 'RAND_SEED=2468'
+args = ["AB", "CS"]
+io_file = "tests/01_eof/io"
+io_prompt = "^\\s*>\\s*$"
+in_file = "tests/01_eof/in"
+exp_file = "tests/01_eof/out"
+exp_retvar = 0
+
+[[testcases]]
+name = "basic game board print"
+testcase_type = "OrdIO"
+description = "configuration from assignment description"
+env_vars = 'RAND_SEED=12345'
+args = ["SAD", "BCL"]
+io_file = "tests/02_basic_game_board_print/io"
+io_prompt = "^\\s*>\\s*$"
+in_file = "tests/02_basic_game_board_print/in"
+exp_file = "tests/02_basic_game_board_print/out"
+exp_retvar = 0
+
+[[testcases]]
+name = "invalid room"
+testcase_type = "OrdIO"
+description = "undefined room used as argument"
+env_vars = 'RAND_SEED=12345'
+args = ["ZS"]
+io_file = "tests/03_invalid_room/io"
+io_prompt = "^\\s*>\\s*$"
+in_file = "tests/03_invalid_room/in"
+exp_file = "tests/03_invalid_room/out"
+exp_retvar = 2
+
+[[testcases]]
+name = "simple move"
+testcase_type = "OrdIO"
+description = "move all characters correctly in starting room"
+env_vars = 'RAND_SEED=2468'
+args = ["S"]
+io_file = "tests/04_simple_move/io"
+io_prompt = "^\\s*>\\s*$"
+in_file = "tests/04_simple_move/in"
+exp_file = "tests/04_simple_move/out"
+exp_retvar = 0
+
+[[testcases]]
+name = "map toggle"
+testcase_type = "OrdIO"
+description = "Toggles map off and on"
+env_vars = 'RAND_SEED=12345'
+args = ["AB", "CS"]
+io_file = "tests/05_map_toggle/io"
+io_prompt = "^\\s*>\\s*$"
+in_file = "tests/05_map_toggle/in"
+exp_file = "tests/05_map_toggle/out"
+exp_retvar = 0
+
+[[testcases]]
+name = "discover room"
+testcase_type = "OrdIO"
+description = "tests discovery of next room"
+env_vars = 'RAND_SEED=12345'
+args = ["A", "S"]
+io_file = "tests/06_discover_new_room/io"
+io_prompt = "^\\s*>\\s*$"
+in_file = "tests/06_discover_new_room/in"
+exp_file = "tests/06_discover_new_room/out"
+exp_retvar = 0
+
+[[testcases]]
+name = "flip"
+testcase_type = "OrdIO"
+description = "flipping a few times"
+env_vars = 'RAND_SEED=2468'
+args = ["S"]
+io_file = "tests/07_flip/io"
+io_prompt = "^\\s*>\\s*$"
+in_file = "tests/07_flip/in"
+exp_file = "tests/07_flip/out"
+exp_retvar = 0
+
+[[testcases]]
+name = "move errors"
+testcase_type = "OrdIO"
+description = "tests a few error cases for the move command"
+env_vars = 'RAND_SEED=2468'
+args = ["S", "B"]
+io_file = "tests/08_move_errors/io"
+io_prompt = "^\\s*>\\s*$"
+in_file = "tests/08_move_errors/in"
+exp_file = "tests/08_move_errors/out"
+exp_retvar = 0
+
+[[testcases]]
+name = "full game"
+timeout = 120
+testcase_type = "OrdIO"
+description = "test a full game from start to end"
+env_vars = 'RAND_SEED=987654321'
+args = ["SAD", "BCL"]
+io_file = "tests/09_full_game/io"
+io_prompt = "^\\s*>\\s*$"
+in_file = "tests/09_full_game/in"
+exp_file = "tests/09_full_game/out"
+exp_retvar = 0
+
+[[testcases]]
+name = "Invalid Config"
+testcase_type = "OrdIO"
+description = "number in configuration"
+env_vars = 'RAND_SEED=2468'
+args = ["42", "SB"]
+io_file = "tests/10_invalid_config/io"
+io_prompt = "^\\s*>\\s*$"
+in_file = "tests/10_invalid_config/in"
+exp_file = "tests/10_invalid_config/out"
+exp_retvar = 2

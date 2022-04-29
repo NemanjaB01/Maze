@@ -1,0 +1,5 @@
+move T left 1
+flip
+flip
+move T up 1
+quit

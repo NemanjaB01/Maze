@@ -1,0 +1,78 @@
+Welcome to the magical OOP1 Maze!!!
+Card Flip Counter:   0
+╬═══════════════════════════════════╬
+║██████████████       ██████████████║
+║███S██████████       ██████████████║
+║██████████████       ██████████████║
+║███████                     ███████║
+║███████   F             T   ███████║
+║███████                     ███████║
+║                                   ║
+║                                   ║
+║                                   ║
+║███████                     ███████║
+║███████   S                 ███████║
+║███████                     ███████║
+║██████████████       ██████████████║
+║██████████████       ██████████████║
+║██████████████       ██████████████║
+╬═══════════════════════════════════╬
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+╬═══════════════════════════════════╬
+Possible move: right
+ > Seer: "I can't go that way right now!"
+ > Who do you want to move?!?
+ > Thief: "My way is blocked!"
+ > Fighter: "I don't understand where I should go!"
+ > Fighter: "There is not enough space on that tile!"
+ > Fighter: "I don't understand how far I should go!"
+ > Card Flip Counter:   0
+╬═══════════════════════════════════╬
+║██████████████       ██████████████║
+║███S██████████       ██████████████║
+║██████████████       ██████████████║
+║███████                     ███████║
+║███████          F      T   ███████║
+║███████                     ███████║
+║                                   ║
+║                                   ║
+║                                   ║
+║███████                     ███████║
+║███████   S                 ███████║
+║███████                     ███████║
+║██████████████       ██████████████║
+║██████████████       ██████████████║
+║██████████████       ██████████████║
+╬═══════════════════════════════════╬
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+╬═══════════════════════════════════╬
+Possible move: right
+ > 

@@ -1,0 +1,7 @@
+move S right 
+flip
+flip
+move t left
+flip
+move f down
+quit

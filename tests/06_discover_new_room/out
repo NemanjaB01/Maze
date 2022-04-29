@@ -1,0 +1,177 @@
+Welcome to the magical OOP1 Maze!!!
+Card Flip Counter:   0
+╬═══════════════════════════════════╬
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+╬═══════════════════════════════════╬
+║██████████████       ██████████████║
+║███S██████████       ██████████████║
+║██████████████       ██████████████║
+║███████                     ███████║
+║███████   F             T   ███████║
+║███████                     ███████║
+║                                   ║
+║                                   ║
+║                                   ║
+║███████                     ███████║
+║███████   S                 ███████║
+║███████                     ███████║
+║██████████████       ██████████████║
+║██████████████       ██████████████║
+║██████████████       ██████████████║
+╬═══════════════════════════════════╬
+Possible move: left
+ > Card Flip Counter:   0
+╬═══════════════════════════════════╬
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+╬═══════════════════════════════════╬
+║██████████████       ██████████████║
+║███S██████████       ██████████████║
+║██████████████       ██████████████║
+║███████                     ███████║
+║███████   F      T          ███████║
+║███████                     ███████║
+║                                   ║
+║                                   ║
+║                                   ║
+║███████                     ███████║
+║███████   S                 ███████║
+║███████                     ███████║
+║██████████████       ██████████████║
+║██████████████       ██████████████║
+║██████████████       ██████████████║
+╬═══════════════════════════════════╬
+Possible move: left
+ > Card Flip Counter:   1
+╬═══════════════════════════════════╬
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+╬═══════════════════════════════════╬
+║██████████████       ██████████████║
+║███S██████████       ██████████████║
+║██████████████       ██████████████║
+║███████                     ███████║
+║███████   F      T          ███████║
+║███████                     ███████║
+║                                   ║
+║                                   ║
+║                                   ║
+║███████                     ███████║
+║███████   S                 ███████║
+║███████                     ███████║
+║██████████████       ██████████████║
+║██████████████       ██████████████║
+║██████████████       ██████████████║
+╬═══════════════════════════════════╬
+Possible move: down
+ > Card Flip Counter:   2
+╬═══════════════════════════════════╬
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
+╬═══════════════════════════════════╬
+║██████████████       ██████████████║
+║███S██████████       ██████████████║
+║██████████████       ██████████████║
+║███████                     ███████║
+║███████   F      T          ███████║
+║███████                     ███████║
+║                                   ║
+║                                   ║
+║                                   ║
+║███████                     ███████║
+║███████   S                 ███████║
+║███████                     ███████║
+║██████████████       ██████████████║
+║██████████████       ██████████████║
+║██████████████       ██████████████║
+╬═══════════════════════════════════╬
+Possible move: up
+ > Card Flip Counter:   2
+╬═══════════════════════════════════╬
+║███████              ██████████████║
+║███A███          M   ██████████████║
+║███████              ██████████████║
+║              ███████          █   ║
+║              ███████          █   ║
+║              ███████          █   ║
+║               \   /        ███████║
+║                | |         ███████║
+║               /   \        ███████║
+║█████████████████████       ███████║
+║█████████████████████       ███████║
+║█████████████████████       ███████║
+║SSSSSSS                     ███████║
+║S     S                 M   ███████║
+║SSSSSSS                     ███████║
+╬═══════════════════════════════════╬
+║██████████████       ██████████████║
+║███S██████████   T   ██████████████║
+║██████████████       ██████████████║
+║███████                     ███████║
+║███████   F                 ███████║
+║███████                     ███████║
+║                                   ║
+║                                   ║
+║                                   ║
+║███████                     ███████║
+║███████   S                 ███████║
+║███████                     ███████║
+║██████████████       ██████████████║
+║██████████████       ██████████████║
+║██████████████       ██████████████║
+╬═══════════════════════════════════╬
+Possible move: up
+ > 
