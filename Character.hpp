@@ -11,6 +11,7 @@ class Character
     CharacterType type_;
 
   public:
+    Character() = default;
     Character(const Character&) = delete;
     Character(CharacterType type) : type_{type} {}
     Character operator=(const Character&) = delete;

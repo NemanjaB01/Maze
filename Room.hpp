@@ -14,8 +14,8 @@ class Room
     bool revealed_;
 
   public:
-    Room(char room_id,const std::string room_info_str);
-    void setRevealed(bool revealed){revealed_ = revealed;}
+    Room(char room_id,const std::string room_info_str) : room_id_{room_id}{}
+    void setRevealed(const bool revealed){revealed_ = revealed;}
     char getRoomId(){return room_id_;}
     std::array<std::array<Tile*,5>,5> getRoomMap(){return room_map_;}
     bool isRevealed(){return revealed_;}
