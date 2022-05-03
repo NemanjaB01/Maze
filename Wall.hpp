@@ -8,10 +8,11 @@
 
 class Wall : public Tile
 {
-
+  private:
+    const char room_id_;
   public:
-    Wall() : Tile{TileType::WALL,row_,column_ ,false, false, false}{}
-    std::string getTileString()const override;
+    Wall(char room_id) : Tile{TileType::WALL,row_,column_ ,false, false, false},room_id_{room_id}{}
+    std::string getTileString() override;
     Wall(const Wall&) = delete;
     ~Wall() = default;
 };

@@ -9,7 +9,7 @@ class Passage : public Tile
 {
   public:
     Passage() : Tile{TileType::PASSAGE,row_,column_,true, true, true}{}
-    std::string getTileString()const override;
+    std::string getTileString() override;
     Passage(const Passage&) = delete;
     ~Passage() = default;
 };

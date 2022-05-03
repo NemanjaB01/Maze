@@ -21,7 +21,7 @@ class Tile
 
   public:
     Tile(TileType type, int row, int column, bool is_available, bool is_passable, bool is_changeable);
-    virtual std::string getTileString() const = 0;
+    virtual std::string getTileString() = 0;
     TileType getTileType() const { return type_; }
     Tile(const Tile&) = delete;
     Tile& operator=(const Tile& other) = delete;

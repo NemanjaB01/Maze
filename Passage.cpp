@@ -1,10 +1,17 @@
 #include "Passage.hpp"
 
 
-std::string Passage::getTileString() const
+std::string Passage::getTileString()
 {
   std::string passage = "       \n"
                         "       \n"
                         "       \n";
+
+  if(character_)
+  {
+    passage.at(12) = character_->getCharacterTypeAsChar();
+    is_available_ = false;
+  }
+
   return passage;
 }
