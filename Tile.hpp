@@ -6,28 +6,28 @@
 #include "Character.hpp"
 #include <memory>
 
+enum class TileType { WALL, PASSAGE, DOOR, SECRET_DOOR, MONSTER, HOURGLASS, CRYSTAL_BALL, LOOT, BUTTON };
 
 class Tile
 {
   protected:
-    std::shared_ptr <Character> charachter_;
+    std::shared_ptr <Character> character_;
+    TileType type_;
     int row_;
     int column_;
-    bool isFieldAvailable_;
-    bool isFieldPassable_;
-    bool isFieldChangeable_;
-    char initial_;
+    bool is_available_;
+    bool is_passable_;
+    bool is_changeable_;
 
   public:
-    virtual std::string getTileString() = 0;
+    Tile(TileType type, int row, int column, bool is_available, bool is_passable, bool is_changeable);
+    virtual std::string getTileString() const = 0;
+    TileType getTileType() const { return type_; }
     Tile(const Tile&) = delete;
+    Tile& operator=(const Tile& other) = delete;
     virtual ~Tile(){}
-    Tile(char initial,bool isFieldAvailable, bool isFieldPassable, bool isFieldChangeable) :
-    initial_{initial},
-    isFieldAvailable_{isFieldAvailable},
-    isFieldPassable_{isFieldPassable},
-    isFieldChangeable_{isFieldChangeable}{}
-
+    int getRow() const { return row_; }
+    int getColumn() const { return column_; }
 };
 
 
