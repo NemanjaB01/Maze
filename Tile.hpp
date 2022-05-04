@@ -6,7 +6,8 @@
 #include "Character.hpp"
 #include <memory>
 
-enum class TileType { WALL, PASSAGE, DOOR, SECRET_DOOR, MONSTER, HOURGLASS, CRYSTAL_BALL, LOOT, BUTTON };
+enum class TileType { WALL, PASSAGE, HORIZONTAL_DOOR, VECTICAL_DOOR, SECRET_DOOR, MONSTER, HOURGLASS,
+                      CRYSTAL_BALL, LOOT, TIEF_BUTTON, FIGHTER_BUTTON, SEER_BUTTON };
 
 class Tile
 {
@@ -17,10 +18,9 @@ class Tile
     int column_;
     bool is_available_;
     bool is_passable_;
-    bool is_changeable_;
 
   public:
-    Tile(TileType type, int row, int column, bool is_available, bool is_passable, bool is_changeable);
+    Tile(TileType type, int row, int column, bool is_available, bool is_passable);
     virtual std::string getTileString() = 0;
     TileType getTileType() const { return type_; }
     Tile(const Tile&) = delete;
