@@ -9,8 +9,9 @@ class Loot : public MagicTile
 {
   public:
     Loot(int row, int column) : MagicTile{TileType::LOOT, row, column, true, true} {}
-    ~Loot() = default;
-    std::string getTileString() override { return "$$$$$$$\n$     $\n$$$$$$$\n"; }
+    ~Loot() override = default;
+    std::string getTileString() override;
+    void magicUsed();
 };
 
 #endif

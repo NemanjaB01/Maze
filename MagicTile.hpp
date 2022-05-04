@@ -14,11 +14,12 @@ class MagicTile : public Tile
 
   public:
     MagicTile(TileType type, int row, int col, bool is_available, bool is_passable)
-     : Tile{type_, row_, column_, is_available_, is_passable_}, magic_used_{false} {}
-    ~MagicTile() override = default;
+     : Tile{type, row, col, is_available, is_passable}, magic_used_{false} {}
+    virtual ~MagicTile() = default;
 
     virtual std::string getTileString() = 0;
     virtual void magicUsed();
+    bool isAvailable();
 };
 
 #endif
