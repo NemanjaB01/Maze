@@ -24,7 +24,7 @@ class Tile
     bool is_magic_;
 
   public:
-    Tile(TileType type, int row, int column, bool is_available, bool is_passable, bool is_magic);
+    Tile(TileType type, int row, int column, bool is_magic);
     virtual std::string getTileString() = 0;
 
     TileType getTileType() const { return type_; }
