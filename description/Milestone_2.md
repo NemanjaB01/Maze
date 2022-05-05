@@ -8,7 +8,7 @@ Eingegebene Befehle werden nur dann ausgeführt, wenn sie mit den Spielregeln (s
 - nach dem nächsten Befehl gefragt werden (Prompt ausgeben).
 
 Ein Spielzug verläuft so:
-1. Der Spielplan mit Zusatzinformationen wird ausgegeben, falls die Spielplanausgabe nicht deaktiviert ist (siehe [Befehl `map`](ausgabe-des-spielplans-ein-oder-ausschalten))).
+1. Der Spielplan mit Zusatzinformationen wird ausgegeben, falls die Spielplanausgabe nicht deaktiviert ist (siehe [Befehl `map`](#ausgabe-des-spielplans-ein-oder-ausschalten))).
 2. Der Prompt wird ausgegeben
 3. Die\*der Spieler\*in gibt Befehle ein
 
