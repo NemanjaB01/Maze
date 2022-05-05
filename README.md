@@ -74,7 +74,7 @@ Die\*der Spieler\*in kann:
 
 ### 1. Charakter bewegen
 
-Ein Zug kann dafür verwendet werden, einen Charakter um ein beliebige Anzahl an Feldern in eine bestimmte Richtung zu bewegen. 
+Ein Zug kann dafür verwendet werden, einen Charakter um eine beliebige Anzahl an Feldern in eine bestimmte Richtung zu bewegen. 
 Es ist jedoch nicht immer möglich, die Charaktere in jede beliebige Richtung zu bewegen. Die\*der Spieler\*in darf nur Bewegungen in jene Richtung durchführen, deren Bewegungskärtchen gerade aufgedeckt ist. Dies kann sie\*er jedoch *beliebig oft* für *alle* Charaktere tun.  
 
 Hierbei sind Hindernisse (z. B. Wände und Monster) zu beachten. Es gibt bestimmte Bonusfelder (z. B. Sanduhr, Monster, Kristallkugel, Schalter), die entweder automatisch eingesetzt werden, wenn ein Charakter seine Bewegung auf diesem Feld beendet, oder es dem Charakter ermöglichen, seine Spezialfähigkeit einzusetzen, wenn sie\*er sich auf einem benachbarten Feld befindet.
