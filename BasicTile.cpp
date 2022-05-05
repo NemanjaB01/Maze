@@ -22,9 +22,7 @@ std::string BasicTile::getTileString()
                     "\u2588\u2588\u2588\u2588\u2588\u2588\u2588\n";
 
       if((row_ == 0) && (column_ == 0))
-      {
         basic_tile.at(12) = in_room_.lock()->getRoomId();
-      }
   }
   else if(type_ == TileType::PASSAGE)
   {
