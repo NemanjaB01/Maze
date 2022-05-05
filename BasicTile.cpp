@@ -32,9 +32,7 @@ std::string BasicTile::getTileString()
                    "       \n"
                    "       \n";
       if(character_)
-      {
         basic_tile.at(12) = character_->getCharacterTypeAsChar();
-      }
   }
 
   return basic_tile;
