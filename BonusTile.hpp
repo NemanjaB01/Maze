@@ -6,11 +6,9 @@
 
 class BonusTile : public MagicTile
 {
-  private:
-    TileType type_;
 
   public:
-    BonusTile(TileType type, int row, int column) : MagicTile{type, row, column, true, true} , type_{type} {}
+    BonusTile(TileType type, int row, int column) : MagicTile{type, row, column, true, true} {}
     BonusTile operator=(const BonusTile&) = delete;
     std::string getTileString() override;
     BonusTile(const BonusTile&) = delete;
