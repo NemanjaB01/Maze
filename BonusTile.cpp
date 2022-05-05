@@ -5,9 +5,9 @@ std::string BonusTile::getTileString()
 {
   std::string bonus_tile;
 
-  switch(letter_)
+  switch(type_)
   {
-    case 'C':
+    case TileType::CRYSTAL_BALL :
       bonus_tile = "  / \\  \n |   | \n  \\ /  \n";
       if(character_)
       {
@@ -15,7 +15,7 @@ std::string BonusTile::getTileString()
         is_available_ = false;
       }
       break;
-    case 'G':
+    case TileType::HOURGLASS :
       bonus_tile = " \\   / \n  | |  \n /   \\ \n";
       if(character_)
       {
