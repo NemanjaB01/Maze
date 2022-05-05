@@ -4,12 +4,7 @@
 BasicTile::BasicTile(TileType type, int row, int column) 
   : Tile{type, row , column, false}
 {
-  if(type_ == TileType::WALL)
-  {
-    is_available_ = false;
-    is_passable_ = false;
-  }
-  else if(type_ == TileType::PASSAGE)
+  if(type_ == TileType::PASSAGE)
   {
     is_available_ = true;
     is_passable_ = true;
@@ -17,7 +12,7 @@ BasicTile::BasicTile(TileType type, int row, int column)
 }
 
 
-BasicTile::getTileString()
+std::string BasicTile::getTileString()
 {
   std::string basic_tile;
   if(type_ == TileType::WALL)
@@ -39,10 +34,7 @@ BasicTile::getTileString()
       if(character_)
       {
         basic_tile.at(12) = character_->getCharacterTypeAsChar();
-        is_available_ = false;
-      } 
-      else if(!is_available_)
-        is_available_ = true;
+      }
   }
 
   return basic_tile;
