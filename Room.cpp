@@ -1,18 +1,14 @@
 #include "Room.hpp"
 #include "Wall.hpp"
-/*
-#include "CrystalBall.hpp"
-#include "HorizontalDoor.hpp"
-#include "VertiacalDoor.hpp"
-#include "HourGlass.hpp"
+#include "BonusTile.hpp"
+#include "Door.hpp"
 #include "Loot.hpp"
 #include "Monster.hpp"
 #include "Passage.hpp"
-#include "SecretDoor.hpp"
 #include "Button.hpp"
-*/
-Room::Room(char room_id, const std::string& room_info_str)
- : room_id_{room_id}, revealed_{false}
+
+Room::Room(char room_id, const std::string& room_info_str,  int row, int column)
+ : room_id_{room_id}, revealed_{false}, row_{row_}, col_{column}
 {
   int row{0};
   int col{0};
@@ -26,16 +22,19 @@ Room::Room(char room_id, const std::string& room_info_str)
         room_map_.at(row).at(col) = std::make_shared<Wall>(room_id_, row, col);
         break;
       case TileType::CRYSTAL_BALL:
-        room_map_.at(row).at(col) = std::make_shared<CrystalBall>(row, col);
-          break;
-      case TileType::HORIZONTAL_DOOR:
-        room_map_.at(row).at(col) = std::make_shared<HorizontalDoor>(row, col);
-          break;
-      case TileType::VECTICAL_DOOR:
-        room_map_.at(row).at(col) = std::make_shared<VerticalDoor>(row, col);
+        room_map_.at(row).at(col) = std::make_shared<BonusTile>(type, row, col);
           break;
       case TileType::HOURGLASS:
-        room_map_.at(row).at(col) = std::make_shared<HourGlass>(row, col);
+        room_map_.at(row).at(col) = std::make_shared<BonusTile>(type, row, col);
+          break;
+      case TileType::HORIZONTAL_DOOR:
+        room_map_.at(row).at(col) = std::make_shared<Door>(type, row, col);
+          break;
+      case TileType::VECTICAL_DOOR:
+        room_map_.at(row).at(col) = std::make_shared<Door>(type, row, col);
+          break;
+      case TileType::SECRET_DOOR:
+        room_map_.at(row).at(col) = std::make_shared<Door>(type, row, col);
           break;
       case TileType::LOOT:
         room_map_.at(row).at(col) = std::make_shared<Loot>(row, col);
@@ -46,17 +45,14 @@ Room::Room(char room_id, const std::string& room_info_str)
       case TileType::PASSAGE:
         room_map_.at(row).at(col) = std::make_shared<Passage>(row, col);
           break;
-      case TileType::SECRET_DOOR:
-        room_map_.at(row).at(col) = std::make_shared<SecretDoor>(row, col);
-          break;
       case TileType::FIGHTER_BUTTON:
-        room_map_.at(row).at(col) = std::make_shared<Button>('F', row, col);
+        room_map_.at(row).at(col) = std::make_shared<Button>(type, row, col, 'F');
           break;
       case TileType::SEER_BUTTON:
-        room_map_.at(row).at(col) = std::make_shared<Button>('S', row, col);
+        room_map_.at(row).at(col) = std::make_shared<Button>(type, row, col, 'S');
           break;
       case TileType::TIEF_BUTTON:
-        room_map_.at(row).at(col) = std::make_shared<Button>('T', row, col);
+        room_map_.at(row).at(col) = std::make_shared<Button>(type, row, col, 'T');
           break;
     }
     col += 1;

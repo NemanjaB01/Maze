@@ -7,16 +7,13 @@
 
 class Door : public MagicTile
 {
-  bool is_secret_;
-
   public:
-    Door(TileType type, int row, int column, bool is_secret);
+    Door(TileType type, int row, int column);
     Door(const Door&) = delete;
     Door& operator=(const Door&) = delete;
     ~Door() override = default;
 
     std::string getTileString() override;
-    bool IsSecret() const { return is_secret_; }
 };
 
 #endif
