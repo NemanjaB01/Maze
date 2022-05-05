@@ -8,7 +8,7 @@
 class BasicTile : public Tile
 {
   public:
-    BasicTile(TileType type, int row, int column);
+    BasicTile(TileType type, char room_id, int row, int column);
     std::string getTileString() override;
 
     BasicTile(const BasicTile&) = delete;
