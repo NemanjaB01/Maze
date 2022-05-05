@@ -7,18 +7,14 @@ std::string Door::getTileString()
 {
   std::string door;
 
-  switch (type_)
-  {
-  case TileType::HORIZONTAL_DOOR:
+  if (type_ == TileType::HORIZONTAL_DOOR)
     door = "       \n███████\n       \n";
-    break;
-  case TileType::VECTICAL_DOOR:
+
+  else if (type_ == TileType::VECTICAL_DOOR)
     door = "   █   \n   █   \n   █   \n";
-    break;
-  case TileType::SECRET_DOOR:
+
+  else if (type_ == TileType::SECRET_DOOR)
     door = "███████\n███████\n███████\n";
-    break;
-  }
 
   return door;
 }
