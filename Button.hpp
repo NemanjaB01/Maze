@@ -6,15 +6,16 @@
 class Button : public MagicTile
 {
   private:
-    char letter_;
+    const char letter_;
 
   public:
-    Button(char letter, int row, int column)
-     : MagicTile{row_, column_, true, true}, letter_{letter} {}
+    Button(TileType type, int row, int column, const char letter)
+     : MagicTile{type, row, column, true, true}, letter_{letter} {}
+    Button(const Button&) = delete;
+    Button& operator=(const Button&) = delete;
+    ~Button() override = default;
+
     std::string getTileString() override;
-    void setLetter(char letter) { letter_ = letter; }
-    char getLetter() const { return letter_; }
-    TileType getButtonType();
 };
 
 #endif
