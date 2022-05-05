@@ -7,11 +7,10 @@
 class BonusTile : public MagicTile
 {
   private:
-    const char letter_;
+    TileType type_;
 
   public:
-    BonusTile(TileType tiletype, int row, int column, const char letter) : MagicTile{type, row, column, true, true}
-    , letter_{letter} {}
+    BonusTile(TileType type, int row, int column) : MagicTile{type, row, column, true, true} , type_{type} {}
     BonusTile operator=(const BonusTile&) = delete;
     std::string getTileString() override;
     BonusTile(const BonusTile&) = delete;
