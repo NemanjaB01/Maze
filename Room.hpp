@@ -20,14 +20,18 @@ class Room
     const char room_id_;
     std::array<std::array<std::shared_ptr<Tile>, 5>, 5 > room_map_;
     bool revealed_;
+    const int row_;
+    const int col_;
 
   public:
-    Room(char room_id, const std::string& room_info_str);
+    Room(char room_id, const std::string& room_info_str, int row_, int column);
     void setRevealed(const bool revealed) { revealed_ = revealed; }
-    char getRoomId() { return room_id_; }
-    std::array<std::array<std::shared_ptr<Tile>, 5> ,5> getRoomMap() { return room_map_; }
+    char getRoomId() const { return room_id_; }
+    std::array<std::array<std::shared_ptr<Tile>, 5> ,5>& getRoomMap() { return room_map_; }
     bool isRevealed() const { return revealed_; }
+
     Room(const Room&) = delete;
+    Room& operator=(const Room&) = delete;
     ~Room() = default;
 };
 

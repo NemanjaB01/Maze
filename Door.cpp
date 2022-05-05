@@ -1,10 +1,7 @@
 #include "Door.hpp"
 
-Door::Door(TileType type, int row, int column, bool is_secret)
- : MagicTile(type, row, column, false, false)
-{
-  type == TileType::SECRET_DOOR ? is_secret = true : is_secret = false;
-}
+Door::Door(TileType type, int row, int column)
+ : MagicTile(type, row, column, false, false) {}
 
 std::string Door::getTileString()
 {
