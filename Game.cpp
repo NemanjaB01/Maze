@@ -45,9 +45,6 @@ void Game::parse(const int argc, const char* const argv[])
       ifEveryRoomUnique(single_room);
 
   ifRoomsFormRectangle();
-  for (const auto& row : rooms_)
-    for (const auto& s : row)
-      s->printRoom();
 }
 
 void Game::checkIfLetters(const std::string& rooms_row_string) const
@@ -110,7 +107,6 @@ void Game::ifEveryRoomUnique(const std::shared_ptr<Room>& current_room) const
         counter += 1;
       if (counter >= 2)
         throw Exceptions::InvalidConfiguration();
-      counter = 0;
     }
 }
 
