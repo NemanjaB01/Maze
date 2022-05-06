@@ -4,13 +4,19 @@
 #include <vector>
 #include <memory>
 #include <array>
+#include <queue>
+
 #include "Room.hpp"
 #include "Character.hpp"
+
+
+enum class DIRECTIONS_TYPES { UP, RIGHT, DOWN, LEFT };
 
 class Game
 {
   std::vector<std::vector<std::shared_ptr<Room>> > rooms_;
   std::array<std::shared_ptr<Character>, 3> characters_;
+  std::queue<DIRECTIONS_TYPES> cards_;
 
   void checkIfLetters(const std::string& rooms_row_string) const;
   void checkRowLength(const std::string& rooms_row_string) const;
@@ -18,6 +24,9 @@ class Game
   void containsSpecificRooms() const;
   void ifEveryRoomUnique(const std::shared_ptr<Room>& room) const;
   void ifRoomsFormRectangle() const;
+
+  void shuffleCards();
+  void flip();
 
   Game();
 

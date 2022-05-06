@@ -5,6 +5,7 @@
 #include "Game.hpp"
 #include "Exceptions.hpp"
 #include "RoomInfo.hpp"
+#include "Random.hpp"
 
 Game::Game()
  : characters_{ std::make_shared<Character>(CharacterType::FIGHTER),
@@ -136,4 +137,24 @@ std::shared_ptr<Room> Game::getRoomById(const char id)
         return single_room;
 
   return nullptr;
+}
+
+void Game::shuffleCards()
+{
+  std::vector<DIRECTIONS_TYPES> cards_dir{DIRECTIONS_TYPES::UP, DIRECTIONS_TYPES::RIGHT,
+                                          DIRECTIONS_TYPES::DOWN, DIRECTIONS_TYPES::LEFT};
+  Oop::Random::Random &r = Oop::Random::getInstance();
+
+  for (unsigned card_left = 4; card_left >= 0; card_left--)
+  {
+    size_t random_card = r.getRandomCard(card_left);
+    cards_.push(cards_dir.at(random_card - 1));
+    cards_dir.erase(cards_dir.begin() + random_card - 1);
+  }
+}
+
+void Game::flip()
+{
+  cards_.push(cards_.front());
+  cards_.pop();
 }

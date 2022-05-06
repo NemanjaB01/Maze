@@ -5,6 +5,8 @@
 
 enum class CharacterType { FIGHTER, THIEF, SEER };
 
+class Tile;
+
 class Character
 {
   private:
