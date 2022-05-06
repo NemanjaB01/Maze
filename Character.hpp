@@ -27,7 +27,7 @@ class Character
     void setOnButton(bool on_button) { on_button_ = on_button; }
 
     std::weak_ptr<Tile>& getCurrentile() { return current_tile_; }
-    void setCurrentTIle( std::weak_ptr<Tile> current_tile) { current_tile_ = current_tile; }
+    void setCurrentTIle( std::shared_ptr<Tile> current_tile) { current_tile_ = current_tile; }
     void setOnLoot(bool on_loot) { on_loot_ = on_loot; }
     bool isOnLoot() { return on_loot_; }
 };
