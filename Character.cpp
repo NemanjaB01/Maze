@@ -8,5 +8,6 @@ char Character::getCharacterTypeAsChar() const
     return 'S';
   else if (type_ == CharacterType::THIEF)
     return 'T';
+  return ' ';
 }
 

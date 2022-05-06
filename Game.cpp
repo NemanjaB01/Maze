@@ -23,22 +23,27 @@ void Game::parse(const int argc, const char* const argv[])
   if (argc < 2)
     throw Exceptions::InvalidConfiguration();
 
-  std::stringstream s_stream;
-
+  std::string helper;
   for (int iter{1}; iter < argc; iter++)
-    s_stream << argv[iter];
+  {
+    helper += argv[iter];
+    helper += ',';
+  }
+  helper.erase(helper.size() - 1, 1);
+  std::stringstream s_stream{ helper };
 
   std::string rooms_row_string;
 
   while(!s_stream.eof())
   {
-    s_stream >> rooms_row_string;
-    std::cout << rooms_row_string << std::endl;
+    getline(s_stream, rooms_row_string, ',');
     checkRowLength(rooms_row_string);
     checkIfLetters(rooms_row_string);
-    addRooms(rooms_row_string);
+    addRoom(rooms_row_string);
+
+    rooms_row_string.clear();
   }
-  containsStartingRoom();
+  containsSpecificRooms();
 
   for (const auto& room_row : rooms_)
     for (const std::shared_ptr<Room>& single_room : room_row)
@@ -60,7 +65,7 @@ void Game::checkRowLength(const std::string& rooms_row_string) const
     throw Exceptions::InvalidConfiguration();
 }
 
-void Game::addRooms(const std::string& rooms_row_string)
+void Game::addRoom(const std::string& rooms_row_string)
 {
   std::vector<std::shared_ptr<Room>> rooms_row;
 
@@ -86,13 +91,17 @@ void Game::addRooms(const std::string& rooms_row_string)
   row++;
 }
 
-void Game::containsStartingRoom() const
+void Game::containsSpecificRooms() const
 {
+  int specific_room_counter{0};
+
   for (const auto& room : rooms_)
     for (const std::shared_ptr<Room>& r : room)
-      if (r->getRoomId() == 'S')
-        return;
-  throw Exceptions::InvalidConfiguration();
+      if (r->getRoomId() == 'S' || r->getRoomId() == 'L')
+        specific_room_counter++;
+
+  if (specific_room_counter != 2)
+    throw Exceptions::InvalidConfiguration();
 }
 
 void Game::ifEveryRoomUnique(const std::shared_ptr<Room>& current_room) const

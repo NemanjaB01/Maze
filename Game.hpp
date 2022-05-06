@@ -14,8 +14,8 @@ class Game
 
   void checkIfLetters(const std::string& rooms_row_string) const;
   void checkRowLength(const std::string& rooms_row_string) const;
-  void addRooms(const std::string& rooms_row_string);
-  void containsStartingRoom() const;
+  void addRoom(const std::string& rooms_row_string);
+  void containsSpecificRooms() const;
   void ifEveryRoomUnique(const std::shared_ptr<Room>& room) const;
   void ifRoomsFormRectangle() const;
 
