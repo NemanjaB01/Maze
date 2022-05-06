@@ -27,7 +27,7 @@ std::string BasicTile::getTileString()
 
       if((row_ == 0) && (column_ == 0))
       {
-        basic_tile.at(12) = inside_room_id_;
+        basic_tile.at(tile_center) = inside_room_id_;
       }
   }
   else if(type_ == TileType::PASSAGE)
@@ -36,7 +36,7 @@ std::string BasicTile::getTileString()
                    "       \n"
                    "       \n";
       if(character_)
-        basic_tile.at(12) = character_->getCharacterTypeAsChar();
+        basic_tile.at(tile_center) = character_->getCharacterTypeAsChar();
   }
 
   return basic_tile;

@@ -1,10 +1,11 @@
 #ifndef ROOM_HPP
 #define ROOM_HPP
 
+#include "Tile.hpp"
+
 #include <iostream>
 #include <string>
 #include <array>
-#include "Tile.hpp"
 #include <map>
 #include <memory>
 
@@ -27,8 +28,9 @@ class Room
     Room(char room_id, const std::string& room_info_str, int row_, int column);
     void setRevealed(const bool revealed) { revealed_ = revealed; }
     char getRoomId() const { return room_id_; }
-    std::array<std::array<std::shared_ptr<Tile>, 5> ,5>& getRoomMap() { return room_map_; }
+    std::array<std::array<std::shared_ptr<Tile>, 5> ,5> getRoomMap() { return room_map_; }
     bool isRevealed() const { return revealed_; }
+    void setTileToPassage(const std::shared_ptr<Tile>& tile);
 
     Room(const Room&) = delete;
     Room& operator=(const Room&) = delete;
