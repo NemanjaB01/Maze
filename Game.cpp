@@ -46,14 +46,14 @@ void Game::parse(const int argc, const char* const argv[])
 
     rooms_row_string.clear();
   }
-  containsSpecificRooms();
+  // containsSpecificRooms();
 
-  for (const auto& room_row : rooms_)
-    for (const std::shared_ptr<Room>& single_room : room_row)
-      ifEveryRoomUnique(single_room);
+  // for (const auto& room_row : rooms_)
+  //   for (const std::shared_ptr<Room>& single_room : room_row)
+  //     ifEveryRoomUnique(single_room);
 
-  ifRoomsFormRectangle();
-  printRooms();
+  // ifRoomsFormRectangle();
+   printRooms();
 }
 
 void Game::checkIfLetters(const std::string& rooms_row_string) const
@@ -169,6 +169,10 @@ void Game::flip()
 
 void Game::printRooms()
 {
+  std::string frame = "\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550"
+                      "\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550"
+                      "\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550";
+
   for(const auto& room_row : rooms_)
   {
     int num_of_rooms = room_row.size();
@@ -179,8 +183,12 @@ void Game::printRooms()
     int current_tile = 1;
     for(; i < 15; i++)
     {
+      if(column == 0 && row == 0 && current_tile == 1)
+          std::cout<<"\u256C"<<frame<<"\u256C"<<frame<<"\u256C"<<std::endl;
       for(const auto& single_room : room_row)
       {
+        if( column == 0)
+          std::cout<<"\u2551";
         for(const auto& single_room_row : single_room->getRoomMap())
         {
           for(const auto& tile : single_room_row)
@@ -194,9 +202,11 @@ void Game::printRooms()
           }
           column = 0;
         }
+
         room_rows++;
         if(room_rows == num_of_rooms)
         {
+          std::cout<<"\u2551";
           std::cout<<std::endl;
         }
       }
@@ -213,4 +223,5 @@ void Game::printRooms()
       room_rows = 0;
     }
   }
+  std::cout<<"\u256C"<<frame<<"\u256C"<<frame<<"\u256C"<<std::endl;
 }
