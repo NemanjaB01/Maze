@@ -42,6 +42,7 @@ class Tile
     virtual ~Tile(){}
     void setCharacter(const std::shared_ptr<Character>& character) { character_ = character; }
     void setInRoom(const char room_id) { inside_room_id_ = room_id; }
+    std::string getLineOfTile(int index, bool is_room_revealed);
 };
 
 #endif

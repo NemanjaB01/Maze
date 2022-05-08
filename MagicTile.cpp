@@ -58,3 +58,5 @@ void MagicTile::magicUsed(std::shared_ptr<Tile>& tile)
   if (tile->ifMagic())
     room->setTileToPassage(tile);
 }
+
+
