@@ -46,11 +46,11 @@ void Game::parse(const int argc, const char* const argv[])
 
     rooms_row_string.clear();
   }
-  // containsSpecificRooms();
+  containsSpecificRooms();
 
-  // for (const auto& room_row : rooms_)
-  //   for (const std::shared_ptr<Room>& single_room : room_row)
-  //     ifEveryRoomUnique(single_room);
+  for (const auto& room_row : rooms_)
+    for (const std::shared_ptr<Room>& single_room : room_row)
+      ifEveryRoomUnique(single_room);
 
   ifRoomsFormRectangle();
   printRooms();
@@ -85,7 +85,7 @@ void Game::addRoom(const std::string& rooms_row_string)
 
     std::shared_ptr<Room> new_room = std::make_shared<Room>(room_id, room_info_string, row, column);
 
-   // (room_id == 'S')
+   if(room_id == 'S')
       new_room->setRevealed(true);
 
     rooms_row.push_back(new_room);
