@@ -46,11 +46,11 @@ void Game::parse(const int argc, const char* const argv[])
 
     rooms_row_string.clear();
   }
-  containsSpecificRooms();
+  // containsSpecificRooms();
 
-  for (const auto& room_row : rooms_)
-    for (const std::shared_ptr<Room>& single_room : room_row)
-      ifEveryRoomUnique(single_room);
+  // for (const auto& room_row : rooms_)
+  //   for (const std::shared_ptr<Room>& single_room : room_row)
+  //     ifEveryRoomUnique(single_room);
 
   ifRoomsFormRectangle();
   printRooms();
@@ -85,7 +85,7 @@ void Game::addRoom(const std::string& rooms_row_string)
 
     std::shared_ptr<Room> new_room = std::make_shared<Room>(room_id, room_info_string, row, column);
 
-    if (room_id == 'S')
+   // (room_id == 'S')
       new_room->setRevealed(true);
 
     rooms_row.push_back(new_room);
@@ -169,55 +169,48 @@ void Game::flip()
 
 void Game::printRooms()
 {
-  int row = 0;
-  int column = 0;
-  int num_of_rooms = 0;
-  int current_tile = 1;
-  int room_rows = 0;
-  int i = 0;
-
-    for(const auto& room_row : rooms_)
+  for(const auto& room_row : rooms_)
+  {
+    int num_of_rooms = room_row.size();
+    int i = 0;
+    int room_rows = 0;
+    int row = 0;
+    int column = 0;
+    int current_tile = 1;
+    for(; i < 15; i++)
     {
-      num_of_rooms = room_row.size();
-      i = 0;
-      room_rows = 0;
-      row = 0;
-      column = 0;
-      current_tile = 1;
-      for(; i < 15; i++)
+      for(const auto& single_room : room_row)
       {
-        for(const auto& single_room : room_row)
+        for(const auto& single_room_row : single_room->getRoomMap())
         {
-          for(const auto& single_room_row : single_room->getRoomMap())
+          for(const auto& tile : single_room_row)
           {
-            for(const auto& tile : single_room_row)
+            if(row ==tile->getRow() && column == tile->getColumn())
             {
-              if(row ==tile->getRow() && column == tile->getColumn())
-              {
-                std::cout<<single_room->getLineOfRoom(current_tile, tile->getTileString(),
-                tile->getTileType(), tile->getRow(), tile->getColumn());
-              }
-              column++;
+              std::cout<<single_room->getLineOfRoom(current_tile, tile->getTileString(),
+              tile->getTileType(), tile->getRow(), tile->getColumn());
             }
-            column = 0;
+            column++;
           }
-          room_rows++;
-          if(room_rows == num_of_rooms)
-          {
-            std::cout<<std::endl;
-          }
+          column = 0;
         }
-        current_tile ++;
-        if(current_tile >= 4)
+        room_rows++;
+        if(room_rows == num_of_rooms)
         {
-          current_tile = 1;
-          row++;
-          if(row >= 5)
-          {
-            row = 0;
-          }
+          std::cout<<std::endl;
         }
-        room_rows = 0;
       }
+      current_tile ++;
+      if(current_tile >= 4)
+      {
+        current_tile = 1;
+        row++;
+        if(row >= 5)
+        {
+          row = 0;
+        }
+      }
+      room_rows = 0;
     }
+  }
 }
