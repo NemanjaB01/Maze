@@ -32,11 +32,13 @@ class Room
     bool isRevealed() const { return revealed_; }
     void setTileToPassage(const std::shared_ptr<Tile>& tile);
     int getRow() const { return row_; }
-    int getColumn() const { return col_; } 
+    int getColumn() const { return col_; }
+    std::string getLineOfRoom(int index, std::string tile, TileType type, int row, int column);
 
     Room(const Room&) = delete;
     Room& operator=(const Room&) = delete;
     ~Room() = default;
+
 };
 
 

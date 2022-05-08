@@ -60,6 +60,7 @@ Room::Room(char room_id, const std::string& room_info_str,  int row_, int column
   }
 }
 
+
 void Room::setTileToPassage(const std::shared_ptr<Tile>& t)
 {
   const int t_row{t->getRow()};
@@ -69,4 +70,48 @@ void Room::setTileToPassage(const std::shared_ptr<Tile>& t)
   {
     room_map_.at(t_row).at(t_col) = std::make_shared<BasicTile>(TileType::PASSAGE, room_id_, t_row, t_col);
   }
+}
+
+
+std::string Room::getLineOfRoom(int index, std::string tile, TileType type, int row, int column)
+{
+  std::string line;
+
+  switch (index)
+  {
+  case 1:
+    if((type == TileType::WALL || type == TileType::SECRET_DOOR)&& isRevealed() == true)
+      line = tile.substr(0,21);
+    else if(type == TileType::VECTICAL_DOOR && isRevealed() == true)
+      line = tile.substr(0,9);
+    else 
+      line = tile.substr(0,7);
+    break;
+  case 2:
+    if(type == TileType::WALL && isRevealed() == true && row == 0 && column == 0)
+      line = tile.substr(22,19);
+    else if((type == TileType::WALL || type == TileType::SECRET_DOOR)&& isRevealed() == true)
+      line = tile.substr(22,21);
+    else if(type == TileType::VECTICAL_DOOR && isRevealed() == true)
+      line = tile.substr(10,9);
+    else if(type == TileType::HORIZONTAL_DOOR && isRevealed() == true)
+      line = tile.substr(8,21);
+    else
+      line = tile.substr(8,7);
+    break;
+  case 3:
+    if(type == TileType::WALL && isRevealed() == true && row == 0 && column == 0)
+      line = tile.substr(42,21);
+    else if((type == TileType::WALL || type == TileType::SECRET_DOOR)&& isRevealed() == true)
+      line = tile.substr(44,21);
+    else if(type == TileType::VECTICAL_DOOR && isRevealed() == true)
+      line = tile.substr(20,9);
+    else if(type == TileType::HORIZONTAL_DOOR && isRevealed() == true)
+      line = tile.substr(30,7);
+    else
+      line = tile.substr(16,7);
+    break;
+  }
+
+  return line;
 }

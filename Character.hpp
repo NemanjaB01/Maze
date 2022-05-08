@@ -2,6 +2,7 @@
 #define CHARACTER_HPP
 
 #include <string>
+#include <memory>
 
 enum class CharacterType { FIGHTER, THIEF, SEER };
 

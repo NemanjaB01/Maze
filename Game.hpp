@@ -38,6 +38,8 @@ class Game
     ~Game() = default;
     Game(const Game& copy) = delete;
     Game& operator=(const Game& game) = delete;
+
+    void printRooms();
 };
 
 #endif // GAME_HPP

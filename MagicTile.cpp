@@ -47,6 +47,7 @@ std::string MagicTile::getTileString()
   if(character_)
     tile.at(TILE_CENTER) = character_->getCharacterTypeAsChar();
 
+
   return tile;
 }
 

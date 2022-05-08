@@ -16,7 +16,7 @@ std::string BasicTile::getTileString()
 {
   std::shared_ptr<Room> inside_room = Game::getInstance().getRoomById(inside_room_id_);
   if (!inside_room->isRevealed())
-    return "UUUUUUU\nUUUUUUU\nUUUUUUU";
+    return "UUUUUUU\nUUUUUUU\nUUUUUUU\n";
 
   std::string basic_tile;
   if(type_ == TileType::WALL)
@@ -27,7 +27,9 @@ std::string BasicTile::getTileString()
 
       if((row_ == 0) && (column_ == 0))
       {
-        basic_tile.at(TILE_CENTER) = inside_room_id_;
+        std::string string;
+        string += inside_room_id_;
+        basic_tile.replace(31,3,string);
       }
   }
   else if(type_ == TileType::PASSAGE)
