@@ -46,13 +46,13 @@ void Game::parse(const int argc, const char* const argv[])
 
     rooms_row_string.clear();
   }
-  containsSpecificRooms();
+  // containsSpecificRooms();
 
-  for (const auto& room_row : rooms_)
-    for (const std::shared_ptr<Room>& single_room : room_row)
-      ifEveryRoomUnique(single_room);
+  // for (const auto& room_row : rooms_)
+  //   for (const std::shared_ptr<Room>& single_room : room_row)
+  //     ifEveryRoomUnique(single_room);
 
-  ifRoomsFormRectangle();
+  // ifRoomsFormRectangle();
    printRooms();
 }
 
