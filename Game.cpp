@@ -46,7 +46,7 @@ void Game::parse(const int argc, const char* const argv[])
 
     rooms_row_string.clear();
   }
-  // containsSpecificRooms();
+  containsOneStartingRoom();
 
   // for (const auto& room_row : rooms_)
   //   for (const std::shared_ptr<Room>& single_room : room_row)
@@ -97,16 +97,14 @@ void Game::addRoom(const std::string& rooms_row_string)
 
 }
 
-void Game::containsSpecificRooms() const
+void Game::containsOneStartingRoom() const
 {
-  int specific_room_counter{0};
-
+  int counter{0};
   for (const auto& room : rooms_)
     for (const std::shared_ptr<Room>& r : room)
-      if (r->getRoomId() == 'S' || r->getRoomId() == 'L')
-        specific_room_counter++;
-
-  if (specific_room_counter != 2)
+      if (r->getRoomId() == 'S')
+        counter++;
+  if (counter != 1)
     throw Exceptions::InvalidConfiguration();
 }
 
@@ -166,61 +164,46 @@ void Game::flip()
   cards_.pop();
 }
 
+const int NUMBER_LINES_IN_ROOM{15};
 
 void Game::printRooms()
 {
-  std::string frame = "\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550"
-                      "\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550"
-                      "\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550";
-
-  for(const auto& room_row : rooms_)
+  int current_row_in_tile = 1;
+  for(const auto& rooms_in_row : rooms_)
   {
-    int num_of_rooms = room_row.size();
-    int i = 0;
-    int room_rows = 0;
-    int row = 0;
-    int column = 0;
-    int current_tile = 1;
-    for(; i < 15; i++)
+    int current_row_in_room{0};
+    for(int line{0}; line < NUMBER_LINES_IN_ROOM; line++)
     {
-      if(column == 0 && row == 0 && current_tile == 1)
-          std::cout<<"\u256C"<<frame<<"\u256C"<<frame<<"\u256C"<<std::endl;
-      for(const auto& single_room : room_row)
+      if(!line)
+          printHorizontalFrame();
+      for(const auto& single_room : rooms_in_row)
       {
-        if( column == 0)
-          std::cout<<"\u2551";
-        for(const auto& single_room_row : single_room->getRoomMap())
+        std::cout << "\u2551";
+        const auto row_in_room = single_room->getRoomMap().at(current_row_in_room);
+        for(const auto& tile : row_in_room)
         {
-          for(const auto& tile : single_room_row)
-          {
-            if(row ==tile->getRow() && column == tile->getColumn())
-            {
-              std::cout<<tile->getLineOfTile(current_tile, single_room->isRevealed());
-            }
-            column++;
-          }
-          column = 0;
-        }
-
-        room_rows++;
-        if(room_rows == num_of_rooms)
-        {
-          std::cout<<"\u2551";
-          std::cout<<std::endl;
+          std::cout<<tile->getLineOfTile(current_row_in_tile, single_room->isRevealed());
         }
       }
-      current_tile ++;
-      if(current_tile >= 4)
+      if(++current_row_in_tile >= 4)
       {
-        current_tile = 1;
-        row++;
-        if(row >= 5)
-        {
-          row = 0;
-        }
+        current_row_in_tile = 1;
+        current_row_in_room++;
       }
-      room_rows = 0;
+      std::cout << "\u2551" << std::endl;
     }
   }
-  std::cout<<"\u256C"<<frame<<"\u256C"<<frame<<"\u256C"<<std::endl;
+  printHorizontalFrame();
+}
+
+const std::string FRAME = "\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550"
+                          "\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550"
+                          "\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550";
+
+void Game::printHorizontalFrame() const
+{
+  std::size_t number_rooms_in_row{ rooms_.at(0).size() };
+  for (std::size_t i{0}; i < number_rooms_in_row; i++)
+    std::cout << "\u256C" << FRAME;
+  std::cout << "\u256C" << std::endl;
 }
