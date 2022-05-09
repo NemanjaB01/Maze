@@ -13,14 +13,15 @@ int main(int argc, char* argv[])
   }
   catch(Exceptions::InvalidConfiguration& e)
   {
-    std::cout << e.what() << std::endl;
+    std::cout << e.what();
     return (int)ReturnValues::INVALID_CONFIGURATION;
   }
   catch(Exceptions::BadAlloc& e)
   {
-    std::cout << e.what() << std::endl;
+    std::cout << e.what();
     return (int)ReturnValues::MEMORY_PROBLEM;
   }
+  Game::getInstance().startTheGame();
 
   return (int)ReturnValues::OK;
 }

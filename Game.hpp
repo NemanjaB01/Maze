@@ -28,7 +28,6 @@ class Game
 
   void printHorizontalFrame() const;
   void shuffleCards();
-  void flip();
 
   std::queue<DIRECTIONS_TYPES> getCards() const { return cards_; }
   void placeCharacterOnStartingPosition();
@@ -40,7 +39,11 @@ class Game
     void parse(const int argc, const char* const argv[]);
     std::shared_ptr<Room> getRoomById(const char id);
     void flip();
-    DIRECTIONS_TYPES current_direction() const;
+    DIRECTIONS_TYPES getCurrentDirection() const;
+    unsigned getFlipsNumber() const { return flips_number_; }
+    std::string getPossibleMoveAsString() const;
+
+    void startTheGame();
 
     ~Game() = default;
     Game(const Game& copy) = delete;
