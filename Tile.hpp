@@ -8,7 +8,7 @@
 
 class Room;
 
-const unsigned TILE_CENTER = 12;
+const unsigned TILE_CENTER = 11;
 
 enum class TileType { WALL, PASSAGE, HORIZONTAL_DOOR, VECTICAL_DOOR, SECRET_DOOR, MONSTER, HOURGLASS,
                       CRYSTAL_BALL, LOOT, TIEF_BUTTON, FIGHTER_BUTTON, SEER_BUTTON };
