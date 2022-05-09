@@ -162,6 +162,22 @@ void Game::flip()
 {
   cards_.push(cards_.front());
   cards_.pop();
+
+  flips_number_++;
+}
+
+DIRECTIONS_TYPES Game::current_direction() const
+{
+  return cards_.front();
+}
+
+void Game::placeCharacterOnStartingPosition()
+{
+  std::shared_ptr<Room> starting_room = getRoomById('S');
+  auto room_map = starting_room->getRoomMap();
+  room_map.at(1).at(1)->setCharacter(characters_.at(0));
+  room_map.at(1).at(3)->setCharacter(characters_.at(1));
+  room_map.at(3).at(1)->setCharacter(characters_.at(2));
 }
 
 const int NUMBER_LINES_IN_ROOM{15};

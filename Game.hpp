@@ -17,6 +17,7 @@ class Game
   std::vector<std::vector<std::shared_ptr<Room>> > rooms_;
   std::array<std::shared_ptr<Character>, 3> characters_;
   std::queue<DIRECTIONS_TYPES> cards_;
+  unsigned flips_number_;
 
   void checkIfLetters(const std::string& rooms_row_string) const;
   void checkRowLength(const std::string& rooms_row_string) const;
@@ -29,12 +30,17 @@ class Game
   void shuffleCards();
   void flip();
 
+  std::queue<DIRECTIONS_TYPES> getCards() const { return cards_; }
+  void placeCharacterOnStartingPosition();
+
   Game();
 
   public:
     static Game& getInstance();
     void parse(const int argc, const char* const argv[]);
     std::shared_ptr<Room> getRoomById(const char id);
+    void flip();
+    DIRECTIONS_TYPES current_direction() const;
 
     ~Game() = default;
     Game(const Game& copy) = delete;
