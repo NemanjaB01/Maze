@@ -23,6 +23,7 @@ class Room
     bool revealed_;
     const int row_;
     const int col_;
+    int num_of_monsters_;
 
   public:
     Room(char room_id, const std::string& room_info_str, int row_, int column);
@@ -33,6 +34,9 @@ class Room
     void setTileToPassage(const std::shared_ptr<Tile>& tile);
     int getRow() const { return row_; }
     int getColumn() const { return col_; }
+    int getNumOfMonsters() { return num_of_monsters_; }
+    void setNumOfMonsters(int num_of_monsters) { num_of_monsters_ = num_of_monsters; }
+
 
     Room(const Room&) = delete;
     Room& operator=(const Room&) = delete;
