@@ -40,6 +40,7 @@ Room::Room(char room_id, const std::string& room_info_str,  int row_, int column
         break;
       case TileType::MONSTER:
         room_map_.at(row).at(col) = std::make_shared<MagicTile>(type, room_id, row, col);
+        num_of_monsters_++;
         break;
       case TileType::FIGHTER_BUTTON:
         room_map_.at(row).at(col) = std::make_shared<MagicTile>(type, room_id, row, col);

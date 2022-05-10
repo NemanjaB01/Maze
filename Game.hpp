@@ -31,7 +31,6 @@ class Game
 
   void printHorizontalFrame() const;
   void shuffleCards();
-  void flip();
 
   std::queue<DIRECTIONS_TYPES> getCards() const { return cards_; }
   void placeCharacterOnStartingPosition();
@@ -42,10 +41,16 @@ class Game
     static Game& getInstance();
     void parse(const int argc, const char* const argv[]);
     std::shared_ptr<Room> getRoomById(const char id);
-    DIRECTIONS_TYPES current_direction() const;
+    void flip();
+    DIRECTIONS_TYPES getCurrentDirection() const;
+    unsigned getFlipsNumber() const { return flips_number_; }
+    std::string getPossibleMoveAsString() const;
+
+    void startTheGame();
     std::string parseInput();
-    COMMANDS ckeckCommand(std::string& input) noexcept; // empty i eof provjeriti
-    bool ckeckNumberOfParameters() const;
+    DIRECTIONS_TYPES current_direction() const;
+    COMMANDS checkCommand(std::string& input) noexcept; // empty i eof provjeriti
+    bool checkNumberOfParameters() const;
 
     ~Game() = default;
     Game(const Game& copy) = delete;

@@ -50,12 +50,11 @@ void Game::parse(const int argc, const char* const argv[])
   }
   containsOneStartingRoom();
 
-  // for (const auto& room_row : rooms_)
-  //   for (const std::shared_ptr<Room>& single_room : room_row)
-  //     ifEveryRoomUnique(single_room);
+  for (const auto& room_row : rooms_)
+     for (const std::shared_ptr<Room>& single_room : room_row)
+       ifEveryRoomUnique(single_room);
 
-  // ifRoomsFormRectangle();
-   printRooms();
+   ifRoomsFormRectangle();
 }
 
 void Game::checkIfLetters(const std::string& rooms_row_string) const
@@ -168,7 +167,7 @@ void Game::flip()
   flips_number_++;
 }
 
-DIRECTIONS_TYPES Game::current_direction() const
+DIRECTIONS_TYPES Game::getCurrentDirection() const
 {
   return cards_.front();
 }
@@ -226,13 +225,40 @@ void Game::printHorizontalFrame() const
   std::cout << "\u256C" << std::endl;
 }
 
+std::string Game::getPossibleMoveAsString() const
+{
+  switch (getCurrentDirection())
+  {
+  case DIRECTIONS_TYPES::UP:
+    return "up";
+  case DIRECTIONS_TYPES::DOWN:
+    return "down";
+  case DIRECTIONS_TYPES::RIGHT:
+    return "right";
+  case DIRECTIONS_TYPES::LEFT:
+    return "left";
+  }
+  return "";
+}
+
+void Game::startTheGame()
+{
+  std::cout << "Welcome to the magical OOP1 Maze!!!" << std::endl;
+  std::cout << "Card Flip Counter:   " << getFlipsNumber() << std::endl;
+  placeCharacterOnStartingPosition();
+  printRooms();
+  std::cout << "Possible move: " << getPossibleMoveAsString() << std::endl;
+}
+
 std::string stringToUppercase(std::string& s)
 {
   for(auto& el : s)
   {
     if(isalpha(el) && islower(el))
-      toupper(el);
+      el = toupper(el);
   }
+
+  return s;
 }
 
 std::string Game::parseInput()
@@ -246,7 +272,7 @@ std::string Game::parseInput()
   return input;
 }
 
-COMMANDS Game::ckeckCommand(std::string& input) noexcept
+COMMANDS Game::checkCommand(std::string& input) noexcept
 {
   input = stringToUppercase(input);
   std::istringstream ss_input{input};
@@ -266,6 +292,7 @@ COMMANDS Game::ckeckCommand(std::string& input) noexcept
   }
   else if(word == "HELP")
   {
+    std::cout << "help" << std::endl;
     command = COMMANDS::HELP;
   }
   else if (word == "FLIP")
