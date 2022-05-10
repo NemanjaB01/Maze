@@ -10,12 +10,17 @@
 #include "RoomInfo.hpp"
 #include "Random.hpp"
 
+std::string stringToUppercase(std::string& s);
+bool checkSizeOfInputParameters(const std::vector<std::string>& container, const COMMANDS& command);
 
 Game::Game()
  : characters_{ std::make_shared<Character>(CharacterType::FIGHTER),
                 std::make_shared<Character>(CharacterType::THIEF),
-                std::make_shared<Character>(CharacterType::SEER) }
-{}
+                std::make_shared<Character>(CharacterType::SEER) },
+  flips_number_{0}
+{
+  shuffleCards();
+}
 
 Game& Game::getInstance()
 {
@@ -150,7 +155,7 @@ void Game::shuffleCards()
                                           DIRECTIONS_TYPES::DOWN, DIRECTIONS_TYPES::LEFT};
   Oop::Random &r = Oop::Random::getInstance();
 
-  for (unsigned card_left = 4; card_left >= 0; card_left--)
+  for (unsigned card_left = 4; card_left > 0; card_left--)
   {
     size_t random_card = r.getRandomCard(card_left);
     cards_.push(cards_dir.at(random_card - 1));
@@ -244,10 +249,49 @@ std::string Game::getPossibleMoveAsString() const
 void Game::startTheGame()
 {
   std::cout << "Welcome to the magical OOP1 Maze!!!" << std::endl;
-  std::cout << "Card Flip Counter:   " << getFlipsNumber() << std::endl;
-  placeCharacterOnStartingPosition();
-  printRooms();
-  std::cout << "Possible move: " << getPossibleMoveAsString() << std::endl;
+
+  while(1)
+  {
+    std::cout << "Card Flip Counter:   " << getFlipsNumber() << std::endl;
+    placeCharacterOnStartingPosition();
+    printRooms();
+    std::cout << "Possible move: " << getPossibleMoveAsString() << std::endl;
+
+    std::string user_input = parseInput();
+    std::string input = stringToUppercase(user_input);
+    std::istringstream ss_input{input};
+
+    std::vector<std::string> container;
+    std::string temp{};
+    for(unsigned index{0}; ss_input >> temp; index++)
+      container.push_back(temp);
+
+    COMMANDS command = checkFirstParameter(container.front());
+    if(!checkSizeOfInputParameters(container, command))
+      continue;
+
+    switch (command)
+    {
+    case COMMANDS::HELP:
+      break;
+    case COMMANDS::QUIT:
+      break;
+    case COMMANDS::MAP:
+      break;
+    case COMMANDS::FLIP:
+      break;
+    case COMMANDS::MOVE:
+      break;
+    case COMMANDS::UNLOCK:
+      break;
+    case COMMANDS::FIGHT:
+      break;
+    case COMMANDS::SCRY:
+      break;
+    case COMMANDS::ERROR:
+      break;
+    }
+  }
 }
 
 std::string stringToUppercase(std::string& s)
@@ -263,8 +307,13 @@ std::string stringToUppercase(std::string& s)
 
 std::string Game::parseInput()
 {
-  std::string input;
-  std::getline(std::cin, input);
+  std::string input{};
+
+  while(input.find_first_not_of(" \t\n") == std::string::npos)
+  {
+    std::cout << " > ";
+    std::getline(std::cin, input);
+  }
 
   if(std::cin.eof())
     throw Exceptions::EndOfFile();
@@ -272,46 +321,39 @@ std::string Game::parseInput()
   return input;
 }
 
-COMMANDS Game::checkCommand(std::string& input) noexcept
+COMMANDS Game::checkFirstParameter(const std::string& input) noexcept
 {
-  input = stringToUppercase(input);
-  std::istringstream ss_input{input};
-
-  std::string word;
   COMMANDS command;
 
-  ss_input >> word;
-
-  if(word == "QUIT")
+  if(input == "QUIT")
   {
     command = COMMANDS::QUIT;
   }
-  else if(word == "MAP")
+  else if(input == "MAP")
   {
     command = COMMANDS::MAP;
   }
-  else if(word == "HELP")
+  else if(input == "HELP")
   {
-    std::cout << "help" << std::endl;
     command = COMMANDS::HELP;
   }
-  else if (word == "FLIP")
+  else if (input == "FLIP")
   {
     command = COMMANDS::FLIP;
   }
-  else if(word == "MOVE")
+  else if(input == "MOVE")
   {
     command = COMMANDS::MOVE;
   }
-  else if(word == "FIGHT")
+  else if(input == "FIGHT")
   {
     command = COMMANDS::FIGHT;
   }
-  else if(word == "SCRY")
+  else if(input == "SCRY")
   {
     command = COMMANDS::SCRY;
   }
-  else if(word == "UNLOCK")
+  else if(input == "UNLOCK")
   {
     command = COMMANDS::UNLOCK;
   }
@@ -321,4 +363,25 @@ COMMANDS Game::checkCommand(std::string& input) noexcept
   }
 
   return command;
+}
+
+bool checkSizeOfInputParameters(const std::vector<std::string>& container, const COMMANDS& command)
+{
+  if(command != COMMANDS::MOVE && command != COMMANDS::SCRY)
+  {
+    if(container.size() != 1)
+      return false;
+  }
+  else if(command == COMMANDS::MOVE)
+  {
+    if(container.size() != 4)
+      return false;
+  }
+  else if(command == COMMANDS::SCRY)
+  {
+    if(container.size() != 3)
+      return false;
+  }
+
+  return true;
 }

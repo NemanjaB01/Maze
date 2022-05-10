@@ -49,7 +49,7 @@ class Game
     void startTheGame();
     std::string parseInput();
     DIRECTIONS_TYPES current_direction() const;
-    COMMANDS checkCommand(std::string& input) noexcept; // empty i eof provjeriti
+    COMMANDS checkFirstParameter(const std::string& input) noexcept;
     bool checkNumberOfParameters() const;
 
     ~Game() = default;
