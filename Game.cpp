@@ -2,11 +2,13 @@
 #include <sstream>
 #include <iostream>
 #include <exception>
+#include <cctype>
+#include <iomanip>
+
 #include "Game.hpp"
 #include "Exceptions.hpp"
 #include "RoomInfo.hpp"
 #include "Random.hpp"
-#include <iomanip>
 
 
 Game::Game()
@@ -222,4 +224,74 @@ void Game::printHorizontalFrame() const
   for (std::size_t i{0}; i < number_rooms_in_row; i++)
     std::cout << "\u256C" << FRAME;
   std::cout << "\u256C" << std::endl;
+}
+
+std::string stringToUppercase(std::string& s)
+{
+  for(auto& el : s)
+  {
+    if(isalpha(el) && islower(el))
+      toupper(el);
+  }
+}
+
+std::string Game::parseInput()
+{
+  std::string input;
+  std::getline(std::cin, input);
+
+  if(std::cin.eof())
+    throw Exceptions::EndOfFile();
+
+  return input;
+}
+
+COMMANDS Game::ckeckCommand(std::string& input) noexcept
+{
+  input = stringToUppercase(input);
+  std::istringstream ss_input{input};
+
+  std::string word;
+  COMMANDS command;
+
+  ss_input >> word;
+
+  if(word == "QUIT")
+  {
+    command = COMMANDS::QUIT;
+  }
+  else if(word == "MAP")
+  {
+    command = COMMANDS::MAP;
+  }
+  else if(word == "HELP")
+  {
+    command = COMMANDS::HELP;
+  }
+  else if (word == "FLIP")
+  {
+    command = COMMANDS::FLIP;
+  }
+  else if(word == "MOVE")
+  {
+    command = COMMANDS::MOVE;
+  }
+  else if(word == "FIGHT")
+  {
+    command = COMMANDS::FIGHT;
+  }
+  else if(word == "SCRY")
+  {
+    command = COMMANDS::SCRY;
+  }
+  else if(word == "UNLOCK")
+  {
+    command = COMMANDS::UNLOCK;
+  }
+  else
+  {
+    command = COMMANDS::ERROR;
+  }
+
+  return command;
 }

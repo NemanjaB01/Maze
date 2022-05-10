@@ -22,5 +22,14 @@ int main(int argc, char* argv[])
     return (int)ReturnValues::MEMORY_PROBLEM;
   }
 
+  try
+  {
+    Game::getInstance().parseInput();
+  }
+  catch(Exceptions::EndOfFile)
+  {
+    return (int)ReturnValues::OK;
+  }
+
   return (int)ReturnValues::OK;
 }

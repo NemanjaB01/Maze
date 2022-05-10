@@ -5,12 +5,15 @@
 #include <memory>
 #include <array>
 #include <queue>
+#include <sstream>
 
 #include "Room.hpp"
 #include "Character.hpp"
 
 
 enum class DIRECTIONS_TYPES { UP, RIGHT, DOWN, LEFT };
+
+enum class COMMANDS { HELP, QUIT, MAP, FLIP, MOVE, UNLOCK, FIGHT, SCRY, ERROR };
 
 class Game
 {
@@ -39,8 +42,10 @@ class Game
     static Game& getInstance();
     void parse(const int argc, const char* const argv[]);
     std::shared_ptr<Room> getRoomById(const char id);
-    void flip();
     DIRECTIONS_TYPES current_direction() const;
+    std::string parseInput();
+    COMMANDS ckeckCommand(std::string& input) noexcept; // empty i eof provjeriti
+    bool ckeckNumberOfParameters() const;
 
     ~Game() = default;
     Game(const Game& copy) = delete;

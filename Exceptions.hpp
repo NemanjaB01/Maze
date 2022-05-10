@@ -16,6 +16,10 @@ namespace Exceptions
     public:
       const char* what() const noexcept override { return "Error: Not enough memory!\n"; }
   };
+
+  class EndOfFile : public std::exception
+  {
+  };
 }
 
 #endif // EXCEPTIONS
