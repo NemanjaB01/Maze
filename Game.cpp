@@ -17,7 +17,8 @@ Game::Game()
  : characters_{ std::make_shared<Character>(CharacterType::FIGHTER),
                 std::make_shared<Character>(CharacterType::THIEF),
                 std::make_shared<Character>(CharacterType::SEER) },
-  flips_number_{0}
+  flips_number_{1},
+  map_activated_{true}
 {
   shuffleCards();
 }
@@ -188,7 +189,7 @@ void Game::placeCharacterOnStartingPosition()
 
 const int NUMBER_LINES_IN_ROOM{15};
 
-void Game::printRooms()
+void Game::printMap()
 {
   int current_row_in_tile = 1;
   for(const auto& rooms_in_row : rooms_)
@@ -254,7 +255,7 @@ void Game::startTheGame()
   {
     std::cout << "Card Flip Counter:   " << getFlipsNumber() << std::endl;
     placeCharacterOnStartingPosition();
-    printRooms();
+    printMap();
     std::cout << "Possible move: " << getPossibleMoveAsString() << std::endl;
 
     std::string user_input = parseInput();
@@ -277,8 +278,10 @@ void Game::startTheGame()
     case COMMANDS::QUIT:
       break;
     case COMMANDS::MAP:
+      setMapActivity(!ifMapActivated());
       break;
     case COMMANDS::FLIP:
+      flip();
       break;
     case COMMANDS::MOVE:
       break;
@@ -384,4 +387,14 @@ bool checkSizeOfInputParameters(const std::vector<std::string>& container, const
   }
 
   return true;
+}
+
+std::shared_ptr<Character> Game::getCharacter(CharacterType type) const
+{
+  if (type == CharacterType::FIGHTER)
+    return characters_.at(0);
+  else if (type == CharacterType::SEER)
+    return characters_.at(1);
+  else
+    return characters_.at(2);
 }

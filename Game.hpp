@@ -21,6 +21,7 @@ class Game
   std::array<std::shared_ptr<Character>, 3> characters_;
   std::queue<DIRECTIONS_TYPES> cards_;
   unsigned flips_number_;
+  bool map_activated_;
 
   void checkIfLetters(const std::string& rooms_row_string) const;
   void checkRowLength(const std::string& rooms_row_string) const;
@@ -51,12 +52,15 @@ class Game
     DIRECTIONS_TYPES current_direction() const;
     COMMANDS checkFirstParameter(const std::string& input) noexcept;
     bool checkNumberOfParameters() const;
+    std::shared_ptr<Character> getCharacter(CharacterType type) const;
+    bool ifMapActivated() const { return map_activated_; }
+    void setMapActivity(bool map_activated) { map_activated_ = map_activated; }
 
     ~Game() = default;
     Game(const Game& copy) = delete;
     Game& operator=(const Game& game) = delete;
 
-    void printRooms();
+    void printMap();
 };
 
 #endif // GAME_HPP
