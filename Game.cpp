@@ -292,7 +292,9 @@ void Game::startTheGame()
       break;
     case COMMANDS::MAP:
       setMapActivity(!ifMapActivated());
-      break;
+      if (show_map_)
+        break;
+      continue;
     case COMMANDS::FLIP:
       flip();
       break;
@@ -301,9 +303,9 @@ void Game::startTheGame()
       {
         move(container);
       }
-      catch(const char* e)
+      catch(std::string& e)
       {
-        std::cout << e;
+        std::cout << e << std::endl;
         continue;
       }
       break;
@@ -497,29 +499,22 @@ void Game::move(std::vector<std::string>& input)
     current_room = getRoomById(current_tile->getInsideRoomId());
 
     if (!tiles_on_the_way.size() && !current_room->isRevealed())
-    {
-      std::cout << character_to_move->getCharacterTypeAsChar();
-      throw ":  My way is blocked!\n";
-    }
+      throw character_to_move->getFullName() + ":  My way is blocked!";
+
     else if(current_room->getNumOfMonsters() && character_to_move->getCharacterType() != CharacterType::FIGHTER)
-    {
-      std::cout << character_to_move->getCharacterTypeAsChar();
-      throw  ":  That room is too scary for me!\n";
-    }
+      throw character_to_move->getFullName() + ":  That room is too scary for me!";
+
     else if (tiles_on_the_way.size() && current_tile->ifPassable() && current_room->isRevealed())
       continue;
+
     else if (!tiles_on_the_way.size() && current_tile->ifAvailable() && current_room->isRevealed())
       stopCharacterOnTile(first_tile, current_room, current_tile, character_to_move);
+
     else if(!tiles_on_the_way.size() && current_tile->ifContainsCharacter())
-    {
-      std::cout << character_to_move->getCharacterTypeAsChar();
-      throw ":  There is not enough space on that tile!\n";
-    }
+      throw character_to_move->getFullName() + ":  There is not enough space on that tile!";
+
     else
-    {
-      std::cout << character_to_move->getCharacterTypeAsChar();
-      throw ":  My way is blocked!\n";
-    }
+      throw character_to_move->getFullName() + ":  My way is blocked!";
   }
 }
 
@@ -562,20 +557,16 @@ void Game::moveInputParsing(std::vector<std::string>& input, std::shared_ptr<Cha
   else if (character_str == "T")
     character_to_move = getCharacter(CharacterType::THIEF);
   else
-    throw "Who do you want to move?!?\n";
+    throw "Who do you want to move?!?";
 
   std::string direction_to_go{ input.at(2) };
   std::string possible_move_str{ getPossibleMoveAsString() };
   if (direction_to_go != "UP" && direction_to_go != "DOWN" && direction_to_go != "RIGHT" && direction_to_go != "LEFT")
-  {
-    std::cout << character_to_move->getCharacterTypeAsChar();
-    throw ":  I don't understand where I should go!\n";
-  }
+    throw character_to_move->getFullName() + ":  I don't understand where I should go!";
+
   else if (direction_to_go != stringToUppercase(possible_move_str))
-  {
-    std::cout << character_to_move->getCharacterTypeAsChar();
-    throw ":  I can't go that way right now!\n";
-  }
+    throw character_to_move->getFullName() + ":  I can't go that way right now!";
+
   if (input.size() == 4)
   {
     try
@@ -587,10 +578,7 @@ void Game::moveInputParsing(std::vector<std::string>& input, std::shared_ptr<Cha
       distance = -1;
     }
     if (distance <= 0)
-    {
-      std::cout << character_to_move->getCharacterTypeAsChar();
-      throw ":  I don't understand how far I should go!\n";
-    }
+      throw character_to_move->getFullName() + ":  I don't understand how far I should go!";
   }
 }
 
@@ -628,40 +616,28 @@ void Game::getTilesOnTheWay(std::queue<std::shared_ptr<Tile>>& tiles_on_way,
     if (next_row == 5) // switch row to down
     {
       if (current_room->getRow() + 1 == (int)rooms_.size())
-      {
-        std::cout << character->getCharacterTypeAsChar();
-        throw ":  My way is blocked\n";
-      }
+        throw character->getFullName() + ":  My way is blocked";
       next_row = 0;
       current_room = rooms_.at(current_room->getRow() + 1).at(current_room->getColumn());
     }
     else if (next_row == -1) // switch row to up
     {
       if (!current_room->getRow())
-      {
-        std::cout << character->getCharacterTypeAsChar();
-        throw ":  My way is blocked\n";
-      }
+        throw character->getFullName() + ":  My way is blocked";
       next_row = 4;
       current_room = rooms_.at(current_room->getRow() - 1).at(current_room->getColumn());
     }
     else if (next_col == 5) // switch column to right
     { 
       if (current_room->getColumn() + 1 == (int)rooms_.at(0).size())
-      {
-        std::cout << character->getCharacterTypeAsChar();
-        throw ":  My way is blocked\n";
-      }
+        throw character->getFullName() + ":  My way is blocked";
       next_col = 0;
       current_room = rooms_.at(current_room->getRow()).at(current_room->getColumn() + 1);
     }
     else if (next_col == -1) // switch column to left
     {
       if (!current_room->getColumn())
-      {
-        std::cout << character->getCharacterTypeAsChar();
-        throw ":  My way is blocked\n";
-      }
+        throw character->getFullName() + ":  My way is blocked";
       next_col = 4;
       current_room = rooms_.at(current_room->getRow()).at(current_room->getColumn() - 1);
     }

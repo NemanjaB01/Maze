@@ -11,3 +11,15 @@ char Character::getCharacterTypeAsChar() const
   return ' ';
 }
 
+std::string Character::getFullName()
+{
+  std::string full_name;
+  if(type_ == CharacterType::FIGHTER)
+    full_name = "Fighter";
+  else if (type_ == CharacterType::SEER)
+    full_name = "Seer";
+  else
+    full_name = "Thief";
+
+  return full_name;
+}

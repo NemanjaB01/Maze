@@ -28,6 +28,7 @@ class Character
     char getCharacterTypeAsChar() const;
     bool ifOnButton() const { return on_button_; }
     void setOnButton(bool on_button) { on_button_ = on_button; }
+    std::string getFullName();
 
     std::weak_ptr<Tile>& getCurrentile() { return current_tile_; }
     void setCurrentTile( std::shared_ptr<Tile> current_tile) { current_tile_ = current_tile; }
