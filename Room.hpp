@@ -31,7 +31,7 @@ class Room
     char getRoomId() const { return room_id_; }
     std::array<std::array<std::shared_ptr<Tile>, 5> ,5> getRoomMap() { return room_map_; }
     bool isRevealed() const { return revealed_; }
-    void setTileToPassage(const std::shared_ptr<Tile>& tile);
+    void setTileToPassage(std::shared_ptr<Tile>& tile);
     int getRow() const { return row_; }
     int getColumn() const { return col_; }
     int getNumOfMonsters() { return num_of_monsters_; }

@@ -21,7 +21,7 @@ class Game
   std::array<std::shared_ptr<Character>, 3> characters_;
   std::queue<DIRECTIONS_TYPES> cards_;
   unsigned flips_number_;
-  bool map_activated_;
+  bool show_map_;
 
   void checkIfLetters(const std::string& rooms_row_string) const;
   void checkRowLength(const std::string& rooms_row_string) const;
@@ -35,6 +35,16 @@ class Game
 
   std::queue<DIRECTIONS_TYPES> getCards() const { return cards_; }
   void placeCharacterOnStartingPosition();
+  void stopCharacterOnTile(std::shared_ptr<Tile>& first_tile, std::shared_ptr<Room>& current_room,
+                           std::shared_ptr<Tile>& current_tile, std::shared_ptr<Character>& moving_character);
+  void useHourglass(std::shared_ptr<Tile>& tile);
+  void moveInputParsing(std::vector<std::string>& input, std::shared_ptr<Character>& character_to_move,
+                        int& distance);
+  void changeNextRowCol(int& next_row, int& next_col);
+  void getTilesOnTheWay(std::queue<std::shared_ptr<Tile>>& tiles_on_way,
+                        const std::shared_ptr<Character>& character, const int& distance);
+  void checkIfNewRoomsNeedToBeRevealed(const std::shared_ptr<Tile>& current_tile,
+                                       const std::shared_ptr<Room> current_room);
 
   Game();
 
@@ -53,8 +63,9 @@ class Game
     COMMANDS checkFirstParameter(const std::string& input) noexcept;
     bool checkNumberOfParameters() const;
     std::shared_ptr<Character> getCharacter(CharacterType type) const;
-    bool ifMapActivated() const { return map_activated_; }
-    void setMapActivity(bool map_activated) { map_activated_ = map_activated; }
+    bool ifMapActivated() const { return show_map_; }
+    void setMapActivity(bool map_activated) { show_map_ = map_activated; }
+    void move(std::vector<std::string>& input);
 
     ~Game() = default;
     Game(const Game& copy) = delete;

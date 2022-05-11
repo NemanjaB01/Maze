@@ -10,6 +10,11 @@ Tile::Tile(TileType type, char room_id, int row, int col, bool is_magic)
     is_magic_{is_magic}
 {}
 
+bool Tile::ifContainsCharacter() const
+{
+  return character_ ? true : false;
+}
+
 
 std::string Tile::getLineOfTile(int index, bool is_revealed)
 {
