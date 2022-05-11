@@ -436,9 +436,13 @@ void Game::fightMonster()
           num_of_monsters--;
         }
         single_room->setNumOfMonsters(num_of_monsters);
+
+        std::cout << "Possible move: " << getPossibleMoveAsString() << std::endl;
+        std::cout << " >  > Card Flip Counter:   " << flips_number_ << std::endl;
         return;
       }
     }
 
-  std::cout<< "Nothing to fight here!";
+  std::cout<< "Fighter: \"Nothing to fight here!\"";
 }
+
