@@ -9,6 +9,7 @@
 #include "Exceptions.hpp"
 #include "RoomInfo.hpp"
 #include "Random.hpp"
+#include "MagicTile.hpp"
 
 std::string stringToUppercase(std::string& s);
 bool checkSizeOfInputParameters(const std::vector<std::string>& container, const COMMANDS& command);
@@ -183,8 +184,13 @@ void Game::placeCharacterOnStartingPosition()
   std::shared_ptr<Room> starting_room = getRoomById('S');
   auto room_map = starting_room->getRoomMap();
   room_map.at(1).at(1)->setCharacter(characters_.at(0));
+  characters_.at(0)->setCurrentTIle(room_map.at(1).at(1));
+
   room_map.at(1).at(3)->setCharacter(characters_.at(1));
+  characters_.at(1)->setCurrentTIle(room_map.at(1).at(3));
+
   room_map.at(3).at(1)->setCharacter(characters_.at(2));
+  characters_.at(2)->setCurrentTIle(room_map.at(3).at(1));
 }
 
 const int NUMBER_LINES_IN_ROOM{15};
@@ -249,27 +255,25 @@ std::string Game::getPossibleMoveAsString() const
 
 void Game::startTheGame()
 {
+  placeCharacterOnStartingPosition();
   std::cout << "Welcome to the magical OOP1 Maze!!!" << std::endl;
+  std::cout << "Card Flip Counter:   " << getFlipsNumber() << std::endl;
+  printMap();
+  std::cout << "Possible move: " << getPossibleMoveAsString() << std::endl;
 
   while(1)
   {
-    std::cout << "Card Flip Counter:   " << getFlipsNumber() << std::endl;
-    placeCharacterOnStartingPosition();
-    printMap();
-    std::cout << "Possible move: " << getPossibleMoveAsString() << std::endl;
-
     std::string user_input = parseInput();
-    std::string input = stringToUppercase(user_input);
-    std::istringstream ss_input{input};
+    std::istringstream ss_input{user_input};
 
     std::vector<std::string> container;
     std::string temp{};
-    for(unsigned index{0}; ss_input >> temp; index++)
+    while(ss_input >> temp)
       container.push_back(temp);
 
     COMMANDS command = checkFirstParameter(container.front());
     if(!checkSizeOfInputParameters(container, command))
-      continue;
+      command = COMMANDS::ERROR;
 
     switch (command)
     {
@@ -295,6 +299,10 @@ void Game::startTheGame()
     case COMMANDS::ERROR:
       break;
     }
+
+    std::cout << "Card Flip Counter:   " << getFlipsNumber() << std::endl;
+    printMap();
+    std::cout << "Possible move: " << getPossibleMoveAsString() << std::endl;
   }
 }
 
@@ -313,14 +321,19 @@ std::string Game::parseInput()
 {
   std::string input{};
 
-  while(input.find_first_not_of(" \t\n") == std::string::npos)
+  while(1)
   {
     std::cout << " > ";
     std::getline(std::cin, input);
+
+    if(std::cin.eof())
+      throw Exceptions::EndOfFile();
+
+    if(input.find_first_not_of(" \t\n") != std::string::npos)
+      break;
   }
 
-  if(std::cin.eof())
-    throw Exceptions::EndOfFile();
+  input = stringToUppercase(input);
 
   return input;
 }
@@ -403,7 +416,7 @@ std::shared_ptr<Character> Game::getCharacter(CharacterType type) const
 
 void Game::fightMonster()
 {
-  std::shared_ptr<Character> character = getCharacter(CharacterType::FIGHTER)
+  std::shared_ptr<Character> character = getCharacter(CharacterType::FIGHTER);
   int row = character->getCurrentile().lock()->getRow();
   int col = character->getCurrentile().lock()->getColumn();
   const char room_id = character->getCurrentile().lock()->getInsideRoomId();
