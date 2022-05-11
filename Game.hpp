@@ -61,6 +61,8 @@ class Game
     Game& operator=(const Game& game) = delete;
 
     void printMap();
+    void fightMonster();
+
 };
 
 #endif // GAME_HPP

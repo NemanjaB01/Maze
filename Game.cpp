@@ -288,6 +288,7 @@ void Game::startTheGame()
     case COMMANDS::UNLOCK:
       break;
     case COMMANDS::FIGHT:
+      fightMonster();
       break;
     case COMMANDS::SCRY:
       break;
@@ -397,4 +398,47 @@ std::shared_ptr<Character> Game::getCharacter(CharacterType type) const
     return characters_.at(1);
   else
     return characters_.at(2);
+}
+
+
+void Game::fightMonster()
+{
+  std::shared_ptr<Character> character = getCharacter(CharacterType::FIGHTER)
+  int row = character->getCurrentile().lock()->getRow();
+  int col = character->getCurrentile().lock()->getColumn();
+  const char room_id = character->getCurrentile().lock()->getInsideRoomId();
+
+  for(const auto& room_row : rooms_)
+    for(const auto& single_room : room_row)
+    {
+      if(single_room->getRoomId() == room_id)
+      {
+        int num_of_monsters = single_room->getNumOfMonsters();
+
+        if(single_room->getRoomMap().at(row).at(col + 1)->getTileType() == TileType::MONSTER)
+        {
+          MagicTile::magicUsed(single_room->getRoomMap().at(row).at(col + 1));
+          num_of_monsters--;
+        }
+        if(single_room->getRoomMap().at(row).at(col - 1)->getTileType() == TileType::MONSTER)
+        {
+          MagicTile::magicUsed(single_room->getRoomMap().at(row).at(col - 1));
+          num_of_monsters--;
+        }
+        if(single_room->getRoomMap().at(row + 1).at(col)->getTileType() == TileType::MONSTER)
+        {
+          MagicTile::magicUsed(single_room->getRoomMap().at(row + 1).at(col));
+          num_of_monsters--;
+        }
+        if(single_room->getRoomMap().at(row - 1).at(col)->getTileType() == TileType::MONSTER)
+        {
+          MagicTile::magicUsed(single_room->getRoomMap().at(row - 1).at(col));
+          num_of_monsters--;
+        }
+        single_room->setNumOfMonsters(num_of_monsters);
+        return;
+      }
+    }
+
+  std::cout<< "Nothing to fight here!";
 }
