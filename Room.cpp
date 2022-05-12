@@ -4,7 +4,7 @@
 
 
 Room::Room(char room_id, const std::string& room_info_str,  int row_, int column)
- : room_id_{room_id}, revealed_{false}, row_{row_}, col_{column}
+ : room_id_{room_id}, revealed_{false}, row_{row_}, col_{column}, num_of_monsters_{0}
 {
   int row{0};
   int col{0};
