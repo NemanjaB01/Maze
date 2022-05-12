@@ -478,7 +478,7 @@ Spielstart mit einem Spielplan, der nur aus zwei Räumen besteht (2 Spalten, 1 R
 Über dem Spielplan befindet sich der Card Flip Counter, unter dem Spielplan wird angezeigt, dass zu Spielstart das Bewegungskärtchen `right` aufgedeckt wurde und jetzt aktiv ist.
 
 ```
-Card Flip Counter:   1
+Card Flip Counter:   0
 ╬═══════════════════════════════════╬═══════════════════════════════════╬
 ║██████████████       ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
 ║███S██████████       ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
