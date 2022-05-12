@@ -312,9 +312,26 @@ void Game::startTheGame()
     case COMMANDS::UNLOCK:
       break;
     case COMMANDS::FIGHT:
-      fightMonster();
+      try
+      {
+        fightMonster();
+      }
+      catch(std::string& e)
+      {
+        std::cout << e << std::endl;
+        continue;
+      }
       break;
     case COMMANDS::SCRY:
+      try
+      {
+        scry(container);
+      }
+      catch(std::string& e)
+      {
+        std::cout << e << std::endl;
+        continue;
+      }
       break;
     case COMMANDS::ERROR:
       break;
@@ -434,50 +451,6 @@ std::shared_ptr<Character> Game::getCharacter(CharacterType type) const
     return characters_.at(2);
 }
 
-void Game::fightMonster()
-{
-  std::shared_ptr<Character> character = getCharacter(CharacterType::FIGHTER);
-  int row = character->getCurrentile().lock()->getRow();
-  int col = character->getCurrentile().lock()->getColumn();
-  const char room_id = character->getCurrentile().lock()->getInsideRoomId();
-
-  for(const auto& room_row : rooms_)
-    for(const auto& single_room : room_row)
-    {
-      if(single_room->getRoomId() == room_id)
-      {
-        int num_of_monsters = single_room->getNumOfMonsters();
-
-        if(single_room->getRoomMap().at(row).at(col + 1)->getTileType() == TileType::MONSTER)
-        {
-          MagicTile::magicUsed(single_room->getRoomMap().at(row).at(col + 1));
-          num_of_monsters--;
-        }
-        if(single_room->getRoomMap().at(row).at(col - 1)->getTileType() == TileType::MONSTER)
-        {
-          MagicTile::magicUsed(single_room->getRoomMap().at(row).at(col - 1));
-          num_of_monsters--;
-        }
-        if(single_room->getRoomMap().at(row + 1).at(col)->getTileType() == TileType::MONSTER)
-        {
-          MagicTile::magicUsed(single_room->getRoomMap().at(row + 1).at(col));
-          num_of_monsters--;
-        }
-        if(single_room->getRoomMap().at(row - 1).at(col)->getTileType() == TileType::MONSTER)
-        {
-          MagicTile::magicUsed(single_room->getRoomMap().at(row - 1).at(col));
-          num_of_monsters--;
-        }
-        single_room->setNumOfMonsters(num_of_monsters);
-
-        std::cout << "Possible move: " << getPossibleMoveAsString() << std::endl;
-        std::cout << " >  > Card Flip Counter:   " << flips_number_ << std::endl;
-        return;
-      }
-    }
-
-  std::cout<< "Fighter: \"Nothing to fight here!\"";
-}
 
 void Game::move(std::vector<std::string>& input)
 {
@@ -674,4 +647,139 @@ void Game::checkIfNewRoomsNeedToBeRevealed(const std::shared_ptr<Tile>& current_
                                                            .at(current_room->getColumn() + 1)->isRevealed())
       rooms_.at(current_room->getRow()).at(current_room->getColumn() + 1)->setRevealed(true);
   }
+}
+
+
+void Game::fightMonster()
+{
+  std::shared_ptr<Character> character = getCharacter(CharacterType::FIGHTER);
+  int row = character->getCurrentile().lock()->getRow();
+  int col = character->getCurrentile().lock()->getColumn();
+  const char room_id = character->getCurrentile().lock()->getInsideRoomId();
+
+  std::shared_ptr<Room> single_room = getRoomById(room_id);
+  int num_of_monsters = single_room->getNumOfMonsters();
+  int num_of_fight_monsters = single_room->getNumOfMonsters();
+
+  if(col != 4 && single_room->getRoomMap().at(row).at(col + 1)->getTileType() == TileType::MONSTER)
+  {
+    MagicTile::magicUsed(single_room->getRoomMap().at(row).at(col + 1));
+    num_of_fight_monsters--;
+  }
+  if(col != 0 && single_room->getRoomMap().at(row).at(col - 1)->getTileType() == TileType::MONSTER)
+  {
+    MagicTile::magicUsed(single_room->getRoomMap().at(row).at(col - 1));
+    num_of_fight_monsters--;
+  }
+  if(row != 4 && single_room->getRoomMap().at(row + 1).at(col)->getTileType() == TileType::MONSTER)
+  {
+    MagicTile::magicUsed(single_room->getRoomMap().at(row + 1).at(col));
+    num_of_fight_monsters--;
+  }
+  if(row != 0 && single_room->getRoomMap().at(row - 1).at(col)->getTileType() == TileType::MONSTER)
+  {
+    MagicTile::magicUsed(single_room->getRoomMap().at(row - 1).at(col));
+    num_of_fight_monsters--;
+  }
+  if(num_of_monsters == num_of_fight_monsters)
+  {
+    throw character->getFullName() + ":  \"Nothing to fight here!\"";
+  }
+
+  single_room->setNumOfMonsters(num_of_fight_monsters);
+}
+
+
+DIRECTIONS_TYPES Game::checkDirection(std::string direction, std::shared_ptr<Character>& character)
+{
+  DIRECTIONS_TYPES direction_type;
+
+  if(direction == "up")
+    direction_type = DIRECTIONS_TYPES::UP;
+  else if(direction == "down")
+    direction_type = DIRECTIONS_TYPES::DOWN;
+  else if(direction == "right")
+    direction_type = DIRECTIONS_TYPES::RIGHT;
+  else if(direction == "left")
+    direction_type = DIRECTIONS_TYPES::LEFT;
+  else
+     throw character->getFullName() + ":  \"I don't understand which room I should scry!\"";
+
+  return direction_type;
+}
+
+
+
+void Game::scryInputParsing(std::vector<std::string>& input, std::shared_ptr<Room>& new_room, 
+                            std::shared_ptr<Room>& character_room, DIRECTIONS_TYPES& direction,
+                            std::shared_ptr<Character> character)
+{
+  std::string room_id = input.at(1);
+  new_room = getRoomById(room_id.at(0));
+
+  if(new_room == nullptr)
+    throw character->getFullName() + ":  \"I don't understand which room I should scry!\"";
+
+  direction = checkDirection(input.at(2), character);
+
+  switch(direction)
+  {
+  case DIRECTIONS_TYPES::DOWN:
+  if(rooms_.at(character_room->getRow() - 1).at(character_room->getColumn())->getRoomId() != new_room->getRoomId())
+    throw character->getFullName() + ":  \"I don't understand which room I should scry!\"";
+  break;
+  case DIRECTIONS_TYPES::RIGHT:
+    if(rooms_.at(character_room->getRow()).at(character_room->getColumn() + 1)->getRoomId() != new_room->getRoomId())
+      throw character->getFullName() + ":  \"I don't understand which room I should scry!\"";
+    break;
+  case DIRECTIONS_TYPES::LEFT:
+    if(rooms_.at(character_room->getRow()).at(character_room->getColumn() - 1)->getRoomId() != new_room->getRoomId())
+      throw character->getFullName() + ":  \"I don't understand which room I should scry!\"";
+    break;
+  case DIRECTIONS_TYPES::UP:
+    if(rooms_.at(character_room->getRow() + 1).at(character_room->getColumn())->getRoomId() != new_room->getRoomId())
+      throw character->getFullName() + ":  \"I don't understand which room I should scry!\"";
+    break;
+  }
+
+  if(new_room->isRevealed() == true)
+    throw character->getFullName() + ": \"We already know that room...\"";
+}
+
+
+void Game::scry(std::vector<std::string>& input)
+{
+  std::shared_ptr<Character> character = getCharacter(CharacterType::FIGHTER);
+  int row = character->getCurrentile().lock()->getRow();
+  int col = character->getCurrentile().lock()->getColumn();
+  const char character_room_id = character->getCurrentile().lock()->getInsideRoomId();
+  std::shared_ptr<Room> character_room = getRoomById(character_room_id);
+
+  if(!(character_room->getRoomMap().at(row).at(col)->getTileType() == TileType::CRYSTAL_BALL))
+    throw character->getFullName() + ":  \"I can't scry without my magic crystal ball!";
+
+  DIRECTIONS_TYPES direction;
+  std::shared_ptr<Room> new_room;
+  scryInputParsing(input, new_room, character_room, direction, character);
+
+  switch(direction)
+  {
+  case DIRECTIONS_TYPES::RIGHT:
+    new_room->setRevealed(true);
+    MagicTile::magicUsed(character_room->getRoomMap().at(row).at(col));
+    break;
+  case DIRECTIONS_TYPES::LEFT:
+    new_room->setRevealed(true);
+    MagicTile::magicUsed(character_room->getRoomMap().at(row).at(col));
+    break;
+  case DIRECTIONS_TYPES::DOWN:
+    new_room->setRevealed(true);
+    MagicTile::magicUsed(character_room->getRoomMap().at(row).at(col));
+    break;
+  case DIRECTIONS_TYPES::UP:
+    new_room->setRevealed(true);
+    MagicTile::magicUsed(character_room->getRoomMap().at(row).at(col));
+    break;
+  }
+
 }

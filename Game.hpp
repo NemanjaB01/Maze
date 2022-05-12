@@ -45,6 +45,11 @@ class Game
                         const std::shared_ptr<Character>& character, const int& distance);
   void checkIfNewRoomsNeedToBeRevealed(const std::shared_ptr<Tile>& current_tile,
                                        const std::shared_ptr<Room> current_room);
+  void scryInputParsing(std::vector<std::string>& input, std::shared_ptr<Room>& new_room, 
+                            std::shared_ptr<Room>& character_room, DIRECTIONS_TYPES& direction,
+                            std::shared_ptr<Character> character);
+  DIRECTIONS_TYPES checkDirection(std::string direction, std::shared_ptr<Character>& character);
+
 
   Game();
 
@@ -73,6 +78,7 @@ class Game
 
     void printMap();
     void fightMonster();
+    void scry(std::vector<std::string>& input);
 
 };
 
