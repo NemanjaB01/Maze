@@ -337,7 +337,7 @@ void Game::startTheGame()
       break;
     }
 
-    std::cout << "Card Flip Counter:   " << getFlipsNumber() << std::endl;
+    std::cout << "Card Flip Counter:" <<  std::setw(4) << getFlipsNumber() << std::endl;
     if (show_map_)
       printMap();
     std::cout << "Possible move: " << getPossibleMoveAsString() << std::endl;
@@ -789,5 +789,6 @@ void Game::scry(std::vector<std::string>& input)
     break;
   }
 
+  character_room->getRoomMap().at(row).at(col)->setCharacter(character);
   character->setCurrentTile(character_room->getRoomMap().at(row).at(col));
 }
