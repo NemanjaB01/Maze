@@ -224,7 +224,7 @@ Jeder Raum ('Room') besteht dabei aus 5\*5 Feldern ('Tile'). Jedes dieser Felder
 
 Das Feld in der linken oberen Ecke jedes Raumes ist immer eine Wand ('Wall'). Hier soll mittig als Zusatzinformation ein Buchstabe ausgegeben werden, um den Raum zu kennzeichnen (`room_id_` A-Z). Solange ein Raum noch nicht aufgedeckt wurde, werden alle seine Felder als unbekannt dargestellt.
 
-Um die Raumgrenzen anzuzeigen, wird eine doppelte Trennlinie verwendet. Die Charaktere starten immer in Raum 'S' in der in [Beispiel 1](#beispiel-1) gezeigten Anordnung. Über dem Spielplan wird angezeigt, wie oft bereits ein Bewegungskärtchen aufgedeckt wurde (rechtsbündig, mit Platz für 3 Stellen) (siehe [Beispiel-Spielpläne](#beispiel-spielpläne)). Dieser Zähler startet bei 1, da bereits zu Spielbeginn das erste Kärtchen aufgedeckt wird.
+Um die Raumgrenzen anzuzeigen, wird eine doppelte Trennlinie verwendet. Die Charaktere starten immer in Raum 'S' in der in [Beispiel 1](#beispiel-1) gezeigten Anordnung. Über dem Spielplan wird angezeigt, wie oft bereits ein Bewegungskärtchen aufgedeckt wurde (rechtsbündig, mit Platz für 3 Stellen) (siehe [Beispiel-Spielpläne](#beispiel-spielpläne)).
 
 Zu Spielbeginn sind alle Türen (geheime und normale) geschlossen. Im Laufe des Spiels benutzte Bonusfelder und Schalter, besiegte Monster und geöffnete Türen werden gleich dargestellt wie ein normaler Gang.
 
