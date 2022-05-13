@@ -283,58 +283,41 @@ void Game::startTheGame()
     COMMANDS command = checkFirstParameter(container.front());
     if(!checkSizeOfInputParameters(container, command))
       command = COMMANDS::ERROR;
-
-    switch (command)
+    try
     {
-    case COMMANDS::HELP:
-      break;
-    case COMMANDS::QUIT:
-      break;
-    case COMMANDS::MAP:
-      setMapActivity(!ifMapActivated());
-      if (show_map_)
-        break;
+      switch (command)
+      {
+        case COMMANDS::HELP:
+          break;
+        case COMMANDS::QUIT:
+          return;
+        case COMMANDS::MAP:
+          setMapActivity(!ifMapActivated());
+          if (show_map_)
+            break;
+          continue;
+        case COMMANDS::FLIP:
+          flip();
+          break;
+        case COMMANDS::MOVE:
+          move(container);
+          break;
+        case COMMANDS::UNLOCK:
+          break;
+        case COMMANDS::FIGHT:
+          fightMonster();
+          break;
+        case COMMANDS::SCRY:
+          scry(container);
+          break;
+        case COMMANDS::ERROR:
+          continue;
+      }
+    }
+    catch(std::string& e)
+    {
+      std::cout << e << std::endl;
       continue;
-    case COMMANDS::FLIP:
-      flip();
-      break;
-    case COMMANDS::MOVE:
-      try
-      {
-        move(container);
-      }
-      catch(std::string& e)
-      {
-        std::cout << e << std::endl;
-        continue;
-      }
-      break;
-    case COMMANDS::UNLOCK:
-      break;
-    case COMMANDS::FIGHT:
-      try
-      {
-        fightMonster();
-      }
-      catch(std::string& e)
-      {
-        std::cout << e << std::endl;
-        continue;
-      }
-      break;
-    case COMMANDS::SCRY:
-      try
-      {
-        scry(container);
-      }
-      catch(std::string& e)
-      {
-        std::cout << e << std::endl;
-        continue;
-      }
-      break;
-    case COMMANDS::ERROR:
-      break;
     }
 
     std::cout << "Card Flip Counter:   " << getFlipsNumber() << std::endl;
@@ -472,10 +455,10 @@ void Game::move(std::vector<std::string>& input)
     current_room = getRoomById(current_tile->getInsideRoomId());
 
     if (!tiles_on_the_way.size() && !current_room->isRevealed())
-      throw character_to_move->getFullName() + ":  My way is blocked!";
+      throw character_to_move->getFullName() + ": \"My way is blocked!\"";
 
     else if(current_room->getNumOfMonsters() && character_to_move->getCharacterType() != CharacterType::FIGHTER)
-      throw character_to_move->getFullName() + ":  That room is too scary for me!";
+      throw character_to_move->getFullName() + ": \"That room is too scary for me!\"";
 
     else if (tiles_on_the_way.size() && current_tile->ifPassable() && current_room->isRevealed())
       continue;
@@ -484,10 +467,10 @@ void Game::move(std::vector<std::string>& input)
       stopCharacterOnTile(first_tile, current_room, current_tile, character_to_move);
 
     else if(!tiles_on_the_way.size() && current_tile->ifContainsCharacter())
-      throw character_to_move->getFullName() + ":  There is not enough space on that tile!";
+      throw character_to_move->getFullName() + ": \"There is not enough space on that tile!\"";
 
     else
-      throw character_to_move->getFullName() + ":  My way is blocked!";
+      throw character_to_move->getFullName() + ": \"My way is blocked!\"";
   }
 }
 
@@ -507,6 +490,17 @@ void Game::stopCharacterOnTile(std::shared_ptr<Tile>& first_tile, std::shared_pt
     current_tile->setCharacter(moving_character);
     moving_character->setCurrentTile(current_tile);
   }
+  if (current_tile->getTileType() == TileType::FIGHTER_BUTTON && 
+           moving_character->getCharacterType() == CharacterType::FIGHTER)
+    moving_character->setOnButton(true);
+  else if (current_tile->getTileType() == TileType::THIEF_BUTTON && 
+           moving_character->getCharacterType() == CharacterType::THIEF)
+    moving_character->setOnButton(true);
+  else if (current_tile->getTileType() == TileType::SEER_BUTTON && 
+           moving_character->getCharacterType() == CharacterType::SEER)
+    moving_character->setOnButton(true);
+  else if (moving_character->ifOnButton())
+    moving_character->setOnButton(false);
 }
 
 void Game::useHourglass(std::shared_ptr<Tile>& tile)
@@ -530,15 +524,15 @@ void Game::moveInputParsing(std::vector<std::string>& input, std::shared_ptr<Cha
   else if (character_str == "T")
     character_to_move = getCharacter(CharacterType::THIEF);
   else
-    throw "Who do you want to move?!?";
+    throw std::string{"Who do you want to move?!?"};
 
   std::string direction_to_go{ input.at(2) };
   std::string possible_move_str{ getPossibleMoveAsString() };
   if (direction_to_go != "UP" && direction_to_go != "DOWN" && direction_to_go != "RIGHT" && direction_to_go != "LEFT")
-    throw character_to_move->getFullName() + ":  I don't understand where I should go!";
+    throw character_to_move->getFullName() + ": \"I don't understand where I should go!\"";
 
   else if (direction_to_go != stringToUppercase(possible_move_str))
-    throw character_to_move->getFullName() + ":  I can't go that way right now!";
+    throw character_to_move->getFullName() + ": \"I can't go that way right now!\"";
 
   if (input.size() == 4)
   {
@@ -551,7 +545,7 @@ void Game::moveInputParsing(std::vector<std::string>& input, std::shared_ptr<Cha
       distance = -1;
     }
     if (distance <= 0)
-      throw character_to_move->getFullName() + ":  I don't understand how far I should go!";
+      throw character_to_move->getFullName() + ": \"I don't understand how far I should go!\"";
   }
 }
 
@@ -589,28 +583,28 @@ void Game::getTilesOnTheWay(std::queue<std::shared_ptr<Tile>>& tiles_on_way,
     if (next_row == 5) // switch row to down
     {
       if (current_room->getRow() + 1 == (int)rooms_.size())
-        throw character->getFullName() + ":  My way is blocked";
+        throw character->getFullName() + ": \"My way is blocked\"";
       next_row = 0;
       current_room = rooms_.at(current_room->getRow() + 1).at(current_room->getColumn());
     }
     else if (next_row == -1) // switch row to up
     {
       if (!current_room->getRow())
-        throw character->getFullName() + ":  My way is blocked";
+        throw character->getFullName() + ": \"My way is blocked\"";
       next_row = 4;
       current_room = rooms_.at(current_room->getRow() - 1).at(current_room->getColumn());
     }
     else if (next_col == 5) // switch column to right
     { 
       if (current_room->getColumn() + 1 == (int)rooms_.at(0).size())
-        throw character->getFullName() + ":  My way is blocked";
+        throw character->getFullName() + ": \"My way is blocked\"";
       next_col = 0;
       current_room = rooms_.at(current_room->getRow()).at(current_room->getColumn() + 1);
     }
     else if (next_col == -1) // switch column to left
     {
       if (!current_room->getColumn())
-        throw character->getFullName() + ":  My way is blocked";
+        throw character->getFullName() + ":  \"My way is blocked\"";
       next_col = 4;
       current_room = rooms_.at(current_room->getRow()).at(current_room->getColumn() - 1);
     }
@@ -635,7 +629,7 @@ void Game::checkIfNewRoomsNeedToBeRevealed(const std::shared_ptr<Tile>& current_
                                                         .at(current_room->getColumn())->isRevealed())
       rooms_.at(current_room->getRow() + 1).at(current_room->getColumn())->setRevealed(true);
   }
-  else if (current_tile->getColumn() == 0)
+  if (current_tile->getColumn() == 0)
   {
     if (current_room->getColumn() - 1 >= 0 && !rooms_.at(current_room->getRow())
                                                      .at(current_room->getColumn() - 1)->isRevealed())

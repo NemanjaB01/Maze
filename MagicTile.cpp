@@ -6,7 +6,7 @@ MagicTile::MagicTile(TileType type, char room_id ,int row, int column)
  : Tile{type, room_id, row, column, true}
 {
   if (type == TileType::CRYSTAL_BALL || type == TileType::HOURGLASS || type == TileType::LOOT ||
-  type == TileType::SEER_BUTTON || type == TileType::TIEF_BUTTON || type == TileType::FIGHTER_BUTTON)
+  type == TileType::SEER_BUTTON || type == TileType::THIEF_BUTTON || type == TileType::FIGHTER_BUTTON)
   {
     is_available_ = true;
     is_passable_ = true;
@@ -31,7 +31,7 @@ std::string MagicTile::getTileString()
     tile = "$$$$$$$\n$     $\n$$$$$$$\n";
   else if(type_ == TileType::SEER_BUTTON)
     tile = "SSSSSSS\nS     S\nSSSSSSS\n";
-  else if(type_ == TileType::TIEF_BUTTON)
+  else if(type_ == TileType::THIEF_BUTTON)
     tile = "TTTTTTT\nT     T\nTTTTTTT\n";
   else if(type_ == TileType::FIGHTER_BUTTON)
     tile = "FFFFFFF\nF     F\nFFFFFFF\n";

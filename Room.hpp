@@ -12,7 +12,7 @@
 const std::map<char, TileType> TILE_TYPE_MAP{
   {'W', TileType::WALL}, {'P', TileType::PASSAGE}, {'X', TileType::SECRET_DOOR}, {'M', TileType::MONSTER}, 
   {'G', TileType::HOURGLASS}, {'C', TileType::CRYSTAL_BALL}, {'H', TileType::HORIZONTAL_DOOR}, 
-  {'V', TileType::VECTICAL_DOOR}, {'L', TileType::LOOT}, {'T', TileType::TIEF_BUTTON},
+  {'V', TileType::VECTICAL_DOOR}, {'L', TileType::LOOT}, {'T', TileType::THIEF_BUTTON},
   {'F', TileType::FIGHTER_BUTTON}, {'S', TileType::SEER_BUTTON} };
 
 class Room

@@ -48,7 +48,7 @@ Room::Room(char room_id, const std::string& room_info_str,  int row_, int column
       case TileType::SEER_BUTTON:
         room_map_.at(row).at(col) = std::make_shared<MagicTile>(type, room_id, row, col);
         break;
-      case TileType::TIEF_BUTTON:
+      case TileType::THIEF_BUTTON:
         room_map_.at(row).at(col) = std::make_shared<MagicTile>(type, room_id, row, col);
         break;
     }
