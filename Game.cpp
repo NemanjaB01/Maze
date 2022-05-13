@@ -320,7 +320,7 @@ void Game::startTheGame()
       continue;
     }
 
-    std::cout << "Card Flip Counter:   " << getFlipsNumber() << std::endl;
+    std::cout << "Card Flip Counter:" <<  std::setw(4) << getFlipsNumber() << std::endl;
     if (show_map_)
       printMap();
     std::cout << "Possible move: " << getPossibleMoveAsString() << std::endl;
@@ -688,13 +688,13 @@ DIRECTIONS_TYPES Game::checkDirection(std::string direction, std::shared_ptr<Cha
 {
   DIRECTIONS_TYPES direction_type;
 
-  if(direction == "up")
+  if(direction == "UP")
     direction_type = DIRECTIONS_TYPES::UP;
-  else if(direction == "down")
+  else if(direction == "DOWN")
     direction_type = DIRECTIONS_TYPES::DOWN;
-  else if(direction == "right")
+  else if(direction == "RIGHT")
     direction_type = DIRECTIONS_TYPES::RIGHT;
-  else if(direction == "left")
+  else if(direction == "LEFT")
     direction_type = DIRECTIONS_TYPES::LEFT;
   else
      throw character->getFullName() + ":  \"I don't understand which room I should scry!\"";
@@ -704,14 +704,15 @@ DIRECTIONS_TYPES Game::checkDirection(std::string direction, std::shared_ptr<Cha
 
 
 
-void Game::scryInputParsing(std::vector<std::string>& input, std::shared_ptr<Room>& new_room, 
-                            std::shared_ptr<Room>& character_room, DIRECTIONS_TYPES& direction,
-                            std::shared_ptr<Character> character)
+void Game::scryInputParsing(std::vector<std::string>& input, std::shared_ptr<Room>& room_to_scry,
+                            DIRECTIONS_TYPES& direction, std::shared_ptr<Character> character)
 {
   std::string room_id = input.at(1);
-  new_room = getRoomById(room_id.at(0));
+  room_to_scry = getRoomById(room_id.at(0));
+  const int game_row = rooms_.size();
+  const int game_col = rooms_[0].size();
 
-  if(new_room == nullptr)
+  if(room_to_scry == nullptr)
     throw character->getFullName() + ":  \"I don't understand which room I should scry!\"";
 
   direction = checkDirection(input.at(2), character);
@@ -719,31 +720,37 @@ void Game::scryInputParsing(std::vector<std::string>& input, std::shared_ptr<Roo
   switch(direction)
   {
   case DIRECTIONS_TYPES::DOWN:
-  if(rooms_.at(character_room->getRow() - 1).at(character_room->getColumn())->getRoomId() != new_room->getRoomId())
-    throw character->getFullName() + ":  \"I don't understand which room I should scry!\"";
+    if(room_to_scry->getRow() + 1 >= game_row)
+      throw character->getFullName() + ":  \"There is no room I can reveal at this position!\"";
+    else if(rooms_.at(room_to_scry->getRow() + 1).at(room_to_scry->getColumn())->isRevealed() == true)
+      throw character->getFullName() + ":  \"We already know that room...\"";
   break;
   case DIRECTIONS_TYPES::RIGHT:
-    if(rooms_.at(character_room->getRow()).at(character_room->getColumn() + 1)->getRoomId() != new_room->getRoomId())
-      throw character->getFullName() + ":  \"I don't understand which room I should scry!\"";
+    if(room_to_scry->getColumn() + 1 >= game_col)
+      throw character->getFullName() + ":  \"There is no room I can reveal at this position!\"";
+    else if(rooms_.at(room_to_scry->getRow()).at(room_to_scry->getColumn() + 1)->isRevealed() == true)
+      throw character->getFullName() + ":  \"We already know that room...\"";
     break;
   case DIRECTIONS_TYPES::LEFT:
-    if(rooms_.at(character_room->getRow()).at(character_room->getColumn() - 1)->getRoomId() != new_room->getRoomId())
-      throw character->getFullName() + ":  \"I don't understand which room I should scry!\"";
+    if(room_to_scry->getColumn() + 1 < 0)
+      throw character->getFullName() + ":  \"There is no room I can reveal at this position!\"";
+    else if(rooms_.at(room_to_scry->getRow()).at(room_to_scry->getColumn() - 1)->isRevealed() == true)
+      throw character->getFullName() + ":  \"We already know that room...\"";
     break;
   case DIRECTIONS_TYPES::UP:
-    if(rooms_.at(character_room->getRow() + 1).at(character_room->getColumn())->getRoomId() != new_room->getRoomId())
-      throw character->getFullName() + ":  \"I don't understand which room I should scry!\"";
+    if(room_to_scry->getRow() - 1 < 0)
+      throw character->getFullName() + ":  \"There is no room I can reveal at this position!\"";
+    else if(rooms_.at(room_to_scry->getRow() - 1).at(room_to_scry->getColumn())->isRevealed() == true)
+      throw character->getFullName() + ":  \"We already know that room...\"";
     break;
   }
 
-  if(new_room->isRevealed() == true)
-    throw character->getFullName() + ": \"We already know that room...\"";
 }
 
 
 void Game::scry(std::vector<std::string>& input)
 {
-  std::shared_ptr<Character> character = getCharacter(CharacterType::FIGHTER);
+  std::shared_ptr<Character> character = getCharacter(CharacterType::SEER);
   int row = character->getCurrentile().lock()->getRow();
   int col = character->getCurrentile().lock()->getColumn();
   const char character_room_id = character->getCurrentile().lock()->getInsideRoomId();
@@ -753,27 +760,29 @@ void Game::scry(std::vector<std::string>& input)
     throw character->getFullName() + ":  \"I can't scry without my magic crystal ball!";
 
   DIRECTIONS_TYPES direction;
-  std::shared_ptr<Room> new_room;
-  scryInputParsing(input, new_room, character_room, direction, character);
+  std::shared_ptr<Room> room_to_scry;
+  scryInputParsing(input, room_to_scry, direction, character);
 
   switch(direction)
   {
   case DIRECTIONS_TYPES::RIGHT:
-    new_room->setRevealed(true);
+    rooms_.at(room_to_scry->getRow()).at(room_to_scry->getColumn() + 1)->setRevealed(true);
     MagicTile::magicUsed(character_room->getRoomMap().at(row).at(col));
     break;
   case DIRECTIONS_TYPES::LEFT:
-    new_room->setRevealed(true);
+     rooms_.at(room_to_scry->getRow()).at(room_to_scry->getColumn() - 1)->setRevealed(true);
     MagicTile::magicUsed(character_room->getRoomMap().at(row).at(col));
     break;
   case DIRECTIONS_TYPES::DOWN:
-    new_room->setRevealed(true);
+    rooms_.at(room_to_scry->getRow() + 1).at(room_to_scry->getColumn())->setRevealed(true);
     MagicTile::magicUsed(character_room->getRoomMap().at(row).at(col));
     break;
   case DIRECTIONS_TYPES::UP:
-    new_room->setRevealed(true);
+    rooms_.at(room_to_scry->getRow() - 1).at(room_to_scry->getColumn())->setRevealed(true);
     MagicTile::magicUsed(character_room->getRoomMap().at(row).at(col));
     break;
   }
 
+  character_room->getRoomMap().at(row).at(col)->setCharacter(character);
+  character->setCurrentTile(character_room->getRoomMap().at(row).at(col));
 }
