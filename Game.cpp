@@ -490,13 +490,13 @@ void Game::stopCharacterOnTile(std::shared_ptr<Tile>& first_tile, std::shared_pt
     current_tile->setCharacter(moving_character);
     moving_character->setCurrentTile(current_tile);
   }
-  if (current_tile->getTileType() == TileType::FIGHTER_BUTTON && 
+  if (current_tile->getTileType() == TileType::FIGHTER_BUTTON &&
            moving_character->getCharacterType() == CharacterType::FIGHTER)
     moving_character->setOnButton(true);
-  else if (current_tile->getTileType() == TileType::THIEF_BUTTON && 
+  else if (current_tile->getTileType() == TileType::THIEF_BUTTON &&
            moving_character->getCharacterType() == CharacterType::THIEF)
     moving_character->setOnButton(true);
-  else if (current_tile->getTileType() == TileType::SEER_BUTTON && 
+  else if (current_tile->getTileType() == TileType::SEER_BUTTON &&
            moving_character->getCharacterType() == CharacterType::SEER)
     moving_character->setOnButton(true);
   else if (moving_character->ifOnButton())
@@ -647,35 +647,79 @@ void Game::checkIfNewRoomsNeedToBeRevealed(const std::shared_ptr<Tile>& current_
 void Game::fightMonster()
 {
   std::shared_ptr<Character> character = getCharacter(CharacterType::FIGHTER);
-  int row = character->getCurrentile().lock()->getRow();
-  int col = character->getCurrentile().lock()->getColumn();
-  const char room_id = character->getCurrentile().lock()->getInsideRoomId();
+  std::shared_ptr<Tile> tile = character->getCurrentile().lock();
+  int row = tile->getRow();
+  int col = tile->getColumn();
+  const char room_id = tile->getInsideRoomId();
+  const int game_row = rooms_.size();
+  const int game_col = rooms_[0].size();
 
   std::shared_ptr<Room> single_room = getRoomById(room_id);
-  int num_of_monsters = single_room->getNumOfMonsters();
+  bool fight_with_monster = false;
   int num_of_fight_monsters = single_room->getNumOfMonsters();
+  std::shared_ptr<Room> next_room = rooms_[single_room->getRow()][single_room->getColumn()];
 
   if(col != 4 && single_room->getRoomMap().at(row).at(col + 1)->getTileType() == TileType::MONSTER)
   {
     MagicTile::magicUsed(single_room->getRoomMap().at(row).at(col + 1));
     num_of_fight_monsters--;
+    single_room->setNumOfMonsters(num_of_fight_monsters);
+    fight_with_monster = true;
+  }
+  else if(col == 4 && game_col > (single_room->getColumn() + 1) && rooms_[single_room->getRow()][single_room->getColumn() + 1]
+  ->getRoomMap().at(row).at(0)->getTileType() == TileType::MONSTER)
+  {
+    next_room = rooms_[single_room->getRow()][single_room->getColumn() + 1];
+    next_room->setNumOfMonsters(next_room->getNumOfMonsters() - 1);
+    MagicTile::magicUsed(next_room->getRoomMap().at(row).at(0));
+    fight_with_monster = true;
   }
   if(col != 0 && single_room->getRoomMap().at(row).at(col - 1)->getTileType() == TileType::MONSTER)
   {
     MagicTile::magicUsed(single_room->getRoomMap().at(row).at(col - 1));
     num_of_fight_monsters--;
+    single_room->setNumOfMonsters(num_of_fight_monsters);
+    fight_with_monster = true;
+  }
+  else if(col == 0 && (single_room->getColumn() - 1) > 0 && rooms_[single_room->getRow()][single_room->getColumn() - 1]
+  ->getRoomMap().at(row).at(4)->getTileType() == TileType::MONSTER)
+  {
+    next_room = rooms_[single_room->getRow()][single_room->getColumn() - 1];
+    next_room->setNumOfMonsters(next_room->getNumOfMonsters() - 1);
+    MagicTile::magicUsed(next_room->getRoomMap().at(row).at(4));
+    fight_with_monster = true;
   }
   if(row != 4 && single_room->getRoomMap().at(row + 1).at(col)->getTileType() == TileType::MONSTER)
   {
     MagicTile::magicUsed(single_room->getRoomMap().at(row + 1).at(col));
     num_of_fight_monsters--;
+    single_room->setNumOfMonsters(num_of_fight_monsters);
+    fight_with_monster = true;
+  }
+  else if(row == 4 && (single_room->getRow() + 1) < game_row && rooms_[single_room->getRow() + 1][single_room->getColumn()]
+  ->getRoomMap().at(0).at(col)->getTileType() == TileType::MONSTER)
+  {
+    next_room = rooms_[single_room->getRow() + 1][single_room->getColumn()];
+    next_room->setNumOfMonsters(next_room->getNumOfMonsters() - 1);
+    MagicTile::magicUsed(next_room->getRoomMap().at(0).at(col));
+    fight_with_monster = true;
   }
   if(row != 0 && single_room->getRoomMap().at(row - 1).at(col)->getTileType() == TileType::MONSTER)
   {
     MagicTile::magicUsed(single_room->getRoomMap().at(row - 1).at(col));
     num_of_fight_monsters--;
+    single_room->setNumOfMonsters(num_of_fight_monsters);
+    fight_with_monster = true;
   }
-  if(num_of_monsters == num_of_fight_monsters)
+  else if(row == 0 && (single_room->getRow() - 1) > 0 && rooms_[single_room->getRow() - 1][single_room->getColumn()]
+  ->getRoomMap().at(4).at(col)->getTileType() == TileType::MONSTER)
+  {
+    next_room = rooms_[single_room->getRow() - 1][single_room->getColumn()];
+    next_room->setNumOfMonsters(next_room->getNumOfMonsters() - 1);
+    MagicTile::magicUsed(next_room->getRoomMap().at(4).at(col));
+    fight_with_monster = true;
+  }
+  if(fight_with_monster == false)
   {
     throw character->getFullName() + ":  \"Nothing to fight here!\"";
   }
@@ -751,9 +795,10 @@ void Game::scryInputParsing(std::vector<std::string>& input, std::shared_ptr<Roo
 void Game::scry(std::vector<std::string>& input)
 {
   std::shared_ptr<Character> character = getCharacter(CharacterType::SEER);
-  int row = character->getCurrentile().lock()->getRow();
-  int col = character->getCurrentile().lock()->getColumn();
-  const char character_room_id = character->getCurrentile().lock()->getInsideRoomId();
+  std::shared_ptr<Tile> tile = character->getCurrentile().lock();
+  int row = tile->getRow();
+  int col = tile->getColumn();
+  const char character_room_id = tile->getInsideRoomId();
   std::shared_ptr<Room> character_room = getRoomById(character_room_id);
 
   if(!(character_room->getRoomMap().at(row).at(col)->getTileType() == TileType::CRYSTAL_BALL))
