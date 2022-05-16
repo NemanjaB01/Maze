@@ -4,6 +4,7 @@
 #include <exception>
 #include <cctype>
 #include <iomanip>
+#include <queue>
 
 #include "Game.hpp"
 #include "Exceptions.hpp"
@@ -653,78 +654,42 @@ void Game::fightMonster()
   const char room_id = tile->getInsideRoomId();
   const int game_row = rooms_.size();
   const int game_col = rooms_[0].size();
+  std::queue<std::shared_ptr<Tile>> monster;
 
   std::shared_ptr<Room> single_room = getRoomById(room_id);
-  bool fight_with_monster = false;
-  int num_of_fight_monsters = single_room->getNumOfMonsters();
-  std::shared_ptr<Room> next_room = rooms_[single_room->getRow()][single_room->getColumn()];
 
   if(col != 4 && single_room->getRoomMap().at(row).at(col + 1)->getTileType() == TileType::MONSTER)
-  {
-    MagicTile::magicUsed(single_room->getRoomMap().at(row).at(col + 1));
-    num_of_fight_monsters--;
-    single_room->setNumOfMonsters(num_of_fight_monsters);
-    fight_with_monster = true;
-  }
+    monster.push(single_room->getRoomMap().at(row).at(col + 1));
   else if(col == 4 && game_col > (single_room->getColumn() + 1) && rooms_[single_room->getRow()][single_room->getColumn() + 1]
   ->getRoomMap().at(row).at(0)->getTileType() == TileType::MONSTER)
-  {
-    next_room = rooms_[single_room->getRow()][single_room->getColumn() + 1];
-    next_room->setNumOfMonsters(next_room->getNumOfMonsters() - 1);
-    MagicTile::magicUsed(next_room->getRoomMap().at(row).at(0));
-    fight_with_monster = true;
-  }
+    monster.push(rooms_[single_room->getRow()][single_room->getColumn() + 1]->getRoomMap().at(row).at(0));
   if(col != 0 && single_room->getRoomMap().at(row).at(col - 1)->getTileType() == TileType::MONSTER)
-  {
-    MagicTile::magicUsed(single_room->getRoomMap().at(row).at(col - 1));
-    num_of_fight_monsters--;
-    single_room->setNumOfMonsters(num_of_fight_monsters);
-    fight_with_monster = true;
-  }
+    single_room->getRoomMap().at(row).at(col - 1);
   else if(col == 0 && (single_room->getColumn() - 1) > 0 && rooms_[single_room->getRow()][single_room->getColumn() - 1]
   ->getRoomMap().at(row).at(4)->getTileType() == TileType::MONSTER)
-  {
-    next_room = rooms_[single_room->getRow()][single_room->getColumn() - 1];
-    next_room->setNumOfMonsters(next_room->getNumOfMonsters() - 1);
-    MagicTile::magicUsed(next_room->getRoomMap().at(row).at(4));
-    fight_with_monster = true;
-  }
+    monster.push(rooms_[single_room->getRow()][single_room->getColumn() - 1]->getRoomMap().at(row).at(4));
   if(row != 4 && single_room->getRoomMap().at(row + 1).at(col)->getTileType() == TileType::MONSTER)
-  {
-    MagicTile::magicUsed(single_room->getRoomMap().at(row + 1).at(col));
-    num_of_fight_monsters--;
-    single_room->setNumOfMonsters(num_of_fight_monsters);
-    fight_with_monster = true;
-  }
+    monster.push(single_room->getRoomMap().at(row + 1).at(col));
   else if(row == 4 && (single_room->getRow() + 1) < game_row && rooms_[single_room->getRow() + 1][single_room->getColumn()]
   ->getRoomMap().at(0).at(col)->getTileType() == TileType::MONSTER)
-  {
-    next_room = rooms_[single_room->getRow() + 1][single_room->getColumn()];
-    next_room->setNumOfMonsters(next_room->getNumOfMonsters() - 1);
-    MagicTile::magicUsed(next_room->getRoomMap().at(0).at(col));
-    fight_with_monster = true;
-  }
+    monster.push(rooms_[single_room->getRow() + 1][single_room->getColumn()]->getRoomMap().at(0).at(col));
   if(row != 0 && single_room->getRoomMap().at(row - 1).at(col)->getTileType() == TileType::MONSTER)
-  {
-    MagicTile::magicUsed(single_room->getRoomMap().at(row - 1).at(col));
-    num_of_fight_monsters--;
-    single_room->setNumOfMonsters(num_of_fight_monsters);
-    fight_with_monster = true;
-  }
+    monster.push(single_room->getRoomMap().at(row - 1).at(col));
   else if(row == 0 && (single_room->getRow() - 1) > 0 && rooms_[single_room->getRow() - 1][single_room->getColumn()]
   ->getRoomMap().at(4).at(col)->getTileType() == TileType::MONSTER)
-  {
-    next_room = rooms_[single_room->getRow() - 1][single_room->getColumn()];
-    next_room->setNumOfMonsters(next_room->getNumOfMonsters() - 1);
-    MagicTile::magicUsed(next_room->getRoomMap().at(4).at(col));
-    fight_with_monster = true;
-  }
-  if(fight_with_monster == false)
-  {
-    throw character->getFullName() + ":  \"Nothing to fight here!\"";
-  }
+    monster.push(rooms_[single_room->getRow() - 1][single_room->getColumn()]->getRoomMap().at(4).at(col));
 
-  single_room->setNumOfMonsters(num_of_fight_monsters);
+  if(monster.empty())
+    throw character->getFullName() + ":  \"Nothing to fight here!\"";
+
+  while(!monster.empty())
+  {
+    MagicTile::magicUsed(monster.front());
+    char room_id = monster.front()->getInsideRoomId();
+    int num_monsters = getRoomById(room_id)->getNumOfMonsters();
+    getRoomById(room_id)->setNumOfMonsters(num_monsters - 1);
+    monster.pop();
+  }
 }
 
 
