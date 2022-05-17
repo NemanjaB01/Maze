@@ -233,7 +233,8 @@ Zu Spielbeginn sind alle Türen (geheime und normale) geschlossen. Im Laufe des 
 ### Felder
 Die einzelnen ASCII-Felder werden nachfolgend dargestellt (bitte markieren, um die Leerzeichen sichtbar zu machen). Zusätzlich wird angeführt, welches Kürzel verwendet wird, um ein Feld dieser Art in einem Raum zu symbolisieren (siehe [Erstellen der einzelnen Räume](#erstellen-der-einzelnen-räume)).  
 Weiters ist angegeben, ob das Feld (in seinem derzeitigen Zustand) betretbar und/oder übertretbar ist. Betretbar bedeutet, dass ein Charakter auf diesem Feld seine Bewegung beenden kann, übertretbar, dass das Feld überquert werden kann.
-Die Zeile 'veränderbar' gibt an, ob und wann das Feld seine Darstellung ändert. Dies sind Zusatzinformationen, die für Milestone 2 relevant sind. Sie könnten jedoch vielleicht eure Gestaltung der Klasse MagicTile beeinflussen, daher haben wir sie bereits in Milestone 1 angegeben.
+Die Zeile 'veränderbar' gibt an, ob und wann das Feld seine Darstellung ändert. Betretbare Felder können in Feldmitte zusätzlich den Buchstaben eines Charakters enthalten, unabhängig davon ob das Feld selbst veränderbar ist oder nicht. 
+Dies sind Zusatzinformationen, die für Milestone 2 relevant sind. Sie könnten jedoch vielleicht eure Gestaltung der Klasse MagicTile beeinflussen, daher haben wir sie bereits in Milestone 1 angegeben.
 
 **Unbekanntes Feld**  
 Kürzel: keines  
@@ -281,7 +282,7 @@ veränderbar: nein
 Kürzel: P ('Passage')  
 betretbar: ja  
 übertretbar: ja  
-veränderbar: ja, durch Betreten mit Charakter  
+veränderbar: nein (außer durch Betreten mit einem Charakter)
 
 ```
        
@@ -295,7 +296,7 @@ veränderbar: ja, durch Betreten mit Charakter
 Kürzel: P ('Passage')  
 betretbar: nein (Es kann sich nur ein einzelner Charakter auf einem Feld befinden.)  
 übertretbar: ja (Charaktere können sich gegenseitig überspringen.)  
-veränderbar: ja, durch Verlassen mit Charakter  
+veränderbar: nein (außer durch Verlassen mit einem Charakter) 
 
 ```
        
@@ -323,7 +324,7 @@ veränderbar: ja, durch Öffnen
 Kürzel: X  
 betretbar: ja  
 übertretbar: ja  
-veränderbar: nein  
+veränderbar: nein (außer durch Betreten mit einem Charakter)
 
 ```
        
@@ -351,7 +352,7 @@ veränderbar: ja, durch Besiegen des Monsters
 Kürzel: G ('hourGlass')  
 betretbar: ja  
 übertretbar: ja  
-veränderbar: ja, durch Verwendung des Bonusfelds  
+veränderbar: ja, durch Verwendung des Bonusfelds
 
 ```
  \   / 
@@ -407,7 +408,7 @@ veränderbar: ja, durch Öffnen
 Kürzel: H bzw. V  
 betretbar: ja  
 übertretbar: ja  
-veränderbar: nein  
+veränderbar: nein (außer durch Betreten mit einem Charakter)
 
 ```
        
@@ -421,7 +422,7 @@ veränderbar: nein
 Kürzel: L ('Loot')  
 betretbar: ja  
 übertretbar: ja  
-veränderbar: nein  
+veränderbar: nein (außer durch Betreten mit einem Charakter)
 
 ```
 $$$$$$$
