@@ -15,7 +15,7 @@ MagicTile::MagicTile(TileType type, char room_id ,int row, int column)
 
 std::string MagicTile::getTileString()
 {
-  std::shared_ptr<Room> room = Game::getInstance().getRoomById(inside_room_id_);
+  std::shared_ptr<Room> room = MagicMaze::Game::getInstance().getRoomById(inside_room_id_);
   if (!room->isRevealed())
   {
     return "UUUUUUU\nUUUUUUU\nUUUUUUU\n";
@@ -53,10 +53,8 @@ std::string MagicTile::getTileString()
 
 void MagicTile::magicUsed(std::shared_ptr<Tile>& tile)
 {
-  Game &g = Game::getInstance();
+  MagicMaze::Game &g = MagicMaze::Game::getInstance();
   std::shared_ptr<Room> room = g.getRoomById(tile->getInsideRoomId());
   if (tile->ifMagic())
     room->setTileToPassage(tile);
 }
-
-

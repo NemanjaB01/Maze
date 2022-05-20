@@ -14,7 +14,7 @@ BasicTile::BasicTile(TileType type, char room_id, int row, int column)
 
 std::string BasicTile::getTileString()
 {
-  std::shared_ptr<Room> inside_room = Game::getInstance().getRoomById(inside_room_id_);
+  std::shared_ptr<Room> inside_room = MagicMaze::Game::getInstance().getRoomById(inside_room_id_);
   if (!inside_room->isRevealed())
     return "UUUUUUU\nUUUUUUU\nUUUUUUU\n";
 

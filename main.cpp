@@ -9,8 +9,8 @@ int main(int argc, char* argv[])
 {
   try
   {
-    Game::getInstance().parse(argc, argv);
-    Game::getInstance().startTheGame();
+    MagicMaze::Game::getInstance().parse(argc, argv);
+    MagicMaze::Game::getInstance().run();
   }
   catch(Exceptions::InvalidConfiguration& e)
   {
@@ -21,10 +21,6 @@ int main(int argc, char* argv[])
   {
     std::cout << e.what();
     return (int)ReturnValues::MEMORY_PROBLEM;
-  }
-  catch(Exceptions::EndOfFile& e)
-  {
-    return (int)ReturnValues::OK;
   }
 
   return (int)ReturnValues::OK;

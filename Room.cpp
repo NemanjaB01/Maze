@@ -8,50 +8,15 @@ Room::Room(char room_id, const std::string& room_info_str,  int row_, int column
 {
   int row{0};
   int col{0};
-
   for (const char& field : room_info_str)
   {
     TileType type{ TILE_TYPE_MAP.at(field) };
-    switch(type)
-    {
-      case TileType::WALL:
-        room_map_.at(row).at(col) = std::make_shared<BasicTile>(type, room_id, row, col);
-        break;
-      case TileType::PASSAGE:
-        room_map_.at(row).at(col) = std::make_shared<BasicTile>(type, room_id, row, col);
-        break;
-      case TileType::CRYSTAL_BALL:
-        room_map_.at(row).at(col) = std::make_shared<MagicTile>(type, room_id, row, col);
-        break;
-      case TileType::HOURGLASS:
-        room_map_.at(row).at(col) = std::make_shared<MagicTile>(type, room_id, row, col);
-        break;
-      case TileType::HORIZONTAL_DOOR:
-        room_map_.at(row).at(col) = std::make_shared<MagicTile>(type, room_id, row, col);
-        break;
-      case TileType::VECTICAL_DOOR:
-        room_map_.at(row).at(col) = std::make_shared<MagicTile>(type, room_id, row, col);
-        break;
-      case TileType::SECRET_DOOR:
-        room_map_.at(row).at(col) = std::make_shared<MagicTile>(type, room_id, row, col);
-        break;
-      case TileType::LOOT:
-        room_map_.at(row).at(col) = std::make_shared<MagicTile>(type, room_id, row, col);
-        break;
-      case TileType::MONSTER:
-        room_map_.at(row).at(col) = std::make_shared<MagicTile>(type, room_id, row, col);
-        num_of_monsters_++;
-        break;
-      case TileType::FIGHTER_BUTTON:
-        room_map_.at(row).at(col) = std::make_shared<MagicTile>(type, room_id, row, col);
-        break;
-      case TileType::SEER_BUTTON:
-        room_map_.at(row).at(col) = std::make_shared<MagicTile>(type, room_id, row, col);
-        break;
-      case TileType::THIEF_BUTTON:
-        room_map_.at(row).at(col) = std::make_shared<MagicTile>(type, room_id, row, col);
-        break;
-    }
+
+    if (type == TileType::PASSAGE || type == TileType::WALL)
+      room_map_.at(row).at(col) = std::make_shared<BasicTile>(type, room_id, row, col);
+    else
+      room_map_.at(row).at(col) = std::make_shared<MagicTile>(type, room_id, row, col);
+
     col += 1;
     if (col >= 5)
     {

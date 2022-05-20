@@ -5,6 +5,7 @@
 #include <cctype>
 #include <iomanip>
 #include <queue>
+#include <algorithm>
 
 #include "Game.hpp"
 #include "Exceptions.hpp"
@@ -12,11 +13,9 @@
 #include "Random.hpp"
 #include "MagicTile.hpp"
 #include "BasicTile.hpp"
+#include "GameParser.hpp"
 
-std::string stringToUppercase(std::string& s);
-bool checkSizeOfInputParameters(const std::vector<std::string>& container, const COMMANDS& command);
-
-Game::Game()
+MagicMaze::Game::Game()
  : characters_{ std::make_shared<Character>(CharacterType::FIGHTER),
                 std::make_shared<Character>(CharacterType::THIEF),
                 std::make_shared<Character>(CharacterType::SEER) },
@@ -26,60 +25,18 @@ Game::Game()
   shuffleCards();
 }
 
-Game& Game::getInstance()
+MagicMaze::Game& MagicMaze::Game::getInstance() noexcept
 {
   static Game game;
   return game;
 }
 
-void Game::parse(const int argc, const char* const argv[])
+void MagicMaze::Game::parse(const int argc, const char* const argv[])
 {
-  if (argc < 2)
-    throw Exceptions::InvalidConfiguration();
-
-  std::string helper;
-  for (int iter{1}; iter < argc; iter++)
-  {
-    helper += argv[iter];
-    helper += ',';
-  }
-  helper.erase(helper.size() - 1, 1);
-  std::stringstream s_stream{ helper };
-
-  std::string rooms_row_string;
-
-  while(!s_stream.eof())
-  {
-    getline(s_stream, rooms_row_string, ',');
-    checkRowLength(rooms_row_string);
-    checkIfLetters(rooms_row_string);
-    addRoom(rooms_row_string);
-
-    rooms_row_string.clear();
-  }
-  containsOneStartingRoom();
-
-  for (const auto& room_row : rooms_)
-     for (const std::shared_ptr<Room>& single_room : room_row)
-       ifEveryRoomUnique(single_room);
-
-   ifRoomsFormRectangle();
+  GameParser::getInstance().parseRooms(argc, argv);
 }
 
-void Game::checkIfLetters(const std::string& rooms_row_string) const
-{
-  for (const char& ch : rooms_row_string)
-    if (ch < 'A' || ch > 'Z')
-      throw Exceptions::InvalidConfiguration();
-}
-
-void Game::checkRowLength(const std::string& rooms_row_string) const
-{
-  if (rooms_row_string.length() > 5)
-    throw Exceptions::InvalidConfiguration();
-}
-
-void Game::addRoom(const std::string& rooms_row_string)
+void MagicMaze::Game::addRoom(const std::string& rooms_row_string)
 {
   std::vector<std::shared_ptr<Room>> rooms_row;
 
@@ -96,7 +53,7 @@ void Game::addRoom(const std::string& rooms_row_string)
     std::shared_ptr<Room> new_room = std::make_shared<Room>(room_id, room_info_string, row, column);
 
    if(room_id == 'S')
-      new_room->setRevealed(true);
+      new_room->reveal();
 
     rooms_row.push_back(new_room);
     column++;
@@ -107,42 +64,7 @@ void Game::addRoom(const std::string& rooms_row_string)
 
 }
 
-void Game::containsOneStartingRoom() const
-{
-  int counter{0};
-  for (const auto& room : rooms_)
-    for (const std::shared_ptr<Room>& r : room)
-      if (r->getRoomId() == 'S')
-        counter++;
-  if (counter != 1)
-    throw Exceptions::InvalidConfiguration();
-}
-
-void Game::ifEveryRoomUnique(const std::shared_ptr<Room>& current_room) const
-{
-  const char room_id{ current_room->getRoomId() };
-  int counter{0};
-
-  for (const auto& room_row : rooms_)
-    for (const std::shared_ptr<Room>& room : room_row)
-    {
-      if (room_id == room->getRoomId())
-        counter += 1;
-      if (counter >= 2)
-        throw Exceptions::InvalidConfiguration();
-    }
-}
-
-void Game::ifRoomsFormRectangle() const
-{
-  const unsigned long number_columns{ rooms_.at(0).size() };
-
-  for (const std::vector<std::shared_ptr<Room>>& room_row : rooms_)
-    if (room_row.size() != number_columns)
-      throw Exceptions::InvalidConfiguration();
-}
-
-std::shared_ptr<Room> Game::getRoomById(const char id)
+std::shared_ptr<Room> MagicMaze::Game::getRoomById(const char id)
 {
   for (auto& rooms_row : rooms_)
     for (std::shared_ptr<Room>& single_room : rooms_row)
@@ -153,7 +75,7 @@ std::shared_ptr<Room> Game::getRoomById(const char id)
 }
 
 
-void Game::shuffleCards()
+void MagicMaze::Game::shuffleCards()
 {
   std::vector<DIRECTIONS_TYPES> cards_dir{DIRECTIONS_TYPES::UP, DIRECTIONS_TYPES::RIGHT,
                                           DIRECTIONS_TYPES::DOWN, DIRECTIONS_TYPES::LEFT};
@@ -167,8 +89,7 @@ void Game::shuffleCards()
   }
 }
 
-
-void Game::flip()
+void MagicMaze::Game::flip()
 {
   cards_.push(cards_.front());
   cards_.pop();
@@ -176,12 +97,12 @@ void Game::flip()
   flips_number_++;
 }
 
-DIRECTIONS_TYPES Game::getCurrentDirection() const
+MagicMaze::DIRECTIONS_TYPES MagicMaze::Game::getCurrentDirection() const
 {
   return cards_.front();
 }
 
-void Game::placeCharacterOnStartingPosition()
+void MagicMaze::Game::placeCharacterOnStartingPosition()
 {
   std::shared_ptr<Room> starting_room = getRoomById('S');
   auto room_map = starting_room->getRoomMap();
@@ -202,9 +123,7 @@ void Game::placeCharacterOnStartingPosition()
   characters_.at(2)->setCurrentTile(tile_helper);
 }
 
-const int NUMBER_LINES_IN_ROOM{15};
-
-void Game::printMap()
+void MagicMaze::Game::printMap()
 {
   int current_row_in_tile = 1;
   for(const auto& rooms_in_row : rooms_)
@@ -234,11 +153,7 @@ void Game::printMap()
   printHorizontalFrame();
 }
 
-const std::string FRAME = "\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550"
-                          "\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550"
-                          "\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550";
-
-void Game::printHorizontalFrame() const
+void MagicMaze::Game::printHorizontalFrame() const
 {
   std::size_t number_rooms_in_row{ rooms_.at(0).size() };
   for (std::size_t i{0}; i < number_rooms_in_row; i++)
@@ -246,7 +161,7 @@ void Game::printHorizontalFrame() const
   std::cout << "\u256C" << std::endl;
 }
 
-std::string Game::getPossibleMoveAsString() const
+std::string MagicMaze::Game::getPossibleMoveAsString() const
 {
   switch (getCurrentDirection())
   {
@@ -262,7 +177,7 @@ std::string Game::getPossibleMoveAsString() const
   return "";
 }
 
-void Game::startTheGame()
+void MagicMaze::Game::prepareGame()
 {
   placeCharacterOnStartingPosition();
 
@@ -270,22 +185,21 @@ void Game::startTheGame()
   std::cout << "Card Flip Counter:   " << getFlipsNumber() << std::endl;
   printMap();
   std::cout << "Possible move: " << getPossibleMoveAsString() << std::endl;
+}
 
+void MagicMaze::Game::run()
+{
+  prepareGame();
+  bool if_eof{false};
+  COMMANDS command;
+  std::vector<std::string> container{};
   while(1)
   {
-    std::string user_input = parseInput();
-    std::istringstream ss_input{user_input};
-
-    std::vector<std::string> container;
-    std::string temp{};
-    while(ss_input >> temp)
-      container.push_back(temp);
-
-    COMMANDS command = checkFirstParameter(container.front());
-    if(!checkSizeOfInputParameters(container, command))
-      command = COMMANDS::ERROR;
     try
     {
+      GameParser::getInstance().parseInput(container, command, if_eof);
+      if (if_eof)
+        return;
       switch (command)
       {
         case COMMANDS::HELP:
@@ -311,8 +225,6 @@ void Game::startTheGame()
         case COMMANDS::SCRY:
           scry(container);
           break;
-        case COMMANDS::ERROR:
-          continue;
       }
     }
     catch(std::string& e)
@@ -328,104 +240,7 @@ void Game::startTheGame()
   }
 }
 
-std::string stringToUppercase(std::string& s)
-{
-  for(auto& el : s)
-  {
-    if(isalpha(el) && islower(el))
-      el = toupper(el);
-  }
-
-  return s;
-}
-
-std::string Game::parseInput()
-{
-  std::string input{};
-
-  while(1)
-  {
-    std::cout << " > ";
-    std::getline(std::cin, input);
-
-    if(std::cin.eof())
-      throw Exceptions::EndOfFile();
-
-    if(input.find_first_not_of(" \t\n") != std::string::npos)
-      break;
-  }
-
-  input = stringToUppercase(input);
-
-  return input;
-}
-
-COMMANDS Game::checkFirstParameter(const std::string& input) noexcept
-{
-  COMMANDS command;
-
-  if(input == "QUIT")
-  {
-    command = COMMANDS::QUIT;
-  }
-  else if(input == "MAP")
-  {
-    command = COMMANDS::MAP;
-  }
-  else if(input == "HELP")
-  {
-    command = COMMANDS::HELP;
-  }
-  else if (input == "FLIP")
-  {
-    command = COMMANDS::FLIP;
-  }
-  else if(input == "MOVE")
-  {
-    command = COMMANDS::MOVE;
-  }
-  else if(input == "FIGHT")
-  {
-    command = COMMANDS::FIGHT;
-  }
-  else if(input == "SCRY")
-  {
-    command = COMMANDS::SCRY;
-  }
-  else if(input == "UNLOCK")
-  {
-    command = COMMANDS::UNLOCK;
-  }
-  else
-  {
-    command = COMMANDS::ERROR;
-  }
-
-  return command;
-}
-
-bool checkSizeOfInputParameters(const std::vector<std::string>& container, const COMMANDS& command)
-{
-  if(command != COMMANDS::MOVE && command != COMMANDS::SCRY)
-  {
-    if(container.size() != 1)
-      return false;
-  }
-  else if(command == COMMANDS::MOVE)
-  {
-    if(container.size() != 3 && container.size() != 4)
-      return false;
-  }
-  else if(command == COMMANDS::SCRY)
-  {
-    if(container.size() != 3)
-      return false;
-  }
-
-  return true;
-}
-
-std::shared_ptr<Character> Game::getCharacter(CharacterType type) const
+std::shared_ptr<Character> MagicMaze::Game::getCharacter(CharacterType type) const
 {
   if (type == CharacterType::FIGHTER)
     return characters_.at(0);
@@ -436,7 +251,7 @@ std::shared_ptr<Character> Game::getCharacter(CharacterType type) const
 }
 
 
-void Game::move(std::vector<std::string>& input)
+void MagicMaze::Game::move(std::vector<std::string>& input)
 {
   std::shared_ptr<Character> character_to_move;
   std::queue<std::shared_ptr<Tile>> tiles_on_the_way;
@@ -475,7 +290,7 @@ void Game::move(std::vector<std::string>& input)
   }
 }
 
-void Game::stopCharacterOnTile(std::shared_ptr<Tile>& first_tile, std::shared_ptr<Room>& current_room,
+void MagicMaze::Game::stopCharacterOnTile(std::shared_ptr<Tile>& first_tile, std::shared_ptr<Room>& current_room,
                                std::shared_ptr<Tile>& current_tile, std::shared_ptr<Character>& moving_character)
 {
   first_tile->setCharacter(nullptr);
@@ -494,17 +309,20 @@ void Game::stopCharacterOnTile(std::shared_ptr<Tile>& first_tile, std::shared_pt
   if (current_tile->getTileType() == TileType::FIGHTER_BUTTON &&
            moving_character->getCharacterType() == CharacterType::FIGHTER)
     moving_character->setOnButton(true);
+
   else if (current_tile->getTileType() == TileType::THIEF_BUTTON &&
            moving_character->getCharacterType() == CharacterType::THIEF)
     moving_character->setOnButton(true);
+
   else if (current_tile->getTileType() == TileType::SEER_BUTTON &&
            moving_character->getCharacterType() == CharacterType::SEER)
     moving_character->setOnButton(true);
+
   else if (moving_character->ifOnButton())
     moving_character->setOnButton(false);
 }
 
-void Game::useHourglass(std::shared_ptr<Tile>& tile)
+void MagicMaze::Game::useHourglass(std::shared_ptr<Tile>& tile)
 {
   if (flips_number_ >= 5)
     flips_number_ -= 5;
@@ -513,7 +331,7 @@ void Game::useHourglass(std::shared_ptr<Tile>& tile)
   MagicTile::magicUsed(tile);
 }
 
-void Game::moveInputParsing(std::vector<std::string>& input, std::shared_ptr<Character>& character_to_move,
+void MagicMaze::Game::moveInputParsing(std::vector<std::string>& input, std::shared_ptr<Character>& character_to_move,
                             int& distance)
 {
   std::string character_str = input.at(1);
@@ -529,10 +347,12 @@ void Game::moveInputParsing(std::vector<std::string>& input, std::shared_ptr<Cha
 
   std::string direction_to_go{ input.at(2) };
   std::string possible_move_str{ getPossibleMoveAsString() };
+  std::transform(possible_move_str.begin(), possible_move_str.end(), possible_move_str.begin(), toupper);
+
   if (direction_to_go != "UP" && direction_to_go != "DOWN" && direction_to_go != "RIGHT" && direction_to_go != "LEFT")
     throw character_to_move->getFullName() + ": \"I don't understand where I should go!\"";
 
-  else if (direction_to_go != stringToUppercase(possible_move_str))
+  else if (direction_to_go != possible_move_str)
     throw character_to_move->getFullName() + ": \"I can't go that way right now!\"";
 
   if (input.size() == 4)
@@ -550,7 +370,7 @@ void Game::moveInputParsing(std::vector<std::string>& input, std::shared_ptr<Cha
   }
 }
 
-void Game::changeNextRowCol(int& next_row, int& next_col)
+void MagicMaze::Game::changeNextRowCol(int& next_row, int& next_col)
 {
   switch(getCurrentDirection())
     {
@@ -569,7 +389,7 @@ void Game::changeNextRowCol(int& next_row, int& next_col)
     }
 }
 
-void Game::getTilesOnTheWay(std::queue<std::shared_ptr<Tile>>& tiles_on_way,
+void MagicMaze::Game::getTilesOnTheWay(std::queue<std::shared_ptr<Tile>>& tiles_on_way,
                             const std::shared_ptr<Character>& character, const int& distance)
 {
   std::shared_ptr<Tile> current_tile{ character->getCurrentile().lock() };
@@ -583,7 +403,7 @@ void Game::getTilesOnTheWay(std::queue<std::shared_ptr<Tile>>& tiles_on_way,
 
     if (next_row == 5) // switch row to down
     {
-      if (current_room->getRow() + 1 == (int)rooms_.size())
+      if (current_room->getRow() + 1 == static_cast<int>(rooms_.size()))
         throw character->getFullName() + ": \"My way is blocked\"";
       next_row = 0;
       current_room = rooms_.at(current_room->getRow() + 1).at(current_room->getColumn());
@@ -597,7 +417,7 @@ void Game::getTilesOnTheWay(std::queue<std::shared_ptr<Tile>>& tiles_on_way,
     }
     else if (next_col == 5) // switch column to right
     { 
-      if (current_room->getColumn() + 1 == (int)rooms_.at(0).size())
+      if (current_room->getColumn() + 1 == static_cast<int>(rooms_.at(0).size()))
         throw character->getFullName() + ": \"My way is blocked\"";
       next_col = 0;
       current_room = rooms_.at(current_room->getRow()).at(current_room->getColumn() + 1);
@@ -613,7 +433,7 @@ void Game::getTilesOnTheWay(std::queue<std::shared_ptr<Tile>>& tiles_on_way,
   }
 }
 
-void Game::checkIfNewRoomsNeedToBeRevealed(const std::shared_ptr<Tile>& current_tile,
+void MagicMaze::Game::checkIfNewRoomsNeedToBeRevealed(const std::shared_ptr<Tile>& current_tile,
                                            const std::shared_ptr<Room> current_room)
 {
   const int map_rows{ (int)rooms_.size() };
@@ -622,30 +442,30 @@ void Game::checkIfNewRoomsNeedToBeRevealed(const std::shared_ptr<Tile>& current_
   {
     if (current_room->getRow() - 1 >= 0 && !rooms_.at(current_room->getRow() - 1)
                                                   .at(current_room->getColumn())->isRevealed())
-      rooms_.at(current_room->getRow() - 1).at(current_room->getColumn())->setRevealed(true);
+      rooms_.at(current_room->getRow() - 1).at(current_room->getColumn())->reveal();
   }
   else if (current_tile->getRow() == 4)
   {
     if (current_room->getRow() + 1 < map_rows && !rooms_.at(current_room->getRow() + 1)
                                                         .at(current_room->getColumn())->isRevealed())
-      rooms_.at(current_room->getRow() + 1).at(current_room->getColumn())->setRevealed(true);
+      rooms_.at(current_room->getRow() + 1).at(current_room->getColumn())->reveal();
   }
   if (current_tile->getColumn() == 0)
   {
     if (current_room->getColumn() - 1 >= 0 && !rooms_.at(current_room->getRow())
                                                      .at(current_room->getColumn() - 1)->isRevealed())
-      rooms_.at(current_room->getRow()).at(current_room->getColumn() - 1)->setRevealed(true);
+      rooms_.at(current_room->getRow()).at(current_room->getColumn() - 1)->reveal();
   }
   else if (current_tile->getColumn() == 4)
   {
     if (current_room->getColumn() + 1 < map_cols && !rooms_.at(current_room->getRow())
                                                            .at(current_room->getColumn() + 1)->isRevealed())
-      rooms_.at(current_room->getRow()).at(current_room->getColumn() + 1)->setRevealed(true);
+      rooms_.at(current_room->getRow()).at(current_room->getColumn() + 1)->reveal();
   }
 }
 
 
-void Game::fightMonster()
+void MagicMaze::Game::fightMonster()
 {
   std::shared_ptr<Character> character = getCharacter(CharacterType::FIGHTER);
   std::shared_ptr<Tile> tile = character->getCurrentile().lock();
@@ -660,23 +480,30 @@ void Game::fightMonster()
 
   if(col != 4 && single_room->getRoomMap().at(row).at(col + 1)->getTileType() == TileType::MONSTER)
     monster.push(single_room->getRoomMap().at(row).at(col + 1));
+
   else if(col == 4 && game_col > (single_room->getColumn() + 1) && rooms_[single_room->getRow()][single_room->getColumn() + 1]
-  ->getRoomMap().at(row).at(0)->getTileType() == TileType::MONSTER)
+    ->getRoomMap().at(row).at(0)->getTileType() == TileType::MONSTER)
     monster.push(rooms_[single_room->getRow()][single_room->getColumn() + 1]->getRoomMap().at(row).at(0));
+
   if(col != 0 && single_room->getRoomMap().at(row).at(col - 1)->getTileType() == TileType::MONSTER)
     single_room->getRoomMap().at(row).at(col - 1);
+
   else if(col == 0 && (single_room->getColumn() - 1) > 0 && rooms_[single_room->getRow()][single_room->getColumn() - 1]
-  ->getRoomMap().at(row).at(4)->getTileType() == TileType::MONSTER)
+    ->getRoomMap().at(row).at(4)->getTileType() == TileType::MONSTER)
     monster.push(rooms_[single_room->getRow()][single_room->getColumn() - 1]->getRoomMap().at(row).at(4));
+
   if(row != 4 && single_room->getRoomMap().at(row + 1).at(col)->getTileType() == TileType::MONSTER)
     monster.push(single_room->getRoomMap().at(row + 1).at(col));
+
   else if(row == 4 && (single_room->getRow() + 1) < game_row && rooms_[single_room->getRow() + 1][single_room->getColumn()]
-  ->getRoomMap().at(0).at(col)->getTileType() == TileType::MONSTER)
+    ->getRoomMap().at(0).at(col)->getTileType() == TileType::MONSTER)
     monster.push(rooms_[single_room->getRow() + 1][single_room->getColumn()]->getRoomMap().at(0).at(col));
+
   if(row != 0 && single_room->getRoomMap().at(row - 1).at(col)->getTileType() == TileType::MONSTER)
     monster.push(single_room->getRoomMap().at(row - 1).at(col));
+
   else if(row == 0 && (single_room->getRow() - 1) > 0 && rooms_[single_room->getRow() - 1][single_room->getColumn()]
-  ->getRoomMap().at(4).at(col)->getTileType() == TileType::MONSTER)
+    ->getRoomMap().at(4).at(col)->getTileType() == TileType::MONSTER)
     monster.push(rooms_[single_room->getRow() - 1][single_room->getColumn()]->getRoomMap().at(4).at(col));
 
   if(monster.empty())
@@ -686,14 +513,14 @@ void Game::fightMonster()
   {
     MagicTile::magicUsed(monster.front());
     char room_id = monster.front()->getInsideRoomId();
-    int num_monsters = getRoomById(room_id)->getNumOfMonsters();
-    getRoomById(room_id)->setNumOfMonsters(num_monsters - 1);
+    getRoomById(room_id)->decreaseNumMonsters();
     monster.pop();
   }
 }
 
 
-DIRECTIONS_TYPES Game::checkDirection(std::string direction, std::shared_ptr<Character>& character)
+MagicMaze::DIRECTIONS_TYPES MagicMaze::Game::checkDirection(std::string direction,
+                                                            std::shared_ptr<Character>& character)
 {
   DIRECTIONS_TYPES direction_type;
 
@@ -711,9 +538,7 @@ DIRECTIONS_TYPES Game::checkDirection(std::string direction, std::shared_ptr<Cha
   return direction_type;
 }
 
-
-
-void Game::scryInputParsing(std::vector<std::string>& input, std::shared_ptr<Room>& room_to_scry,
+void MagicMaze::Game::scryInputParsing(std::vector<std::string>& input, std::shared_ptr<Room>& room_to_scry,
                             DIRECTIONS_TYPES& direction, std::shared_ptr<Character> character)
 {
   std::string room_id = input.at(1);
@@ -756,8 +581,7 @@ void Game::scryInputParsing(std::vector<std::string>& input, std::shared_ptr<Roo
 
 }
 
-
-void Game::scry(std::vector<std::string>& input)
+void MagicMaze::Game::scry(std::vector<std::string>& input)
 {
   std::shared_ptr<Character> character = getCharacter(CharacterType::SEER);
   std::shared_ptr<Tile> tile = character->getCurrentile().lock();
@@ -776,19 +600,19 @@ void Game::scry(std::vector<std::string>& input)
   switch(direction)
   {
   case DIRECTIONS_TYPES::RIGHT:
-    rooms_.at(room_to_scry->getRow()).at(room_to_scry->getColumn() + 1)->setRevealed(true);
+    rooms_.at(room_to_scry->getRow()).at(room_to_scry->getColumn() + 1)->reveal();
     MagicTile::magicUsed(character_room->getRoomMap().at(row).at(col));
     break;
   case DIRECTIONS_TYPES::LEFT:
-     rooms_.at(room_to_scry->getRow()).at(room_to_scry->getColumn() - 1)->setRevealed(true);
+     rooms_.at(room_to_scry->getRow()).at(room_to_scry->getColumn() - 1)->reveal();
     MagicTile::magicUsed(character_room->getRoomMap().at(row).at(col));
     break;
   case DIRECTIONS_TYPES::DOWN:
-    rooms_.at(room_to_scry->getRow() + 1).at(room_to_scry->getColumn())->setRevealed(true);
+    rooms_.at(room_to_scry->getRow() + 1).at(room_to_scry->getColumn())->reveal();
     MagicTile::magicUsed(character_room->getRoomMap().at(row).at(col));
     break;
   case DIRECTIONS_TYPES::UP:
-    rooms_.at(room_to_scry->getRow() - 1).at(room_to_scry->getColumn())->setRevealed(true);
+    rooms_.at(room_to_scry->getRow() - 1).at(room_to_scry->getColumn())->reveal();
     MagicTile::magicUsed(character_room->getRoomMap().at(row).at(col));
     break;
   }

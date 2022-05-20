@@ -24,7 +24,6 @@ class Character
     ~Character() = default;
 
     CharacterType getCharacterType() const { return type_; }
-    void setCharacterType(const CharacterType& type) { type_ = type; }
     char getCharacterTypeAsChar() const;
     bool ifOnButton() const { return on_button_; }
     void setOnButton(bool on_button) { on_button_ = on_button; }

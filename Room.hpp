@@ -15,6 +15,8 @@ const std::map<char, TileType> TILE_TYPE_MAP{
   {'V', TileType::VECTICAL_DOOR}, {'L', TileType::LOOT}, {'T', TileType::THIEF_BUTTON},
   {'F', TileType::FIGHTER_BUTTON}, {'S', TileType::SEER_BUTTON} };
 
+const int NUMBER_LINES_IN_ROOM = 15;
+
 class Room
 {
   private:
@@ -27,7 +29,7 @@ class Room
 
   public:
     Room(char room_id, const std::string& room_info_str, int row_, int column);
-    void setRevealed(const bool revealed) { revealed_ = revealed; }
+    void reveal() { revealed_ = true; }
     char getRoomId() const { return room_id_; }
     std::array<std::array<std::shared_ptr<Tile>, 5> ,5> getRoomMap() { return room_map_; }
     bool isRevealed() const { return revealed_; }
@@ -35,8 +37,7 @@ class Room
     int getRow() const { return row_; }
     int getColumn() const { return col_; }
     int getNumOfMonsters() { return num_of_monsters_; }
-    void setNumOfMonsters(int num_of_monsters) { num_of_monsters_ = num_of_monsters; }
-
+    void decreaseNumMonsters() { num_of_monsters_--; }
 
     Room(const Room&) = delete;
     Room& operator=(const Room&) = delete;
