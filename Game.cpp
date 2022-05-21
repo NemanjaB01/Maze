@@ -14,6 +14,7 @@
 #include "MagicTile.hpp"
 #include "BasicTile.hpp"
 #include "GameParser.hpp"
+#include "IO.hpp"
 
 MagicMaze::Game::Game()
  : characters_{ std::make_shared<Character>(CharacterType::FIGHTER),
@@ -29,11 +30,6 @@ MagicMaze::Game& MagicMaze::Game::getInstance() noexcept
 {
   static Game game;
   return game;
-}
-
-void MagicMaze::Game::parse(const int argc, const char* const argv[])
-{
-  GameParser::getInstance().parseRooms(argc, argv);
 }
 
 void MagicMaze::Game::addRoom(const std::string& rooms_row_string)
@@ -64,10 +60,10 @@ void MagicMaze::Game::addRoom(const std::string& rooms_row_string)
 
 }
 
-std::shared_ptr<Room> MagicMaze::Game::getRoomById(const char id)
+std::shared_ptr<Room> MagicMaze::Game::getRoomById(const char id) const
 {
-  for (auto& rooms_row : rooms_)
-    for (std::shared_ptr<Room>& single_room : rooms_row)
+  for (const auto& rooms_row : rooms_)
+    for (const std::shared_ptr<Room>& single_room : rooms_row)
       if (id == single_room->getRoomId())
         return single_room;
 
@@ -97,11 +93,6 @@ void MagicMaze::Game::flip()
   flips_number_++;
 }
 
-MagicMaze::DIRECTIONS_TYPES MagicMaze::Game::getCurrentDirection() const
-{
-  return cards_.front();
-}
-
 void MagicMaze::Game::placeCharacterOnStartingPosition()
 {
   std::shared_ptr<Room> starting_room = getRoomById('S');
@@ -123,7 +114,7 @@ void MagicMaze::Game::placeCharacterOnStartingPosition()
   characters_.at(2)->setCurrentTile(tile_helper);
 }
 
-void MagicMaze::Game::printMap()
+void MagicMaze::Game::printMap() const
 {
   int current_row_in_tile = 1;
   for(const auto& rooms_in_row : rooms_)
@@ -132,7 +123,7 @@ void MagicMaze::Game::printMap()
     for(int line{0}; line < NUMBER_LINES_IN_ROOM; line++)
     {
       if(!line)
-          printHorizontalFrame();
+        printHorizontalFrame();
       for(const auto& single_room : rooms_in_row)
       {
         std::cout << "\u2551";
@@ -157,7 +148,7 @@ void MagicMaze::Game::printHorizontalFrame() const
 {
   std::size_t number_rooms_in_row{ rooms_.at(0).size() };
   for (std::size_t i{0}; i < number_rooms_in_row; i++)
-    std::cout << "\u256C" << FRAME;
+    std::cout << "\u256C" << IO::FRAME;
   std::cout << "\u256C" << std::endl;
 }
 
@@ -328,7 +319,9 @@ void MagicMaze::Game::useHourglass(std::shared_ptr<Tile>& tile)
     flips_number_ -= 5;
   else
     flips_number_ = 0;
-  MagicTile::magicUsed(tile);
+  std::shared_ptr<MagicTile> hourglass = std::dynamic_pointer_cast<MagicTile>(tile);
+  hourglass->magicUsed();
+
 }
 
 void MagicMaze::Game::moveInputParsing(std::vector<std::string>& input, std::shared_ptr<Character>& character_to_move,
@@ -434,10 +427,10 @@ void MagicMaze::Game::getTilesOnTheWay(std::queue<std::shared_ptr<Tile>>& tiles_
 }
 
 void MagicMaze::Game::checkIfNewRoomsNeedToBeRevealed(const std::shared_ptr<Tile>& current_tile,
-                                           const std::shared_ptr<Room> current_room)
+                                                      const std::shared_ptr<Room> current_room)
 {
-  const int map_rows{ (int)rooms_.size() };
-  const int map_cols{ (int)rooms_.at(0).size() };
+  const int map_rows{ static_cast<int>(rooms_.size()) };
+  const int map_cols{ static_cast<int>(rooms_.at(0).size()) };
   if (current_tile->getRow() == 0)
   {
     if (current_room->getRow() - 1 >= 0 && !rooms_.at(current_room->getRow() - 1)
@@ -486,7 +479,7 @@ void MagicMaze::Game::fightMonster()
     monster.push(rooms_[single_room->getRow()][single_room->getColumn() + 1]->getRoomMap().at(row).at(0));
 
   if(col != 0 && single_room->getRoomMap().at(row).at(col - 1)->getTileType() == TileType::MONSTER)
-    single_room->getRoomMap().at(row).at(col - 1);
+    monster.push(single_room->getRoomMap().at(row).at(col - 1));
 
   else if(col == 0 && (single_room->getColumn() - 1) > 0 && rooms_[single_room->getRow()][single_room->getColumn() - 1]
     ->getRoomMap().at(row).at(4)->getTileType() == TileType::MONSTER)
@@ -511,9 +504,8 @@ void MagicMaze::Game::fightMonster()
 
   while(!monster.empty())
   {
-    MagicTile::magicUsed(monster.front());
-    char room_id = monster.front()->getInsideRoomId();
-    getRoomById(room_id)->decreaseNumMonsters();
+    std::dynamic_pointer_cast<MagicTile>(monster.front())->magicUsed();
+    getRoomById(monster.front()->getInsideRoomId())->decreaseNumMonsters();
     monster.pop();
   }
 }
@@ -558,19 +550,22 @@ void MagicMaze::Game::scryInputParsing(std::vector<std::string>& input, std::sha
       throw character->getFullName() + ":  \"There is no room I can reveal at this position!\"";
     else if(rooms_.at(room_to_scry->getRow() + 1).at(room_to_scry->getColumn())->isRevealed() == true)
       throw character->getFullName() + ":  \"We already know that room...\"";
-  break;
+    break;
+
   case DIRECTIONS_TYPES::RIGHT:
     if(room_to_scry->getColumn() + 1 >= game_col)
       throw character->getFullName() + ":  \"There is no room I can reveal at this position!\"";
     else if(rooms_.at(room_to_scry->getRow()).at(room_to_scry->getColumn() + 1)->isRevealed() == true)
       throw character->getFullName() + ":  \"We already know that room...\"";
     break;
+
   case DIRECTIONS_TYPES::LEFT:
     if(room_to_scry->getColumn() + 1 < 0)
       throw character->getFullName() + ":  \"There is no room I can reveal at this position!\"";
     else if(rooms_.at(room_to_scry->getRow()).at(room_to_scry->getColumn() - 1)->isRevealed() == true)
       throw character->getFullName() + ":  \"We already know that room...\"";
     break;
+
   case DIRECTIONS_TYPES::UP:
     if(room_to_scry->getRow() - 1 < 0)
       throw character->getFullName() + ":  \"There is no room I can reveal at this position!\"";
@@ -585,8 +580,8 @@ void MagicMaze::Game::scry(std::vector<std::string>& input)
 {
   std::shared_ptr<Character> character = getCharacter(CharacterType::SEER);
   std::shared_ptr<Tile> tile = character->getCurrentile().lock();
-  int row = tile->getRow();
-  int col = tile->getColumn();
+  const int row = tile->getRow();
+  const int col = tile->getColumn();
   const char character_room_id = tile->getInsideRoomId();
   std::shared_ptr<Room> character_room = getRoomById(character_room_id);
 
@@ -601,19 +596,19 @@ void MagicMaze::Game::scry(std::vector<std::string>& input)
   {
   case DIRECTIONS_TYPES::RIGHT:
     rooms_.at(room_to_scry->getRow()).at(room_to_scry->getColumn() + 1)->reveal();
-    MagicTile::magicUsed(character_room->getRoomMap().at(row).at(col));
+    std::dynamic_pointer_cast<MagicTile>(character_room->getRoomMap().at(row).at(col))->magicUsed();
     break;
   case DIRECTIONS_TYPES::LEFT:
-     rooms_.at(room_to_scry->getRow()).at(room_to_scry->getColumn() - 1)->reveal();
-    MagicTile::magicUsed(character_room->getRoomMap().at(row).at(col));
+    rooms_.at(room_to_scry->getRow()).at(room_to_scry->getColumn() - 1)->reveal();
+    std::dynamic_pointer_cast<MagicTile>(character_room->getRoomMap().at(row).at(col))->magicUsed();
     break;
   case DIRECTIONS_TYPES::DOWN:
     rooms_.at(room_to_scry->getRow() + 1).at(room_to_scry->getColumn())->reveal();
-    MagicTile::magicUsed(character_room->getRoomMap().at(row).at(col));
+    std::dynamic_pointer_cast<MagicTile>(character_room->getRoomMap().at(row).at(col))->magicUsed();
     break;
   case DIRECTIONS_TYPES::UP:
     rooms_.at(room_to_scry->getRow() - 1).at(room_to_scry->getColumn())->reveal();
-    MagicTile::magicUsed(character_room->getRoomMap().at(row).at(col));
+    std::dynamic_pointer_cast<MagicTile>(character_room->getRoomMap().at(row).at(col))->magicUsed();
     break;
   }
 

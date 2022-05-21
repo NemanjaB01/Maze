@@ -13,10 +13,10 @@ class MagicTile : public Tile
 
     MagicTile(const MagicTile&) = delete;
     MagicTile& operator=(const MagicTile&) = delete;
-    ~MagicTile() = default;
+    ~MagicTile() noexcept override = default;
 
-    std::string getTileString() override;
-    static void magicUsed(std::shared_ptr<Tile>& tile);
+    std::string getTileString() const override;
+    void magicUsed();
 };
 
 #endif

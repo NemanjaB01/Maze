@@ -3,6 +3,7 @@
 
 #include <string>
 #include <memory>
+#include <map>
 
 enum class CharacterType { FIGHTER, THIEF, SEER };
 
@@ -12,27 +13,27 @@ class Character
 {
   private:
     CharacterType type_;
-    bool on_button_;
+    std::string full_name_;
     std::weak_ptr<Tile> current_tile_;
+    bool on_button_;
     bool on_loot_;
 
   public:
-    Character() = default;
     Character(const Character&) = delete;
-    Character(CharacterType type) : type_{type} ,on_button_{false}, on_loot_{false} {}
+    Character(CharacterType type) noexcept;
     Character operator=(const Character&) = delete;
-    ~Character() = default;
+    virtual ~Character() noexcept = default;
 
     CharacterType getCharacterType() const { return type_; }
     char getCharacterTypeAsChar() const;
     bool ifOnButton() const { return on_button_; }
-    void setOnButton(bool on_button) { on_button_ = on_button; }
-    std::string getFullName();
-
+    std::string getFullName() const { return full_name_; };
     std::weak_ptr<Tile>& getCurrentile() { return current_tile_; }
+    bool isOnLoot() { return on_loot_; }
+
+    void setOnButton(bool on_button) { on_button_ = on_button; }
     void setCurrentTile( std::shared_ptr<Tile> current_tile) { current_tile_ = current_tile; }
     void setOnLoot(bool on_loot) { on_loot_ = on_loot; }
-    bool isOnLoot() { return on_loot_; }
 };
 
 #endif

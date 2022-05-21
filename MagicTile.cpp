@@ -1,6 +1,7 @@
 #include "MagicTile.hpp"
 #include "Game.hpp"
 #include "BasicTile.hpp"
+#include "IO.hpp"
 
 MagicTile::MagicTile(TileType type, char room_id ,int row, int column)
  : Tile{type, room_id, row, column, true}
@@ -13,36 +14,34 @@ MagicTile::MagicTile(TileType type, char room_id ,int row, int column)
   }
 }
 
-std::string MagicTile::getTileString()
+std::string MagicTile::getTileString() const
 {
   std::shared_ptr<Room> room = MagicMaze::Game::getInstance().getRoomById(inside_room_id_);
   if (!room->isRevealed())
-  {
-    return "UUUUUUU\nUUUUUUU\nUUUUUUU\n";
-  }
+    return IO::UNKNOWN_TILE_STRING;
 
   std::string tile;
 
   if(type_ == TileType::CRYSTAL_BALL)
-    tile = "  / \\  \n |   | \n  \\ /  \n";
+    tile = IO::CRYSTAL_BALL_STRING;
   else if(type_ == TileType::HOURGLASS)
-    tile = " \\   / \n  | |  \n /   \\ \n";
+    tile = IO::HOURGLASS_STRING;
   else if(type_ == TileType::LOOT)
-    tile = "$$$$$$$\n$     $\n$$$$$$$\n";
+    tile = IO::LOOT_STRING;
   else if(type_ == TileType::SEER_BUTTON)
-    tile = "SSSSSSS\nS     S\nSSSSSSS\n";
+    tile = IO::SEER_BUTTON_STRING;
   else if(type_ == TileType::THIEF_BUTTON)
-    tile = "TTTTTTT\nT     T\nTTTTTTT\n";
+    tile = IO::THIEF_BUTTON_STRING;
   else if(type_ == TileType::FIGHTER_BUTTON)
-    tile = "FFFFFFF\nF     F\nFFFFFFF\n";
+    tile = IO::FIGHTER_BUTTON_STRING;
   else if(type_ == TileType::MONSTER)
-    tile = "       \n   M   \n       \n";
+    tile = IO::MONSTER_STRING;
   else if(type_ == TileType::HORIZONTAL_DOOR)
-    tile = "       \n███████\n       \n";
+    tile = IO::HORIZONTAL_DOOR_STRING;
   else if(type_ == TileType::VECTICAL_DOOR)
-    tile = "   █   \n   █   \n   █   \n";
+    tile = IO::VERTICAL_DOOR_STRING;
   else if(type_ == TileType::SECRET_DOOR)
-    tile = "███████\n███████\n███████\n";
+    tile = IO::SECRET_DOOR_STRING;
 
   if(character_)
     tile.at(TILE_CENTER) = character_->getCharacterTypeAsChar();
@@ -51,10 +50,9 @@ std::string MagicTile::getTileString()
   return tile;
 }
 
-void MagicTile::magicUsed(std::shared_ptr<Tile>& tile)
+void MagicTile::magicUsed()
 {
   MagicMaze::Game &g = MagicMaze::Game::getInstance();
-  std::shared_ptr<Room> room = g.getRoomById(tile->getInsideRoomId());
-  if (tile->ifMagic())
-    room->setTileToPassage(tile);
+  std::shared_ptr<Room> room = g.getRoomById(inside_room_id_);
+  room->setTileToPassage(this->row_, this->column_);
 }

@@ -1,5 +1,22 @@
 #include "Character.hpp"
 
+Character::Character(CharacterType type) noexcept
+  : type_{type}, on_button_{false}, on_loot_{false}
+{
+  switch (type)
+  {
+  case CharacterType::FIGHTER:
+    full_name_ = "Fighter";
+    break;
+  case CharacterType::THIEF:
+    full_name_ = "Thief";
+    break;
+  case CharacterType::SEER:
+    full_name_ = "Seer";
+    break;
+  }
+}
+
 char Character::getCharacterTypeAsChar() const
 {
   if (type_ == CharacterType::FIGHTER)
@@ -11,15 +28,3 @@ char Character::getCharacterTypeAsChar() const
   return ' ';
 }
 
-std::string Character::getFullName()
-{
-  std::string full_name;
-  if(type_ == CharacterType::FIGHTER)
-    full_name = "Fighter";
-  else if (type_ == CharacterType::SEER)
-    full_name = "Seer";
-  else
-    full_name = "Thief";
-
-  return full_name;
-}

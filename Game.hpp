@@ -17,47 +17,40 @@ namespace MagicMaze
 
   enum class COMMANDS { HELP, QUIT, MAP, FLIP, MOVE, UNLOCK, FIGHT, SCRY };
 
-  const std::string FRAME = "\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550"
-                            "\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550"
-                            "\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550";
-
   class Game
   {
-    std::vector<std::vector<std::shared_ptr<Room>> > rooms_;
-    std::array<std::shared_ptr<Character>, 3> characters_;
-    std::queue<DIRECTIONS_TYPES> cards_;
-    unsigned flips_number_;
-    bool show_map_;
+    private:
+      std::vector<std::vector<std::shared_ptr<Room>> > rooms_;
+      std::array<std::shared_ptr<Character>, 3> characters_;
+      std::queue<DIRECTIONS_TYPES> cards_;
+      unsigned flips_number_;
+      bool show_map_;
 
-    void printHorizontalFrame() const;
-    void shuffleCards();
+      void printHorizontalFrame() const;
+      void shuffleCards();
 
-    std::queue<DIRECTIONS_TYPES> getCards() const { return cards_; }
-    void placeCharacterOnStartingPosition();
-    void stopCharacterOnTile(std::shared_ptr<Tile>& first_tile, std::shared_ptr<Room>& current_room,
-                            std::shared_ptr<Tile>& current_tile, std::shared_ptr<Character>& moving_character);
-    void useHourglass(std::shared_ptr<Tile>& tile);
-    void moveInputParsing(std::vector<std::string>& input, std::shared_ptr<Character>& character_to_move,
-                          int& distance);
-    void changeNextRowCol(int& next_row, int& next_col);
-    void getTilesOnTheWay(std::queue<std::shared_ptr<Tile>>& tiles_on_way,
-                          const std::shared_ptr<Character>& character, const int& distance);
-    void checkIfNewRoomsNeedToBeRevealed(const std::shared_ptr<Tile>& current_tile,
-                                        const std::shared_ptr<Room> current_room);
-    void scryInputParsing(std::vector<std::string>& input, std::shared_ptr<Room>& room_to_scry,
-                          DIRECTIONS_TYPES& direction, std::shared_ptr<Character> character);
-    DIRECTIONS_TYPES checkDirection(std::string direction, std::shared_ptr<Character>& character);
+      void placeCharacterOnStartingPosition();
+      void stopCharacterOnTile(std::shared_ptr<Tile>& first_tile, std::shared_ptr<Room>& current_room,
+                              std::shared_ptr<Tile>& current_tile, std::shared_ptr<Character>& moving_character);
+      void useHourglass(std::shared_ptr<Tile>& tile);
+      void moveInputParsing(std::vector<std::string>& input, std::shared_ptr<Character>& character_to_move,
+                            int& distance);
+      void changeNextRowCol(int& next_row, int& next_col);
+      void getTilesOnTheWay(std::queue<std::shared_ptr<Tile>>& tiles_on_way,
+                            const std::shared_ptr<Character>& character, const int& distance);
+      void checkIfNewRoomsNeedToBeRevealed(const std::shared_ptr<Tile>& current_tile,
+                                          const std::shared_ptr<Room> current_room);
+      void scryInputParsing(std::vector<std::string>& input, std::shared_ptr<Room>& room_to_scry,
+                            DIRECTIONS_TYPES& direction, std::shared_ptr<Character> character);
+      DIRECTIONS_TYPES checkDirection(std::string direction, std::shared_ptr<Character>& character);
 
-
-    Game();
-
+      Game();
     public:
       static Game& getInstance() noexcept;
-      void parse(const int argc, const char* const argv[]);
       void addRoom(const std::string& rooms_row_string);
 
-      std::shared_ptr<Room> getRoomById(const char id);
-      DIRECTIONS_TYPES getCurrentDirection() const;
+      std::shared_ptr<Room> getRoomById(const char id) const;
+      DIRECTIONS_TYPES getCurrentDirection() const { return cards_.front(); };
       unsigned getFlipsNumber() const { return flips_number_; }
       std::string getPossibleMoveAsString() const;
       std::vector<std::vector<std::shared_ptr<Room>> > getRooms() const { return rooms_; }
@@ -67,7 +60,7 @@ namespace MagicMaze
 
       void run();
       void prepareGame();
-      void printMap();
+      void printMap() const;
       void flip();
       void setMapActivity(bool map_activated) { show_map_ = map_activated; }
       void move(std::vector<std::string>& input);

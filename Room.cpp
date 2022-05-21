@@ -17,6 +17,9 @@ Room::Room(char room_id, const std::string& room_info_str,  int row_, int column
     else
       room_map_.at(row).at(col) = std::make_shared<MagicTile>(type, room_id, row, col);
 
+    if (type == TileType::MONSTER)
+      num_of_monsters_++;
+
     col += 1;
     if (col >= 5)
     {
@@ -27,15 +30,8 @@ Room::Room(char room_id, const std::string& room_info_str,  int row_, int column
 }
 
 
-void Room::setTileToPassage(std::shared_ptr<Tile>& t)
+void Room::setTileToPassage(const int& tile_row, const int& tile_column)
 {
-  const int t_row{t->getRow()};
-  const int t_col{t->getColumn()};
-
-  if (t->getTileType() == room_map_.at(t_row).at(t_col)->getTileType())
-  {
-    t = std::make_shared<BasicTile>(TileType::PASSAGE, room_id_, t_row, t_col);
-    room_map_.at(t_row).at(t_col) = t;
-  }
+  room_map_.at(tile_row).at(tile_column) = std::make_shared<BasicTile>(TileType::PASSAGE, room_id_,
+                                                                       tile_row, tile_column);
 }
-

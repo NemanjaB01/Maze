@@ -33,15 +33,15 @@ class Room
     char getRoomId() const { return room_id_; }
     std::array<std::array<std::shared_ptr<Tile>, 5> ,5> getRoomMap() { return room_map_; }
     bool isRevealed() const { return revealed_; }
-    void setTileToPassage(std::shared_ptr<Tile>& tile);
+    void setTileToPassage(const int& tile_row, const int& tile_column);
     int getRow() const { return row_; }
     int getColumn() const { return col_; }
-    int getNumOfMonsters() { return num_of_monsters_; }
+    int getNumOfMonsters() const { return num_of_monsters_; }
     void decreaseNumMonsters() { num_of_monsters_--; }
 
     Room(const Room&) = delete;
     Room& operator=(const Room&) = delete;
-    ~Room() = default;
+    ~Room() noexcept = default;
 
 };
 

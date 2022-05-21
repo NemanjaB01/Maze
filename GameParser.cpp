@@ -126,7 +126,7 @@ void GameParser::parseInput(std::vector<std::string>& container, MagicMaze::COMM
   checkSizeOfInputParameters(container, command);
 }
 
-void GameParser::checkFirstParameter(std::string& command_as_string, MagicMaze::COMMANDS& command)
+void GameParser::checkFirstParameter(const std::string& command_as_string, MagicMaze::COMMANDS& command) const
 {
   if(command_as_string == "QUIT")
   {
@@ -167,7 +167,7 @@ void GameParser::checkFirstParameter(std::string& command_as_string, MagicMaze::
 }
 
 void GameParser::checkSizeOfInputParameters(const std::vector<std::string>& container,
-                                            const MagicMaze::COMMANDS& command)
+                                            const MagicMaze::COMMANDS& command) const
 {
   if(command != MagicMaze::COMMANDS::MOVE && command != MagicMaze::COMMANDS::SCRY)
   {

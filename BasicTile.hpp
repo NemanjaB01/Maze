@@ -9,11 +9,11 @@ class BasicTile : public Tile
 {
   public:
     BasicTile(TileType type, char room_id, int row, int column);
-    std::string getTileString() override;
+    std::string getTileString() const override;
 
     BasicTile(const BasicTile&) = delete;
     BasicTile operator=(const BasicTile&) = delete;
-    ~BasicTile() = default;
+    ~BasicTile() noexcept override = default;
 };
 
 

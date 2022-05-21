@@ -27,7 +27,7 @@ class Tile
 
   public:
     Tile(TileType type, char room_id ,int row, int column, bool is_magic);
-    virtual std::string getTileString() = 0;
+    virtual std::string getTileString() const = 0;
 
     TileType getTileType() const { return type_; }
     char getInsideRoomId() const { return inside_room_id_; }
@@ -39,7 +39,8 @@ class Tile
 
     Tile(const Tile&) = delete;
     Tile& operator=(const Tile& other) = delete;
-    virtual ~Tile(){}
+    virtual ~Tile() noexcept = default;
+
     void setCharacter(const std::shared_ptr<Character>& character) { character_ = character; }
     void setInRoom(const char room_id) { inside_room_id_ = room_id; }
     void setAvailable(bool available) { is_available_ = available; }

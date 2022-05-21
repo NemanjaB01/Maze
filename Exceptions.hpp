@@ -1,21 +1,22 @@
-#ifndef EXCEPTIONS
-#define EXCEPTIONS
+#ifndef EXCEPTIONS_HPP
+#define EXCEPTIONS_HPP
 
 #include <exception>
+#include "IO.hpp"
 
 namespace Exceptions
 {
   class InvalidConfiguration : public std::exception
   {
     public:
-      const char* what() const noexcept override { return "Error: Invalid configuration!\n"; }
+      const char* what() const noexcept override { return IO::INVALID_CONFIGURATION_MSG; }
   };
 
   class BadAlloc : public std::bad_alloc
   {
     public:
-      const char* what() const noexcept override { return "Error: Not enough memory!\n"; }
+      const char* what() const noexcept override { return IO::BAD_ALLOC_MSG; }
   };
 }
 
-#endif // EXCEPTIONS
+#endif // EXCEPTIONS_HPP
