@@ -284,6 +284,9 @@ void MagicMaze::Game::move(std::vector<std::string>& input)
 void MagicMaze::Game::stopCharacterOnTile(std::shared_ptr<Tile>& first_tile, std::shared_ptr<Room>& current_room,
                                std::shared_ptr<Tile>& current_tile, std::shared_ptr<Character>& moving_character)
 {
+  const int row{ current_tile->getRow() };
+  const int col{ current_tile->getColumn() };
+
   first_tile->setCharacter(nullptr);
   first_tile->setAvailable(true);
   current_tile->setCharacter(moving_character);
@@ -294,6 +297,7 @@ void MagicMaze::Game::stopCharacterOnTile(std::shared_ptr<Tile>& first_tile, std
   if (current_tile->getTileType() == TileType::HOURGLASS)
   {
     useHourglass(current_tile);
+    current_tile = current_room->getRoomMap().at(row).at(col);
     current_tile->setCharacter(moving_character);
     moving_character->setCurrentTile(current_tile);
   }
@@ -321,7 +325,6 @@ void MagicMaze::Game::useHourglass(std::shared_ptr<Tile>& tile)
     flips_number_ = 0;
   std::shared_ptr<MagicTile> hourglass = std::dynamic_pointer_cast<MagicTile>(tile);
   hourglass->magicUsed();
-
 }
 
 void MagicMaze::Game::moveInputParsing(std::vector<std::string>& input, std::shared_ptr<Character>& character_to_move,
