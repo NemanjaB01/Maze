@@ -20,6 +20,9 @@ Room::Room(char room_id, const std::string& room_info_str,  int row_, int column
     if (type == TileType::MONSTER)
       num_of_monsters_++;
 
+    if (type == TileType::SECRET_DOOR)
+      secret_doors_.push_back(std::dynamic_pointer_cast<MagicTile>(room_map_.at(row).at(col)));
+
     col += 1;
     if (col >= 5)
     {

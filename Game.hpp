@@ -29,7 +29,7 @@ namespace MagicMaze
       void printHorizontalFrame() const;
       void shuffleCards();
 
-      void placeCharacterOnStartingPosition();
+      void placeCharactersOnStartingPositions();
       void stopCharacterOnTile(std::shared_ptr<Tile>& first_tile, std::shared_ptr<Room>& current_room,
                               std::shared_ptr<Tile>& current_tile, std::shared_ptr<Character>& moving_character);
       void useHourglass(std::shared_ptr<Tile>& tile);
@@ -56,7 +56,6 @@ namespace MagicMaze
       std::vector<std::vector<std::shared_ptr<Room>> > getRooms() const { return rooms_; }
       bool ifMapActivated() const { return show_map_; }
       std::shared_ptr<Character> getCharacter(CharacterType type) const;
-      DIRECTIONS_TYPES current_direction() const;
 
       void run();
       void prepareGame();
@@ -66,6 +65,9 @@ namespace MagicMaze
       void move(std::vector<std::string>& input);
       void fightMonster();
       void scry(std::vector<std::string>& input);
+      void unlock();
+      void checkCorrespondingTileType(const TileType tile_type, std::queue<std::shared_ptr<Tile>>& container,
+       std::shared_ptr<Tile> current_tile);
 
       ~Game() noexcept = default;
       Game(const Game& copy) = delete;

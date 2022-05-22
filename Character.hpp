@@ -29,7 +29,7 @@ class Character
     bool ifOnButton() const { return on_button_; }
     std::string getFullName() const { return full_name_; };
     std::weak_ptr<Tile>& getCurrentile() { return current_tile_; }
-    bool isOnLoot() { return on_loot_; }
+    bool isOnLoot() const { return on_loot_; }
 
     void setOnButton(bool on_button) { on_button_ = on_button; }
     void setCurrentTile( std::shared_ptr<Tile> current_tile) { current_tile_ = current_tile; }

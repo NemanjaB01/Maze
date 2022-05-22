@@ -172,16 +172,16 @@ void GameParser::checkSizeOfInputParameters(const std::vector<std::string>& cont
   if(command != MagicMaze::COMMANDS::MOVE && command != MagicMaze::COMMANDS::SCRY)
   {
     if(container.size() != 1)
-      throw std::string{"Please enter a KNOWN COMMAND to not confuse your treasure hunters!"};
+      throw std::string{"Please enter a correct NUMBER OF PARAMETERS to not confuse your treasure hunters!\n"};
   }
   else if(command == MagicMaze::COMMANDS::MOVE)
   {
     if(container.size() != 3 && container.size() != 4)
-      throw std::string{"Please enter a KNOWN COMMAND to not confuse your treasure hunters!"};
+      throw std::string{"Please enter a correct NUMBER OF PARAMETERS to not confuse your treasure hunters!\n"};
   }
   else if(command == MagicMaze::COMMANDS::SCRY)
   {
     if(container.size() != 3)
-      throw std::string{"Please enter a KNOWN COMMAND to not confuse your treasure hunters!"};
+      throw std::string{"Please enter a correct NUMBER OF PARAMETERS to not confuse your treasure hunters!\n"};
   }
 }

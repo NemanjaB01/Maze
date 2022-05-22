@@ -93,7 +93,7 @@ void MagicMaze::Game::flip()
   flips_number_++;
 }
 
-void MagicMaze::Game::placeCharacterOnStartingPosition()
+void MagicMaze::Game::placeCharactersOnStartingPositions()
 {
   std::shared_ptr<Room> starting_room = getRoomById('S');
   auto room_map = starting_room->getRoomMap();
@@ -170,7 +170,7 @@ std::string MagicMaze::Game::getPossibleMoveAsString() const
 
 void MagicMaze::Game::prepareGame()
 {
-  placeCharacterOnStartingPosition();
+  placeCharactersOnStartingPositions();
 
   std::cout << "Welcome to the magical OOP1 Maze!!!" << std::endl;
   std::cout << "Card Flip Counter:   " << getFlipsNumber() << std::endl;
@@ -324,7 +324,8 @@ void MagicMaze::Game::useHourglass(std::shared_ptr<Tile>& tile)
   else
     flips_number_ = 0;
   std::shared_ptr<MagicTile> hourglass = std::dynamic_pointer_cast<MagicTile>(tile);
-  hourglass->magicUsed();
+  if (hourglass)
+    hourglass->magicUsed();
 }
 
 void MagicMaze::Game::moveInputParsing(std::vector<std::string>& input, std::shared_ptr<Character>& character_to_move,
@@ -460,56 +461,81 @@ void MagicMaze::Game::checkIfNewRoomsNeedToBeRevealed(const std::shared_ptr<Tile
   }
 }
 
-
-void MagicMaze::Game::fightMonster()
+void MagicMaze::Game::unlock()
 {
-  std::shared_ptr<Character> character = getCharacter(CharacterType::FIGHTER);
+  std::queue<std::shared_ptr<Tile>> doors;
+  std::shared_ptr<Character> character = getCharacter(CharacterType::THIEF);
   std::shared_ptr<Tile> tile = character->getCurrentile().lock();
+  checkCorrespondingTileType(TileType::HORIZONTAL_DOOR, doors, tile);
+
+  if(doors.empty())
+    throw "Thief: ""Nothing to unlock here!""\n";
+
+  while(!doors.empty())
+  {
+    std::shared_ptr<MagicTile> door =  std::dynamic_pointer_cast<MagicTile>(doors.front());
+    if(door)
+      door->magicUsed();
+    doors.pop();
+  }
+}
+
+void MagicMaze::Game::checkCorrespondingTileType(const TileType tile_type, std::queue<std::shared_ptr<Tile>>& container,
+ std::shared_ptr<Tile> tile)
+{
   int row = tile->getRow();
   int col = tile->getColumn();
   const char room_id = tile->getInsideRoomId();
   const int game_row = rooms_.size();
   const int game_col = rooms_[0].size();
-  std::queue<std::shared_ptr<Tile>> monster;
+  std::shared_ptr<Room> current_room = getRoomById(room_id);
 
-  std::shared_ptr<Room> single_room = getRoomById(room_id);
+  std::shared_ptr<Tile> tile_right = current_room->getRoomMap().at(row).at(col + 1);
+  auto room_map = rooms_[current_room->getRow()][current_room->getColumn() + 1]->getRoomMap();
+  if(col != 4 && tile_right->getTileType() == tile_type)
+    container.push(tile_right);
+  else if(col == 4 && game_col > (current_room->getColumn() + 1) && room_map.at(row).at(0)->getTileType() == tile_type)
+    container.push(room_map.at(row).at(0));
 
-  if(col != 4 && single_room->getRoomMap().at(row).at(col + 1)->getTileType() == TileType::MONSTER)
-    monster.push(single_room->getRoomMap().at(row).at(col + 1));
+  std::shared_ptr<Tile> tile_left = current_room->getRoomMap().at(row).at(col - 1);
+  room_map = rooms_[current_room->getRow()][current_room->getColumn() - 1]->getRoomMap();
+  if(col != 0 && tile_left->getTileType() == tile_type)
+    container.push(tile_left);
+  else if(col == 0 && (current_room->getColumn() - 1) > 0 && room_map.at(row).at(4)->getTileType() == tile_type)
+    container.push(room_map.at(row).at(4));
 
-  else if(col == 4 && game_col > (single_room->getColumn() + 1) && rooms_[single_room->getRow()][single_room->getColumn() + 1]
-    ->getRoomMap().at(row).at(0)->getTileType() == TileType::MONSTER)
-    monster.push(rooms_[single_room->getRow()][single_room->getColumn() + 1]->getRoomMap().at(row).at(0));
+  std::shared_ptr<Tile> tile_down = current_room->getRoomMap().at(row + 1).at(col);
+  room_map = rooms_[current_room->getRow() + 1][current_room->getColumn()]->getRoomMap();
+  if(tile_down->getTileType() == tile_type)
+    container.push(tile_down);
+  else if(row == 4 && (current_room->getRow() + 1) < game_row && room_map.at(0).at(col)->getTileType() == tile_type)
+    container.push(room_map.at(0).at(col));
 
-  if(col != 0 && single_room->getRoomMap().at(row).at(col - 1)->getTileType() == TileType::MONSTER)
-    monster.push(single_room->getRoomMap().at(row).at(col - 1));
+  std::shared_ptr<Tile> tile_up = current_room->getRoomMap().at(row - 1).at(col);
+  room_map = rooms_[current_room->getRow() - 1][current_room->getColumn()]->getRoomMap();
+  if(tile_up->getTileType() == tile_type)
+    container.push(tile_up);
+  else if(row == 0 && (current_room->getRow() - 1) > 0 && room_map.at(4).at(col)->getTileType() == tile_type)
+    container.push(room_map.at(4).at(col));
+}
 
-  else if(col == 0 && (single_room->getColumn() - 1) > 0 && rooms_[single_room->getRow()][single_room->getColumn() - 1]
-    ->getRoomMap().at(row).at(4)->getTileType() == TileType::MONSTER)
-    monster.push(rooms_[single_room->getRow()][single_room->getColumn() - 1]->getRoomMap().at(row).at(4));
+void MagicMaze::Game::fightMonster()
+{
+  std::queue<std::shared_ptr<Tile>> monsters;
+  std::shared_ptr<Character> character = getCharacter(CharacterType::FIGHTER);
+  std::shared_ptr<Tile> tile = character->getCurrentile().lock();
+  checkCorrespondingTileType(TileType::MONSTER, monsters, tile);
 
-  if(row != 4 && single_room->getRoomMap().at(row + 1).at(col)->getTileType() == TileType::MONSTER)
-    monster.push(single_room->getRoomMap().at(row + 1).at(col));
+  if(monsters.empty())
+    throw "Fighter: ""Nothing to fight here!""\n";
 
-  else if(row == 4 && (single_room->getRow() + 1) < game_row && rooms_[single_room->getRow() + 1][single_room->getColumn()]
-    ->getRoomMap().at(0).at(col)->getTileType() == TileType::MONSTER)
-    monster.push(rooms_[single_room->getRow() + 1][single_room->getColumn()]->getRoomMap().at(0).at(col));
-
-  if(row != 0 && single_room->getRoomMap().at(row - 1).at(col)->getTileType() == TileType::MONSTER)
-    monster.push(single_room->getRoomMap().at(row - 1).at(col));
-
-  else if(row == 0 && (single_room->getRow() - 1) > 0 && rooms_[single_room->getRow() - 1][single_room->getColumn()]
-    ->getRoomMap().at(4).at(col)->getTileType() == TileType::MONSTER)
-    monster.push(rooms_[single_room->getRow() - 1][single_room->getColumn()]->getRoomMap().at(4).at(col));
-
-  if(monster.empty())
-    throw character->getFullName() + ":  \"Nothing to fight here!\"";
-
-  while(!monster.empty())
+  while(!monsters.empty())
   {
-    std::dynamic_pointer_cast<MagicTile>(monster.front())->magicUsed();
-    getRoomById(monster.front()->getInsideRoomId())->decreaseNumMonsters();
-    monster.pop();
+    std::shared_ptr<MagicTile> monster = std::dynamic_pointer_cast<MagicTile>(monsters.front());
+    if(monster)
+      monster->magicUsed();
+    getRoomById(monsters.front()->getInsideRoomId())->decreaseNumMonsters();
+    monsters.pop();
   }
 }
 

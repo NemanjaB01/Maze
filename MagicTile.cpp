@@ -38,7 +38,7 @@ std::string MagicTile::getTileString() const
     tile = IO::MONSTER_STRING;
   else if(type_ == TileType::HORIZONTAL_DOOR)
     tile = IO::HORIZONTAL_DOOR_STRING;
-  else if(type_ == TileType::VECTICAL_DOOR)
+  else if(type_ == TileType::VERTICAL_DOOR)
     tile = IO::VERTICAL_DOOR_STRING;
   else if(type_ == TileType::SECRET_DOOR)
     tile = IO::SECRET_DOOR_STRING;
