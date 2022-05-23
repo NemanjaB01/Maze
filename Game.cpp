@@ -340,7 +340,6 @@ void MagicMaze::Game::moveInputParsing(std::vector<std::string>& input, std::sha
 
   std::string direction_upper{input.at(2)};
   std::transform(direction_upper.begin(), direction_upper.end(), direction_upper.begin(), toupper);
-  std::cout << "Print here: "<< direction_upper<<std::endl;
 
   MagicMaze::DIRECTIONS direction;
   if (!checkDirection(direction_upper, direction))
