@@ -123,7 +123,7 @@ void GameParser::parseInput(std::vector<std::string>& container, MagicMaze::COMM
     container.push_back(temp);
 
   checkFirstParameter(container.front(), command);
-  checkSizeOfInputParameters(container, command);
+  checkSizeOfInputParameters(container, command, input);
 }
 
 void GameParser::checkFirstParameter(const std::string& command_as_string, MagicMaze::COMMANDS& command) const
@@ -167,7 +167,7 @@ void GameParser::checkFirstParameter(const std::string& command_as_string, Magic
 }
 
 void GameParser::checkSizeOfInputParameters(const std::vector<std::string>& container,
-                                            const MagicMaze::COMMANDS& command) const
+                                            const MagicMaze::COMMANDS& command, const std::string& input) const
 {
   if(command != MagicMaze::COMMANDS::MOVE && command != MagicMaze::COMMANDS::SCRY)
   {
@@ -184,4 +184,7 @@ void GameParser::checkSizeOfInputParameters(const std::vector<std::string>& cont
     if(container.size() != 3)
       throw std::string{"Please enter a correct NUMBER OF PARAMETERS to not confuse your treasure hunters!\n"};
   }
+
+  if(input.back() == ' ' || input.back() == '\t')
+    throw std::string{"Please enter a correct NUMBER OF PARAMETERS to not confuse your treasure hunters!\n"};
 }

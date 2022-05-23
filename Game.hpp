@@ -13,16 +13,16 @@
 
 namespace MagicMaze
 {
-  enum class DIRECTIONS_TYPES { UP, RIGHT, DOWN, LEFT };
+  enum class DIRECTIONS { UP, RIGHT, DOWN, LEFT };
 
   enum class COMMANDS { HELP, QUIT, MAP, FLIP, MOVE, UNLOCK, FIGHT, SCRY };
 
   class Game
   {
     private:
-      std::vector<std::vector<std::shared_ptr<Room>> > rooms_;
+      std::vector<std::vector<std::shared_ptr<Room>>> rooms_;
       std::array<std::shared_ptr<Character>, 3> characters_;
-      std::queue<DIRECTIONS_TYPES> cards_;
+      std::queue<DIRECTIONS> cards_;
       unsigned flips_number_;
       bool show_map_;
 
@@ -41,8 +41,8 @@ namespace MagicMaze
       void checkIfNewRoomsNeedToBeRevealed(const std::shared_ptr<Tile>& current_tile,
                                           const std::shared_ptr<Room> current_room);
       void scryInputParsing(std::vector<std::string>& input, std::shared_ptr<Room>& room_to_scry,
-                            DIRECTIONS_TYPES& direction, std::shared_ptr<Character> character);
-      DIRECTIONS_TYPES checkDirection(std::string direction, std::shared_ptr<Character>& character);
+                            DIRECTIONS& direction, std::shared_ptr<Character> character);
+      DIRECTIONS checkDirection(std::string direction, std::shared_ptr<Character>& character);
 
       Game();
     public:
@@ -50,7 +50,7 @@ namespace MagicMaze
       void addRoom(const std::string& rooms_row_string);
 
       std::shared_ptr<Room> getRoomById(const char id) const;
-      DIRECTIONS_TYPES getCurrentDirection() const { return cards_.front(); };
+      DIRECTIONS getCurrentDirection() const { return cards_.front(); };
       unsigned getFlipsNumber() const { return flips_number_; }
       std::string getPossibleMoveAsString() const;
       std::vector<std::vector<std::shared_ptr<Room>> > getRooms() const { return rooms_; }
@@ -68,6 +68,13 @@ namespace MagicMaze
       void unlock();
       void checkCorrespondingTileType(const TileType tile_type, std::queue<std::shared_ptr<Tile>>& container,
        std::shared_ptr<Tile> current_tile);
+      void checkNeighborsTile(const TileType tile_type, const int row, const int column,
+       std::queue<std::shared_ptr<Tile>>& container, std::shared_ptr<Room> neighbour);
+      void checkCorrespondingTiles(const TileType tile_type, std::queue<std::shared_ptr<Tile>>& container,
+       std::shared_ptr<Tile> current_tile);
+      void checkTileType(const TileType tile_type, const int row, const int column,
+       std::queue<std::shared_ptr<Tile>>& container, std::shared_ptr<Room> current_room, const int index);
+      std::shared_ptr<Room> getNeighborsRoom(int game_row, int game_column);
 
       ~Game() noexcept = default;
       Game(const Game& copy) = delete;

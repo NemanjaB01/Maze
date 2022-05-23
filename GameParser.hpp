@@ -18,7 +18,7 @@ class GameParser
     void ifRoomsFormRectangle(const std::vector<std::vector<std::shared_ptr<Room>> >& all_rooms) const;
     void checkFirstParameter(const std::string& command_as_string, MagicMaze::COMMANDS& command) const;
     void checkSizeOfInputParameters(const std::vector<std::string>& container,
-                                    const MagicMaze::COMMANDS& command) const;
+                                    const MagicMaze::COMMANDS& command, const std::string& input) const;
 
   GameParser() = default;
   public:
