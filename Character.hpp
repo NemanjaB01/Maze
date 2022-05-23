@@ -5,7 +5,7 @@
 #include <memory>
 #include <map>
 
-enum class CharacterType { FIGHTER, THIEF, SEER };
+enum class CharacterType { FIGHTER, THIEF, SEER, NONE };
 
 class Tile;
 
@@ -26,6 +26,7 @@ class Character
 
     CharacterType getCharacterType() const { return type_; }
     char getCharacterTypeAsChar() const;
+    static CharacterType getCharacterTypeFromChar(const std::string& character_str);
     bool ifOnButton() const { return on_button_; }
     std::string getFullName() const { return full_name_; };
     std::weak_ptr<Tile>& getCurrentile() { return current_tile_; }

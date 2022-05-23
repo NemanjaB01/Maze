@@ -31,20 +31,22 @@ namespace MagicMaze
 
       void placeCharactersOnStartingPositions();
       void stopCharacterOnTile(std::shared_ptr<Tile>& first_tile, std::shared_ptr<Room>& current_room,
-                              std::shared_ptr<Tile>& current_tile, std::shared_ptr<Character>& moving_character);
+                               std::shared_ptr<Tile>& current_tile, std::shared_ptr<Character>& moving_character);
+      void ifCharacterStoppedOnButton(const std::shared_ptr<Tile>& tile, const std::shared_ptr<Character>& character);
       void useHourglass(std::shared_ptr<Tile>& tile);
       void moveInputParsing(std::vector<std::string>& input, std::shared_ptr<Character>& character_to_move,
                             int& distance);
-      void changeNextRowCol(int& next_row, int& next_col);
+      void changeNextRowCol(int& next_row, int& next_col, const DIRECTIONS& dir) const;
       void getTilesOnTheWay(std::queue<std::shared_ptr<Tile>>& tiles_on_way,
                             const std::shared_ptr<Character>& character, const int& distance);
       void checkIfNewRoomsNeedToBeRevealed(const std::shared_ptr<Tile>& current_tile,
-                                          const std::shared_ptr<Room> current_room);
+                                           const std::shared_ptr<Room> current_room);
       void scryInputParsing(std::vector<std::string>& input, std::shared_ptr<Room>& room_to_scry,
-                            DIRECTIONS& direction, std::shared_ptr<Character> character);
-      DIRECTIONS checkDirection(std::string direction, std::shared_ptr<Character>& character);
+                            std::shared_ptr<Character> character) const;
+      bool checkDirection(const std::string& direction, MagicMaze::DIRECTIONS& direction_type) const noexcept;
 
       Game();
+
     public:
       static Game& getInstance() noexcept;
       void addRoom(const std::string& rooms_row_string);

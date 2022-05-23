@@ -41,7 +41,7 @@ class Tile
     Tile& operator=(const Tile& other) = delete;
     virtual ~Tile() noexcept = default;
 
-    void setCharacter(const std::shared_ptr<Character>& character) { character_ = character; }
+    void setCharacter(const std::shared_ptr<Character>& character);
     void setInRoom(const char room_id) { inside_room_id_ = room_id; }
     void setAvailable(bool available) { is_available_ = available; }
     bool ifContainsCharacter() const;

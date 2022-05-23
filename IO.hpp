@@ -22,8 +22,8 @@ class IO
     inline static const std::string SECRET_DOOR_STRING{ "███████\n███████\n███████\n" };
     inline static const std::string UNKNOWN_TILE_STRING{ "UUUUUUU\nUUUUUUU\nUUUUUUU\n" };
     inline static const std::string WALL_STRING{ "\u2588\u2588\u2588\u2588\u2588\u2588\u2588\n"
-                               "\u2588\u2588\u2588\u2588\u2588\u2588\u2588\n"
-                               "\u2588\u2588\u2588\u2588\u2588\u2588\u2588\n" };
+                                                 "\u2588\u2588\u2588\u2588\u2588\u2588\u2588\n"
+                                                 "\u2588\u2588\u2588\u2588\u2588\u2588\u2588\n" };
     inline static const std::string PASSAGE_STRING{ "       \n       \n       \n" };
     inline static const char* const INVALID_CONFIGURATION_MSG{ "Error: Invalid configuration!\n" };
     inline static const char* const BAD_ALLOC_MSG{ "Error: Not enough memory!\n" };

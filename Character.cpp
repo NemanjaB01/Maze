@@ -14,6 +14,8 @@ Character::Character(CharacterType type) noexcept
   case CharacterType::SEER:
     full_name_ = "Seer";
     break;
+  case CharacterType::NONE:
+    break;
   }
 }
 
@@ -28,3 +30,14 @@ char Character::getCharacterTypeAsChar() const
   return ' ';
 }
 
+CharacterType Character::getCharacterTypeFromChar(const std::string& character_str)
+{
+  if (character_str == "F")
+    return CharacterType::FIGHTER;
+  else if (character_str == "S")
+    return CharacterType::SEER;
+  else if (character_str == "T")
+    return CharacterType::THIEF;
+  else
+    return CharacterType::NONE;
+}

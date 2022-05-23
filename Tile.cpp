@@ -58,3 +58,12 @@ std::string Tile::getLineOfTile(int index, bool is_revealed)
 
   return line;
 }
+
+void Tile::setCharacter(const std::shared_ptr<Character>& character)
+{
+  character_ = character;
+  if (character)
+    is_available_ = false;
+  else
+    is_available_ = true;
+}
