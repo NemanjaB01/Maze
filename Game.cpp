@@ -639,7 +639,7 @@ void MagicMaze::Game::scryInputParsing(std::vector<std::string>& input, std::sha
   }
   catch(std::out_of_range& e)
   {
-    throw character->getFullName() + ": \"I don't understand which room I should scry!\"";
+    throw character->getFullName() + ": \"There is no room I can reveal at this position!\"";
   }
 }
 
