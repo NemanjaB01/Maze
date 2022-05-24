@@ -16,6 +16,8 @@
 #include "GameParser.hpp"
 #include "IO.hpp"
 
+const int CHARACTERS_NUMBER = 3;
+
 MagicMaze::Game::Game()
  : characters_{ std::make_shared<Character>(CharacterType::FIGHTER),
                 std::make_shared<Character>(CharacterType::THIEF),
@@ -231,7 +233,7 @@ void MagicMaze::Game::run()
     std::cout << "Possible move: " << getPossibleMoveAsString() << std::endl;
     if(endOfGame())
     {
-      std::cout << "You win, congratulations! It took you "<< getFlipsNumber() <<" card flips to find the treasure.\n\n";
+      std::cout << "You win, congratulations! It took you "<< getFlipsNumber() <<" card flips to find the treasure.\n";
       break;
     }
   }
@@ -306,6 +308,11 @@ void MagicMaze::Game::stopCharacterOnTile(std::shared_ptr<Tile>& first_tile, std
     moving_character->setCurrentTile(current_tile);
   }
   ifCharacterStoppedOnButton(current_tile, moving_character);
+  if(checkIfAllCharactersOnButton())
+  {
+    setAllButtonsToPassage();
+    removeAllSecretDoors();
+  }
 
   if(current_tile->getTileType() == TileType::LOOT)
     moving_character->setOnLoot(true);
@@ -501,10 +508,10 @@ std::shared_ptr<Room> MagicMaze::Game::getNeighborsRoom(int game_row, int game_c
 }
 
 void MagicMaze::Game::checkNeighborsTile(const TileType tile_type, const int row, const int column,
-  std::queue<std::shared_ptr<Tile>>& container, std::shared_ptr<Room> neighbour)
+  std::queue<std::shared_ptr<Tile>>& container, std::shared_ptr<Room> room)
 {
-  if(neighbour->getRoomMap().at(row).at(column)->getTileType() == tile_type)
-    container.push(neighbour->getRoomMap().at(row).at(column));
+  if(room->getRoomMap().at(row).at(column)->getTileType() == tile_type)
+    container.push(room->getRoomMap().at(row).at(column));
 }
 
 void MagicMaze::Game::checkTileType(const TileType tile_type, const int row, const int column,
@@ -512,8 +519,7 @@ void MagicMaze::Game::checkTileType(const TileType tile_type, const int row, con
 {
   try
   {
-    if(current_room->getRoomMap().at(row).at(column)->getTileType() == tile_type)
-      container.push(current_room->getRoomMap().at(row).at(column));
+    checkNeighborsTile(tile_type, row, column, container, current_room);
   }
   catch(const std::out_of_range& e)
   {
@@ -657,6 +663,45 @@ void MagicMaze::Game::scry(std::vector<std::string>& input)
     std::shared_ptr<Tile> changed_tile = character_room->getRoomMap().at(row).at(col);
     changed_tile->setCharacter(character);
     character->setCurrentTile(changed_tile);
+  }
+}
+
+bool MagicMaze::Game::checkIfAllCharactersOnButton() const
+{
+  for(int index{0}; index < CHARACTERS_NUMBER; index++)
+  {
+    if(!characters_.at(index)->ifOnButton())
+      return false;
+  }
+
+  return true;
+}
+
+void MagicMaze::Game::removeAllSecretDoors()
+{
+  for(std::vector<std::shared_ptr<Room>>& rooms_row : rooms_)
+    for(std::shared_ptr<Room>& single_room : rooms_row)
+    {
+      auto secret_doors = single_room->getSecretDoors();
+      while(!secret_doors.empty())
+      {
+        secret_doors.back()->magicUsed();
+        secret_doors.pop_back();
+      }
+    }
+}
+
+void MagicMaze::Game::setAllButtonsToPassage()
+{
+  std::shared_ptr<MagicTile> button;
+  for(int index{0}; index < CHARACTERS_NUMBER; index++)
+  {
+    button = std::dynamic_pointer_cast<MagicTile>(characters_.at(index)->getCurrentile().lock());
+    button->magicUsed();
+    std::shared_ptr<Room> room = getRoomById(button->getInsideRoomId());
+    auto passage = room->getRoomMap().at(button->getRow()).at(button->getColumn());
+    passage->setCharacter(characters_.at(index));
+    characters_.at(index)->setCurrentTile(passage);
   }
 }
 

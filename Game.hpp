@@ -44,6 +44,9 @@ namespace MagicMaze
       void scryInputParsing(std::vector<std::string>& input, std::shared_ptr<Room>& room_to_scry,
                             std::shared_ptr<Character> character) const;
       bool checkDirection(const std::string& direction, MagicMaze::DIRECTIONS& direction_type) const noexcept;
+      bool checkIfAllCharactersOnButton() const;
+      void removeAllSecretDoors();
+      void setAllButtonsToPassage();
 
       Game();
 
