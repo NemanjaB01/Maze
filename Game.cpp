@@ -201,7 +201,7 @@ void MagicMaze::Game::run()
       {
         case COMMANDS::HELP:
           help();
-          break;
+          continue;
         case COMMANDS::QUIT:
           return;
         case COMMANDS::MAP:
@@ -481,7 +481,7 @@ void MagicMaze::Game::unlock()
   checkCorrespondingTiles(TileType::VERTICAL_DOOR, doors, tile);
 
   if(doors.empty())
-    throw std::string{character->getFullName() + ": ""Nothing to unlock here!"""};
+    throw character->getFullName() + ": \"Nothing to unlock here!\"";
 
   while(!doors.empty())
   {
@@ -578,7 +578,7 @@ void MagicMaze::Game::fightMonster()
   checkCorrespondingTiles(TileType::MONSTER, monsters, tile);
 
   if(monsters.empty())
-    throw std::string{character->getFullName() +  ": ""Nothing to fight here!"""};
+    throw std::string{character->getFullName() +  ": \"Nothing to fight here!\""};
 
   while(!monsters.empty())
   {
@@ -626,7 +626,7 @@ void MagicMaze::Game::scryInputParsing(std::vector<std::string>& input, std::sha
   helper = input.at(2);
   std::transform(helper.begin(), helper.end(), helper.begin(), toupper);
   if (!checkDirection(helper, direction))
-    throw character->getFullName() + ":  \"I don't understand which room I should scry!\"";
+    throw character->getFullName() + ": \"I don't understand which room I should scry!\"";
 
   try
   {
