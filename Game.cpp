@@ -361,8 +361,6 @@ void MagicMaze::Game::moveInputParsing(std::vector<std::string>& input, std::sha
   if (!checkDirection(direction_upper, direction))
     throw character_to_move->getFullName() + ": \"I don't understand where I should go!\"";
 
-  else if (direction != getCurrentDirection())
-    throw character_to_move->getFullName() + ": \"I can't go that way right now!\"";
 
   if (input.size() == 4)
   {
@@ -378,6 +376,8 @@ void MagicMaze::Game::moveInputParsing(std::vector<std::string>& input, std::sha
       throw character_to_move->getFullName() + ": \"I don't understand how far I should go!\"";
     }
   }
+  if (direction != getCurrentDirection())
+    throw character_to_move->getFullName() + ": \"I can't go that way right now!\"";
 }
 
 void MagicMaze::Game::changeNextRowCol(int& next_row, int& next_col, const MagicMaze::DIRECTIONS& dir) const
