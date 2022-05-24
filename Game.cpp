@@ -653,7 +653,7 @@ void MagicMaze::Game::scry(std::vector<std::string>& input)
   std::shared_ptr<Room> character_room = getRoomById(tile->getInsideRoomId());
 
   if(!(character_room->getRoomMap().at(row).at(col)->getTileType() == TileType::CRYSTAL_BALL))
-    throw character->getFullName() + ": \"I can't scry without my magic crystal ball!";
+    throw character->getFullName() + ": \"I can't scry without my magic crystal ball!\"";
 
   std::shared_ptr<Room> room_to_scry;
   scryInputParsing(input, room_to_scry, character);
