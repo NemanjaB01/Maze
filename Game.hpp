@@ -83,6 +83,7 @@ namespace MagicMaze
       void scry(std::vector<std::string>& input);
       void unlock();
       void help();
+      void revealAllRooms();
 
       ~Game() noexcept = default;
       Game(const Game& copy) = delete;

@@ -309,6 +309,7 @@ void MagicMaze::Game::stopCharacterOnTile(std::shared_ptr<Tile>& first_tile, std
   {
     setAllButtonsToPassage();
     removeAllSecretDoors();
+    revealAllRooms();
   }
 
   if(current_tile->getTileType() == TileType::LOOT)
@@ -739,4 +740,14 @@ void MagicMaze::Game::help()
                "    <KNOWN_ROOM>: where to scry from\n"
                "    <DIRECTION>: which direction to scry\n" << std::endl;
 
+}
+
+void MagicMaze::Game::revealAllRooms()
+{
+  for(auto & room_row : rooms_)
+    for(auto& single_room : room_row)
+    {
+      if(single_room->isRevealed() == false)
+        single_room->reveal();
+    }
 }
