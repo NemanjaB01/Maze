@@ -617,7 +617,7 @@ void MagicMaze::Game::scryInputParsing(std::vector<std::string>& input, std::sha
   std::transform(helper.begin(), helper.end(), helper.begin(), toupper);
 
   std::shared_ptr<Room> scry_from = getRoomById(helper.at(0));
-  if(scry_from == nullptr)
+  if(scry_from == nullptr || !scry_from->isRevealed())
     throw character->getFullName() + ": \"I don't understand which room I should scry!\"";
 
   MagicMaze::DIRECTIONS direction;
