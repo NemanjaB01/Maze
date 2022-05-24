@@ -724,7 +724,7 @@ bool MagicMaze::Game::endOfGame()
 
 void MagicMaze::Game::help()
 {
-  std::cout << "Commands:\n - help\n    Prints this help text.\n\n"
+  std::cout << "\nCommands:\n - help\n    Prints this help text.\n\n"
                " - quit\n    Terminates the game.\n\n"
                " - map\n    Activates or deactivates the map.\n\n"
                " - flip\n    Changes the possible move direction.\n\n"
@@ -740,14 +740,4 @@ void MagicMaze::Game::help()
                "    <KNOWN_ROOM>: where to scry from\n"
                "    <DIRECTION>: which direction to scry\n" << std::endl;
 
-}
-
-void MagicMaze::Game::revealAllRooms()
-{
-  for(auto & room_row : rooms_)
-    for(auto& single_room : room_row)
-    {
-      if(single_room->isRevealed() == false)
-        single_room->reveal();
-    }
 }
