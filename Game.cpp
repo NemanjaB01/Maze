@@ -272,8 +272,12 @@ void MagicMaze::Game::move(std::vector<std::string>& input)
     tiles_on_the_way.pop();
     current_room = getRoomById(current_tile->getInsideRoomId());
 
-    if (!tiles_on_the_way.size() && !current_room->isRevealed())
+    if (!current_room->isRevealed() || (!tiles_on_the_way.size() && !current_tile->ifAvailable() &&
+       !current_tile->ifContainsCharacter()) || (tiles_on_the_way.size() && !current_tile->ifPassable()))
       throw character_to_move->getFullName() + ": \"My way is blocked!\"";
+
+    else if(!tiles_on_the_way.size() && current_tile->ifContainsCharacter())
+      throw character_to_move->getFullName() + ": \"There is not enough space on that tile!\"";
 
     else if(current_room->getNumOfMonsters() && character_to_move->getCharacterType() != CharacterType::FIGHTER)
       throw character_to_move->getFullName() + ": \"That room is too scary for me!\"";
@@ -281,14 +285,9 @@ void MagicMaze::Game::move(std::vector<std::string>& input)
     else if (tiles_on_the_way.size() && current_tile->ifPassable() && current_room->isRevealed())
       continue;
 
-    else if (!tiles_on_the_way.size() && current_tile->ifAvailable() && current_room->isRevealed())
+    else
       stopCharacterOnTile(first_tile, current_room, current_tile, character_to_move);
 
-    else if(!tiles_on_the_way.size() && current_tile->ifContainsCharacter())
-      throw character_to_move->getFullName() + ": \"There is not enough space on that tile!\"";
-
-    else
-      throw character_to_move->getFullName() + ": \"My way is blocked!\"";
   }
 }
 
