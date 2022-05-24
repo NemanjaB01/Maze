@@ -68,6 +68,8 @@ namespace MagicMaze
       void fightMonster();
       void scry(std::vector<std::string>& input);
       void unlock();
+      bool endOfGame();
+      void help();
       void checkCorrespondingTileType(const TileType tile_type, std::queue<std::shared_ptr<Tile>>& container,
        std::shared_ptr<Tile> current_tile);
       void checkNeighborsTile(const TileType tile_type, const int row, const int column,

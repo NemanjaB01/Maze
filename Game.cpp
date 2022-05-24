@@ -191,6 +191,7 @@ void MagicMaze::Game::run()
       switch (command)
       {
         case COMMANDS::HELP:
+          help();
           break;
         case COMMANDS::QUIT:
           return;
@@ -228,6 +229,11 @@ void MagicMaze::Game::run()
     if (show_map_)
       printMap();
     std::cout << "Possible move: " << getPossibleMoveAsString() << std::endl;
+    if(endOfGame())
+    {
+      std::cout << "You win, congratulations! It took you "<< getFlipsNumber() <<" card flips to find the treasure.\n";
+      break;
+    }
   }
 }
 
@@ -300,6 +306,9 @@ void MagicMaze::Game::stopCharacterOnTile(std::shared_ptr<Tile>& first_tile, std
     moving_character->setCurrentTile(current_tile);
   }
   ifCharacterStoppedOnButton(current_tile, moving_character);
+
+  if(current_tile->getTileType() == TileType::LOOT)
+    moving_character->setOnLoot(true);
 }
 
 void MagicMaze::Game::ifCharacterStoppedOnButton(const std::shared_ptr<Tile>& tile,
@@ -647,4 +656,37 @@ void MagicMaze::Game::scry(std::vector<std::string>& input)
     changed_tile->setCharacter(character);
     character->setCurrentTile(changed_tile);
   }
+}
+
+bool MagicMaze::Game::endOfGame()
+{
+  std::shared_ptr<Character> thief = getCharacter(CharacterType::THIEF);
+  std::shared_ptr<Character> fighter = getCharacter(CharacterType::FIGHTER);
+  std::shared_ptr<Character> seer = getCharacter(CharacterType::SEER);
+
+  if((thief->isOnLoot() == true) && (fighter->isOnLoot() == true) && (seer->isOnLoot() == true))
+    return true;
+
+  return false;
+}
+
+
+void MagicMaze::Game::help()
+{
+  std::cout << "Commands:\n - help\n    Prints this help text.\n\n"
+               " - quit\n    Terminates the game.\n\n"
+               " - map\n    Activates or deactivates the map.\n\n"
+               " - flip\n    Changes the possible move direction.\n\n"
+               " - move <CHARACTER> <DIRECTION> <DISTANCE>\n"
+               "    Moves a character.\n"
+               "    <CHARACTER>: the character to move, T/F/S\n"
+               "    <DIRECTION>: the direction to move, up/down/left/right\n"
+               "    <DISTANCE>: optional, the distance to move\n\n"
+               " - unlock\n    Unlocks a nearby door.\n\n"
+               " - fight\n    Fights a nearby monster.\n\n"
+               " - scry <KNOWN_ROOM> <DIRECTION>\n"
+               "    Reveals an unknown room.\n"
+               "    <KNOWN_ROOM>: where to scry from\n"
+               "    <DIRECTION>: which direction to scry\n" << std::endl;
+
 }
