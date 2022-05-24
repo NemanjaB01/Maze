@@ -279,7 +279,8 @@ void MagicMaze::Game::move(std::vector<std::string>& input)
     else if(!tiles_on_the_way.size() && current_tile->ifContainsCharacter())
       throw character_to_move->getFullName() + ": \"There is not enough space on that tile!\"";
 
-    else if(current_room->getNumOfMonsters() && character_to_move->getCharacterType() != CharacterType::FIGHTER)
+    else if(current_room->getNumOfMonsters() && character_to_move->getCharacterType() != CharacterType::FIGHTER &&
+      !tiles_on_the_way.size())
       throw character_to_move->getFullName() + ": \"That room is too scary for me!\"";
 
     else if (tiles_on_the_way.size() && current_tile->ifPassable() && current_room->isRevealed())
