@@ -618,7 +618,7 @@ void MagicMaze::Game::scryInputParsing(std::vector<std::string>& input, std::sha
 
   std::shared_ptr<Room> scry_from = getRoomById(helper.at(0));
   if(scry_from == nullptr || !scry_from->isRevealed())
-    throw character->getFullName() + ": \"I don't understand which room I should scry!\"";
+    throw character->getFullName() + ": \"There is no room I can reveal at this position!\"";
 
   MagicMaze::DIRECTIONS direction;
 
@@ -626,7 +626,7 @@ void MagicMaze::Game::scryInputParsing(std::vector<std::string>& input, std::sha
   helper = input.at(2);
   std::transform(helper.begin(), helper.end(), helper.begin(), toupper);
   if (!checkDirection(helper, direction))
-    throw character->getFullName() + ": \"I don't understand which room I should scry!\"";
+    throw character->getFullName() + ": \"There is no room I can reveal at this position!\"";
 
   try
   {
@@ -639,7 +639,7 @@ void MagicMaze::Game::scryInputParsing(std::vector<std::string>& input, std::sha
   }
   catch(std::out_of_range& e)
   {
-    throw character->getFullName() + ": \"There is no room I can reveal at this position!\"";
+    throw character->getFullName() + ": \"I don't understand which room I should scry!\"";
   }
 }
 
