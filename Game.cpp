@@ -370,7 +370,13 @@ void MagicMaze::Game::moveInputParsing(std::vector<std::string>& input, std::sha
     {
       size_t index{0};
       distance = stoi(input.at(3), &index);
-      if (index != input.at(3).length() || distance <= 0)
+      bool check_digit{true};
+      std::for_each(input.at(3).begin(), input.at(3).end(), [&check_digit](const char& c) -> void
+      {
+        if (!isdigit(c))
+          check_digit = false;
+      });
+      if (index != input.at(3).length() || distance <= 0 || !check_digit)
         throw std::invalid_argument("");
     }
     catch(std::invalid_argument& e)
@@ -458,7 +464,7 @@ void MagicMaze::Game::checkIfNewRoomsNeedToBeRevealed(const std::shared_ptr<Tile
                                                         .at(current_room->getColumn())->isRevealed())
       rooms_.at(current_room->getRow() + 1).at(current_room->getColumn())->reveal();
   }
-  if (current_tile->getColumn() == 0)
+  else if (current_tile->getColumn() == 0)
   {
     if (current_room->getColumn() - 1 >= 0 && !rooms_.at(current_room->getRow())
                                                      .at(current_room->getColumn() - 1)->isRevealed())
@@ -723,7 +729,7 @@ bool MagicMaze::Game::endOfGame()
 
 void MagicMaze::Game::help()
 {
-  std::cout << "\nCommands:\n - help\n    Prints this help text.\n\n"
+  std::cout << "Commands:\n - help\n    Prints this help text.\n\n"
                " - quit\n    Terminates the game.\n\n"
                " - map\n    Activates or deactivates the map.\n\n"
                " - flip\n    Changes the possible move direction.\n\n"
