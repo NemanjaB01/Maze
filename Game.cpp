@@ -683,7 +683,9 @@ void MagicMaze::Game::removeAllSecretDoors()
       auto secret_doors = single_room->getSecretDoors();
       while(!secret_doors.empty())
       {
-        secret_doors.back()->magicUsed();
+        auto secret_door = secret_doors.back();
+        if (secret_door->magicUsed())
+          single_room->setTileToPassage(secret_door->getRow(), secret_door->getColumn(), nullptr);
         secret_doors.pop_back();
       }
     }
@@ -695,11 +697,11 @@ void MagicMaze::Game::setAllButtonsToPassage()
   for(int index{0}; index < CHARACTERS_NUMBER; index++)
   {
     button = std::dynamic_pointer_cast<MagicTile>(characters_.at(index)->getCurrentile().lock());
-    button->magicUsed();
-    std::shared_ptr<Room> room = getRoomById(button->getInsideRoomId());
-    auto passage = room->getRoomMap().at(button->getRow()).at(button->getColumn());
-    passage->setCharacter(characters_.at(index));
-    characters_.at(index)->setCurrentTile(passage);
+    if (button && button->magicUsed())
+    {
+      std::shared_ptr<Room> room = getRoomById(button->getInsideRoomId());
+      room->setTileToPassage(button->getRow(), button->getColumn(), characters_.at(index));
+    }
   }
 }
 
