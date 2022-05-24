@@ -36,7 +36,7 @@ MagicMaze::Game& MagicMaze::Game::getInstance() noexcept
 
 std::ostream& MagicMaze::operator<<(std::ostream& out, const Game& game)
 {
-  out << "Card Flip Counter:   " << game.getFlipsNumber() << std::endl;
+  out << "Card Flip Counter:" << std::setw(4) << game.getFlipsNumber() << std::endl;
   if (game.ifMapActivated())
     game.printMap();
   out << "Possible move: " << game.getPossibleMoveAsString();
