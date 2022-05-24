@@ -309,7 +309,6 @@ void MagicMaze::Game::stopCharacterOnTile(std::shared_ptr<Tile>& first_tile, std
   {
     setAllButtonsToPassage();
     removeAllSecretDoors();
-    revealAllRooms();
   }
 
   if(current_tile->getTileType() == TileType::LOOT)
