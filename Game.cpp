@@ -231,7 +231,7 @@ void MagicMaze::Game::run()
     std::cout << "Possible move: " << getPossibleMoveAsString() << std::endl;
     if(endOfGame())
     {
-      std::cout << "You win, congratulations! It took you "<< getFlipsNumber() <<" card flips to find the treasure.\n";
+      std::cout << "You win, congratulations! It took you "<< getFlipsNumber() <<" card flips to find the treasure.\n\n";
       break;
     }
   }
@@ -309,6 +309,8 @@ void MagicMaze::Game::stopCharacterOnTile(std::shared_ptr<Tile>& first_tile, std
 
   if(current_tile->getTileType() == TileType::LOOT)
     moving_character->setOnLoot(true);
+  else if(moving_character->isOnLoot())
+    moving_character->setOnLoot(false);
 }
 
 void MagicMaze::Game::ifCharacterStoppedOnButton(const std::shared_ptr<Tile>& tile,
