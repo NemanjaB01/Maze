@@ -34,6 +34,16 @@ MagicMaze::Game& MagicMaze::Game::getInstance() noexcept
   return game;
 }
 
+std::ostream& MagicMaze::operator<<(std::ostream& out, const Game& game)
+{
+  out << "Card Flip Counter:   " << game.getFlipsNumber() << std::endl;
+  if (game.ifMapActivated())
+    game.printMap();
+  out << "Possible move: " << game.getPossibleMoveAsString();
+
+  return out;
+}
+
 void MagicMaze::Game::addRoom(const std::string& rooms_row_string)
 {
   std::vector<std::shared_ptr<Room>> rooms_row;
@@ -129,7 +139,7 @@ void MagicMaze::Game::printMap() const
         const auto row_in_room = single_room->getRoomMap().at(current_row_in_room);
         for(const auto& tile : row_in_room)
         {
-          std::cout<<tile->getLineOfTile(current_row_in_tile, single_room->isRevealed());
+          std::cout<< tile->getLineOfTile(current_row_in_tile, single_room->isRevealed());
         }
       }
       if(++current_row_in_tile >= 4)
@@ -170,11 +180,8 @@ std::string MagicMaze::Game::getPossibleMoveAsString() const
 void MagicMaze::Game::prepareGame()
 {
   placeCharactersOnStartingPositions();
-
   std::cout << "Welcome to the magical OOP1 Maze!!!" << std::endl;
-  std::cout << "Card Flip Counter:   " << getFlipsNumber() << std::endl;
-  printMap();
-  std::cout << "Possible move: " << getPossibleMoveAsString() << std::endl;
+  std::cout << *this << std::endl;
 }
 
 void MagicMaze::Game::run()
@@ -226,11 +233,7 @@ void MagicMaze::Game::run()
       std::cout << e << std::endl;
       continue;
     }
-
-    std::cout << "Card Flip Counter:" <<  std::setw(4) << getFlipsNumber() << std::endl;
-    if (show_map_)
-      printMap();
-    std::cout << "Possible move: " << getPossibleMoveAsString() << std::endl;
+    std::cout << *this << std::endl;
     if(endOfGame())
     {
       std::cout << "You win, congratulations! It took you "<< getFlipsNumber() <<" card flips to find the treasure.\n";
@@ -292,9 +295,6 @@ void MagicMaze::Game::move(std::vector<std::string>& input)
 void MagicMaze::Game::stopCharacterOnTile(std::shared_ptr<Tile>& first_tile, std::shared_ptr<Room>& current_room,
                                std::shared_ptr<Tile>& current_tile, std::shared_ptr<Character>& moving_character)
 {
-  const int row{ current_tile->getRow() };
-  const int col{ current_tile->getColumn() };
-
   first_tile->setCharacter(nullptr);
   current_tile->setCharacter(moving_character);
   moving_character->setCurrentTile(current_tile);
@@ -302,10 +302,7 @@ void MagicMaze::Game::stopCharacterOnTile(std::shared_ptr<Tile>& first_tile, std
   checkIfNewRoomsNeedToBeRevealed(current_tile, current_room);
   if (current_tile->getTileType() == TileType::HOURGLASS)
   {
-    useHourglass(current_tile);
-    current_tile = current_room->getRoomMap().at(row).at(col);
-    current_tile->setCharacter(moving_character);
-    moving_character->setCurrentTile(current_tile);
+    useHourglass(current_tile, current_room, moving_character);
   }
   ifCharacterStoppedOnButton(current_tile, moving_character);
   if(checkIfAllCharactersOnButton())
@@ -336,15 +333,16 @@ void MagicMaze::Game::ifCharacterStoppedOnButton(const std::shared_ptr<Tile>& ti
     character->setOnButton(false);
 }
 
-void MagicMaze::Game::useHourglass(std::shared_ptr<Tile>& tile)
+void MagicMaze::Game::useHourglass(std::shared_ptr<Tile>& tile, std::shared_ptr<Room>& room,
+                                   std::shared_ptr<Character>& character)
 {
   if (flips_number_ >= 5)
     flips_number_ -= 5;
   else
     flips_number_ = 0;
   std::shared_ptr<MagicTile> hourglass = std::dynamic_pointer_cast<MagicTile>(tile);
-  if (hourglass)
-    hourglass->magicUsed();
+  if (hourglass && hourglass->magicUsed())
+    room->setTileToPassage(hourglass->getRow(), hourglass->getColumn(), character);
 }
 
 void MagicMaze::Game::moveInputParsing(std::vector<std::string>& input, std::shared_ptr<Character>& character_to_move,
@@ -480,13 +478,13 @@ void MagicMaze::Game::unlock()
   checkCorrespondingTiles(TileType::VERTICAL_DOOR, doors, tile);
 
   if(doors.empty())
-    throw std::string{"Thief: ""Nothing to unlock here!""\n"};
+    throw std::string{character->getFullName() + ": ""Nothing to unlock here!"""};
 
   while(!doors.empty())
   {
     std::shared_ptr<MagicTile> door =  std::dynamic_pointer_cast<MagicTile>(doors.front());
-    if(door)
-      door->magicUsed();
+    if(door && door->magicUsed())
+      getRoomById(door->getInsideRoomId())->setTileToPassage(door->getRow(), door->getColumn(), nullptr);
     doors.pop();
   }
 }
@@ -577,14 +575,17 @@ void MagicMaze::Game::fightMonster()
   checkCorrespondingTiles(TileType::MONSTER, monsters, tile);
 
   if(monsters.empty())
-    throw std::string{"Fighter: ""Nothing to fight here!""\n"};
+    throw std::string{character->getFullName() +  ": ""Nothing to fight here!"""};
 
   while(!monsters.empty())
   {
     std::shared_ptr<MagicTile> monster = std::dynamic_pointer_cast<MagicTile>(monsters.front());
-    if(monster)
-      monster->magicUsed();
-    getRoomById(monsters.front()->getInsideRoomId())->decreaseNumMonsters();
+    if(monster && monster->magicUsed())
+    {
+      auto monster_room = getRoomById(monsters.front()->getInsideRoomId());
+      monster_room->setTileToPassage(monster->getRow(), monster->getColumn(), nullptr);
+      monster_room->decreaseNumMonsters();
+    }
     monsters.pop();
   }
 }
@@ -656,13 +657,10 @@ void MagicMaze::Game::scry(std::vector<std::string>& input)
 
   room_to_scry->reveal();
 
-  std::shared_ptr<MagicTile> magic = std::dynamic_pointer_cast<MagicTile>(character_room->getRoomMap().at(row).at(col));
-  if (magic)
+  auto crystal_ball = std::dynamic_pointer_cast<MagicTile>(character_room->getRoomMap().at(row).at(col));
+  if (crystal_ball && crystal_ball->magicUsed())
   {
-    magic->magicUsed();
-    std::shared_ptr<Tile> changed_tile = character_room->getRoomMap().at(row).at(col);
-    changed_tile->setCharacter(character);
-    character->setCurrentTile(changed_tile);
+    character_room->setTileToPassage(crystal_ball->getRow(), crystal_ball->getColumn(), character);
   }
 }
 

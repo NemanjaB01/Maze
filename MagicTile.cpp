@@ -50,9 +50,9 @@ std::string MagicTile::getTileString() const
   return tile;
 }
 
-void MagicTile::magicUsed()
+bool MagicTile::magicUsed() const
 {
-  MagicMaze::Game &g = MagicMaze::Game::getInstance();
-  std::shared_ptr<Room> room = g.getRoomById(inside_room_id_);
-  room->setTileToPassage(this->row_, this->column_);
+  if (type_ != TileType::LOOT)
+    return true;
+  return false;
 }

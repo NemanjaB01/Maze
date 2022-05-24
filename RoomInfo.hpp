@@ -67,7 +67,7 @@ namespace Oop
           "", // P
           "", // Q
           "", // R
-          "WWPWWWPPPWPPPPPWPPPWWWPWW", // S (start room)
+          "WWPWWWPPPWPPCGPWPPPWWWPWW", // S (start room)
           "", // T
           "", // U
           "", // V

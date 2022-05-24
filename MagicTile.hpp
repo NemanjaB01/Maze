@@ -16,7 +16,7 @@ class MagicTile : public Tile
     ~MagicTile() noexcept override = default;
 
     std::string getTileString() const override;
-    void magicUsed();
+    bool magicUsed() const;
 };
 
 #endif

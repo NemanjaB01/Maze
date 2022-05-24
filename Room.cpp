@@ -35,8 +35,13 @@ Room::Room(char room_id, const std::string& room_info_str,  int row_, int column
 }
 
 
-void Room::setTileToPassage(const int& tile_row, const int& tile_column)
+void Room::setTileToPassage(const int& tile_row, const int& tile_column, std::shared_ptr<Character> character)
 {
-  room_map_.at(tile_row).at(tile_column) = std::make_shared<BasicTile>(TileType::PASSAGE, room_id_,
-                                                                       tile_row, tile_column);
+  std::shared_ptr<Tile> new_tile{ std::make_shared<BasicTile>(TileType::PASSAGE, room_id_, tile_row, tile_column) };
+  room_map_.at(tile_row).at(tile_column) = new_tile;
+  if (character)
+  {
+    character->setCurrentTile(new_tile);
+    new_tile->setCharacter(character);
+  }
 }
