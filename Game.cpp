@@ -370,7 +370,7 @@ void MagicMaze::Game::moveInputParsing(std::vector<std::string>& input, std::sha
     {
       size_t index{0};
       distance = stoi(input.at(3), &index);
-      if (index != input.at(3).length())
+      if (index != input.at(3).length() || distance <= 0)
         throw std::invalid_argument("");
     }
     catch(std::invalid_argument& e)
