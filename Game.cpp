@@ -436,7 +436,7 @@ void MagicMaze::Game::getTilesOnTheWay(std::queue<std::shared_ptr<Tile>>& tiles_
     }
     catch(std::out_of_range& e)
     {
-      throw character->getFullName() + ": \"My way is blocked\"";
+      throw character->getFullName() + ": \"My way is blocked!\"";
     }
   }
 }
