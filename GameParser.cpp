@@ -4,6 +4,7 @@
 #include <sstream>
 #include "Exceptions.hpp"
 #include <algorithm>
+#include "IO.hpp"
 
 
 GameParser& GameParser::getInstance() noexcept
@@ -63,15 +64,16 @@ void GameParser::checkRowLength(const std::string& rooms_row_string) const
 void GameParser::containsOneStartingRoom(const std::vector<std::vector<std::shared_ptr<Room>> >& all_rooms) const
 {
   int counter{0};
-  for (const auto& room : all_rooms)
-    for (const std::shared_ptr<Room>& r : room)
+  for (const auto& room_row : all_rooms)
+    for (const std::shared_ptr<Room>& r : room_row)
       if (r->getRoomId() == 'S')
         counter++;
   if (counter != 1)
     throw Exceptions::InvalidConfiguration();
 }
 
-void GameParser::ifEveryRoomUnique(const std::vector<std::vector<std::shared_ptr<Room>> >& all_rooms, const std::shared_ptr<Room>& current_room) const
+void GameParser::ifEveryRoomUnique(const std::vector<std::vector<std::shared_ptr<Room>> >& all_rooms, 
+                                   const std::shared_ptr<Room>& current_room) const
 {
   const char room_id{ current_room->getRoomId() };
   int counter{0};
@@ -162,7 +164,7 @@ void GameParser::checkFirstParameter(const std::string& command_as_string, Magic
   }
   else
   {
-    throw std::string{"Please enter a KNOWN COMMAND to not confuse your treasure hunters!"};
+    throw IO::NOT_KNOWN_COMMAND_MSG;
   }
 }
 
@@ -172,16 +174,16 @@ void GameParser::checkSizeOfInputParameters(const std::vector<std::string>& cont
   if(command != MagicMaze::COMMANDS::MOVE && command != MagicMaze::COMMANDS::SCRY)
   {
     if(container.size() != 1)
-      throw std::string{"Please enter a correct NUMBER OF PARAMETERS to not confuse your treasure hunters!"};
+      throw IO::NUMBER_PARAMETERS_MSG;
   }
   else if(command == MagicMaze::COMMANDS::MOVE)
   {
     if(container.size() != 3 && container.size() != 4)
-      throw std::string{"Please enter a correct NUMBER OF PARAMETERS to not confuse your treasure hunters!"};
+      throw IO::NUMBER_PARAMETERS_MSG;
   }
   else if(command == MagicMaze::COMMANDS::SCRY)
   {
     if(container.size() != 3)
-      throw std::string{"Please enter a correct NUMBER OF PARAMETERS to not confuse your treasure hunters!"};
+      throw IO::NUMBER_PARAMETERS_MSG;
   }
 }

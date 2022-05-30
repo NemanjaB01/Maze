@@ -17,6 +17,8 @@ namespace MagicMaze
 
   enum class COMMANDS { HELP, QUIT, MAP, FLIP, MOVE, UNLOCK, FIGHT, SCRY };
 
+  const int CHARACTERS_NUMBER = 3;
+
   class Game
   {
     private:
@@ -82,12 +84,13 @@ namespace MagicMaze
       void fightMonster();
       void scry(std::vector<std::string>& input);
       void unlock();
-      void help();
+
 
       ~Game() noexcept = default;
       Game(const Game& copy) = delete;
       Game& operator=(const Game& game) = delete;
   };
+
   std::ostream& operator<<(std::ostream& out, const Game& game);
 }
 #endif // GAME_HPP

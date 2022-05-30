@@ -16,8 +16,6 @@
 #include "GameParser.hpp"
 #include "IO.hpp"
 
-const int CHARACTERS_NUMBER = 3;
-
 MagicMaze::Game::Game()
  : characters_{ std::make_shared<Character>(CharacterType::FIGHTER),
                 std::make_shared<Character>(CharacterType::THIEF),
@@ -86,7 +84,7 @@ std::shared_ptr<Room> MagicMaze::Game::getRoomById(const char id) const
 void MagicMaze::Game::shuffleCards()
 {
   std::vector<DIRECTIONS> cards_dir{DIRECTIONS::UP, DIRECTIONS::RIGHT,
-                                          DIRECTIONS::DOWN, DIRECTIONS::LEFT};
+                                    DIRECTIONS::DOWN, DIRECTIONS::LEFT};
   Oop::Random &r = Oop::Random::getInstance();
 
   for (unsigned card_left = 4; card_left > 0; card_left--)
@@ -180,7 +178,7 @@ std::string MagicMaze::Game::getPossibleMoveAsString() const
 void MagicMaze::Game::prepareGame()
 {
   placeCharactersOnStartingPositions();
-  std::cout << "Welcome to the magical OOP1 Maze!!!" << std::endl;
+  std::cout << IO::WELCOME_MSG << std::endl;
   std::cout << *this << std::endl;
 }
 
@@ -200,7 +198,7 @@ void MagicMaze::Game::run()
       switch (command)
       {
         case COMMANDS::HELP:
-          help();
+            std::cout << IO::HELP << std::endl;
           continue;
         case COMMANDS::QUIT:
           return;
@@ -274,14 +272,14 @@ void MagicMaze::Game::move(std::vector<std::string>& input)
 
     if (!current_room->isRevealed() || (!tiles_on_the_way.size() && !current_tile->ifAvailable() &&
        !current_tile->ifContainsCharacter()) || (tiles_on_the_way.size() && !current_tile->ifPassable()))
-      throw character_to_move->getFullName() + ": \"My way is blocked!\"";
+      throw character_to_move->getFullName() + IO::MOVE_BLOCKED_WAY_MSG;
 
     else if(!tiles_on_the_way.size() && current_tile->ifContainsCharacter())
-      throw character_to_move->getFullName() + ": \"There is not enough space on that tile!\"";
+      throw character_to_move->getFullName() + IO::MOVE_NOT_ENOUGH_PLACE_MSG;
 
     else if(current_room->getNumOfMonsters() && character_to_move->getCharacterType() != CharacterType::FIGHTER &&
       !tiles_on_the_way.size())
-      throw character_to_move->getFullName() + ": \"That room is too scary for me!\"";
+      throw character_to_move->getFullName() + IO::MOVE_SCARY_ROOM_MSG;
 
     else if (tiles_on_the_way.size() && current_tile->ifPassable() && current_room->isRevealed())
       continue;
@@ -350,7 +348,7 @@ void MagicMaze::Game::moveInputParsing(std::vector<std::string>& input, std::sha
 {
   CharacterType character_type = Character::getCharacterTypeFromChar(input.at(1));
   if (character_type == CharacterType::NONE)
-    throw std::string{"Who do you want to move?!?"};
+    throw std::string{IO::MOVE_NOT_SPECIFIED_CHARACTER_MSG};
 
   character_to_move = getCharacter(character_type);
 
@@ -359,7 +357,7 @@ void MagicMaze::Game::moveInputParsing(std::vector<std::string>& input, std::sha
 
   MagicMaze::DIRECTIONS direction;
   if (!checkDirection(direction_upper, direction))
-    throw character_to_move->getFullName() + ": \"I don't understand where I should go!\"";
+    throw character_to_move->getFullName() + IO::MOVE_NOT_NOT_KNOWN_DIRECTION_MSG;
 
 
   if (input.size() == 4)
@@ -379,11 +377,11 @@ void MagicMaze::Game::moveInputParsing(std::vector<std::string>& input, std::sha
     }
     catch(std::invalid_argument& e)
     {
-      throw character_to_move->getFullName() + ": \"I don't understand how far I should go!\"";
+      throw character_to_move->getFullName() + IO::MOVE_WRONG_DISTANCE_MSG;
     }
   }
   if (direction != getCurrentDirection())
-    throw character_to_move->getFullName() + ": \"I can't go that way right now!\"";
+    throw character_to_move->getFullName() + IO::MOVE_WRONG_DIRECTION_MSG;
 }
 
 void MagicMaze::Game::changeNextRowCol(int& next_row, int& next_col, const MagicMaze::DIRECTIONS& dir) const
@@ -442,7 +440,7 @@ void MagicMaze::Game::getTilesOnTheWay(std::queue<std::shared_ptr<Tile>>& tiles_
     }
     catch(std::out_of_range& e)
     {
-      throw character->getFullName() + ": \"My way is blocked!\"";
+      throw character->getFullName() + IO::MOVE_BLOCKED_WAY_MSG;
     }
   }
 }
@@ -487,7 +485,7 @@ void MagicMaze::Game::unlock()
   checkCorrespondingTiles(TileType::VERTICAL_DOOR, doors, tile);
 
   if(doors.empty())
-    throw character->getFullName() + ": \"Nothing to unlock here!\"";
+    throw character->getFullName() + IO::UNLOCK_NO_DOORS_MSG;
 
   while(!doors.empty())
   {
@@ -567,7 +565,7 @@ void MagicMaze::Game::checkCorrespondingTiles(const TileType tile_type, std::que
   const char room_id = current_tile->getInsideRoomId();
   std::shared_ptr<Room> current_room = getRoomById(room_id);
   std::array<int, 4> row_values { -1, 0,  1,  0}; // UP  RIGHT  DOWN  LEFT
-  std::array<int, 4> col_values {  0, 1,  0, -1}; //
+  std::array<int, 4> col_values {  0, 1,  0, -1};
 
   for(unsigned n{0}; n < 4; n++)
   {
@@ -584,7 +582,7 @@ void MagicMaze::Game::fightMonster()
   checkCorrespondingTiles(TileType::MONSTER, monsters, tile);
 
   if(monsters.empty())
-    throw std::string{character->getFullName() +  ": \"Nothing to fight here!\""};
+    throw std::string{character->getFullName() + IO::FIGHT_NO_MOSTERS_MSG};
 
   while(!monsters.empty())
   {
@@ -624,7 +622,7 @@ void MagicMaze::Game::scryInputParsing(std::vector<std::string>& input, std::sha
 
   std::shared_ptr<Room> scry_from = getRoomById(helper.at(0));
   if(scry_from == nullptr || !scry_from->isRevealed())
-    throw character->getFullName() + ": \"I don't understand which room I should scry!\"";
+    throw character->getFullName() + IO::SCRY_NOT_KNOWN_START_ROOM_MSG;
 
   MagicMaze::DIRECTIONS direction;
 
@@ -632,7 +630,7 @@ void MagicMaze::Game::scryInputParsing(std::vector<std::string>& input, std::sha
   helper = input.at(2);
   std::transform(helper.begin(), helper.end(), helper.begin(), toupper);
   if (!checkDirection(helper, direction))
-    throw character->getFullName() + ": \"I don't understand which room I should scry!\"";
+    throw character->getFullName() + IO::SCRY_NOT_KNOWN_START_ROOM_MSG;
 
   try
   {
@@ -641,11 +639,11 @@ void MagicMaze::Game::scryInputParsing(std::vector<std::string>& input, std::sha
     changeNextRowCol(next_row, next_col, direction);
     room_to_scry = rooms_.at(next_row).at(next_col);
     if(room_to_scry->isRevealed())
-      throw character->getFullName() + ": \"We already know that room...\"";
+      throw character->getFullName() + IO::SCRY_ALREADY_KNOW_ROOM_MSG;
   }
   catch(std::out_of_range& e)
   {
-    throw character->getFullName() + ": \"There is no room I can reveal at this position!\"";
+    throw character->getFullName() + IO::SCRY_NO_ROOM_MSG;
   }
 }
 
@@ -659,7 +657,7 @@ void MagicMaze::Game::scry(std::vector<std::string>& input)
   std::shared_ptr<Room> character_room = getRoomById(tile->getInsideRoomId());
 
   if(!(character_room->getRoomMap().at(row).at(col)->getTileType() == TileType::CRYSTAL_BALL))
-    throw character->getFullName() + ": \"I can't scry without my magic crystal ball!\"";
+    throw character->getFullName() + IO::SCRY_NO_CRISTAL_BALL_MSG;
 
   std::shared_ptr<Room> room_to_scry;
   scryInputParsing(input, room_to_scry, character);
@@ -724,25 +722,4 @@ bool MagicMaze::Game::endOfGame()
     return true;
 
   return false;
-}
-
-
-void MagicMaze::Game::help()
-{
-  std::cout << "Commands:\n - help\n    Prints this help text.\n\n"
-               " - quit\n    Terminates the game.\n\n"
-               " - map\n    Activates or deactivates the map.\n\n"
-               " - flip\n    Changes the possible move direction.\n\n"
-               " - move <CHARACTER> <DIRECTION> <DISTANCE>\n"
-               "    Moves a character.\n"
-               "    <CHARACTER>: the character to move, T/F/S\n"
-               "    <DIRECTION>: the direction to move, up/down/left/right\n"
-               "    <DISTANCE>: optional, the distance to move\n\n"
-               " - unlock\n    Unlocks a nearby door.\n\n"
-               " - fight\n    Fights a nearby monster.\n\n"
-               " - scry <KNOWN_ROOM> <DIRECTION>\n"
-               "    Reveals an unknown room.\n"
-               "    <KNOWN_ROOM>: where to scry from\n"
-               "    <DIRECTION>: which direction to scry\n" << std::endl;
-
 }
