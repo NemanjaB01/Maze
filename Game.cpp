@@ -272,23 +272,23 @@ void MagicMaze::Game::move(std::vector<std::string>& input)
     tiles_on_the_way.pop();
     current_room = getRoomById(current_tile->getInsideRoomId());
 
-    if (!tiles_on_the_way.size() && !current_room->isRevealed())
+    if (!current_room->isRevealed() || (!tiles_on_the_way.size() && !current_tile->ifAvailable() &&
+       !current_tile->ifContainsCharacter()) || (tiles_on_the_way.size() && !current_tile->ifPassable()))
       throw character_to_move->getFullName() + ": \"My way is blocked!\"";
 
-    else if(current_room->getNumOfMonsters() && character_to_move->getCharacterType() != CharacterType::FIGHTER)
+    else if(!tiles_on_the_way.size() && current_tile->ifContainsCharacter())
+      throw character_to_move->getFullName() + ": \"There is not enough space on that tile!\"";
+
+    else if(current_room->getNumOfMonsters() && character_to_move->getCharacterType() != CharacterType::FIGHTER &&
+      !tiles_on_the_way.size())
       throw character_to_move->getFullName() + ": \"That room is too scary for me!\"";
 
     else if (tiles_on_the_way.size() && current_tile->ifPassable() && current_room->isRevealed())
       continue;
 
-    else if (!tiles_on_the_way.size() && current_tile->ifAvailable() && current_room->isRevealed())
+    else
       stopCharacterOnTile(first_tile, current_room, current_tile, character_to_move);
 
-    else if(!tiles_on_the_way.size() && current_tile->ifContainsCharacter())
-      throw character_to_move->getFullName() + ": \"There is not enough space on that tile!\"";
-
-    else
-      throw character_to_move->getFullName() + ": \"My way is blocked!\"";
   }
 }
 
@@ -361,8 +361,6 @@ void MagicMaze::Game::moveInputParsing(std::vector<std::string>& input, std::sha
   if (!checkDirection(direction_upper, direction))
     throw character_to_move->getFullName() + ": \"I don't understand where I should go!\"";
 
-  else if (direction != getCurrentDirection())
-    throw character_to_move->getFullName() + ": \"I can't go that way right now!\"";
 
   if (input.size() == 4)
   {
@@ -384,6 +382,8 @@ void MagicMaze::Game::moveInputParsing(std::vector<std::string>& input, std::sha
       throw character_to_move->getFullName() + ": \"I don't understand how far I should go!\"";
     }
   }
+  if (direction != getCurrentDirection())
+    throw character_to_move->getFullName() + ": \"I can't go that way right now!\"";
 }
 
 void MagicMaze::Game::changeNextRowCol(int& next_row, int& next_col, const MagicMaze::DIRECTIONS& dir) const
@@ -442,7 +442,7 @@ void MagicMaze::Game::getTilesOnTheWay(std::queue<std::shared_ptr<Tile>>& tiles_
     }
     catch(std::out_of_range& e)
     {
-      throw character->getFullName() + ": \"My way is blocked\"";
+      throw character->getFullName() + ": \"My way is blocked!\"";
     }
   }
 }
@@ -623,7 +623,7 @@ void MagicMaze::Game::scryInputParsing(std::vector<std::string>& input, std::sha
   std::transform(helper.begin(), helper.end(), helper.begin(), toupper);
 
   std::shared_ptr<Room> scry_from = getRoomById(helper.at(0));
-  if(scry_from == nullptr)
+  if(scry_from == nullptr || !scry_from->isRevealed())
     throw character->getFullName() + ": \"I don't understand which room I should scry!\"";
 
   MagicMaze::DIRECTIONS direction;
