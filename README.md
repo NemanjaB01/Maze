@@ -42,7 +42,7 @@ Auch wenn die benötigten 50 % der öffentlichen Test Cases am Ende der Abgabefr
 
 ### Assignment 3
 
-Da Assignment 3 (A3) auf Assignment 2 aufbauen wird, gibt es eine Teilnahmevoraussetzung für A3. Für eine Teilnahme an A3 sind zumindest **zwei Drittel aller Test Cases** in A2 zu bestehen.
+Da Assignment 3 (A3) auf Assignment 2 aufbaut, gibt es eine Teilnahmevoraussetzung für A3. Für eine Teilnahme an A3 sind zumindest **zwei Drittel aller Test Cases** in A2 zu bestehen. Die Angabe zu A3 findest du unter [description/A3.md](description/A3.md).
 
 ### Ende der KU mit den in A1 und A2 erreichten Punkten
 A3 ist ebenso wie die Ausbesserung optional. Wer sich mit den in A1 und A2 erreichten Punkten zufrieden gibt, muss nach A2 keine weitere Aufgabe machen.
