@@ -133,7 +133,7 @@ void MagicMaze::Game::printMap() const
         printHorizontalFrame();
       for(const auto& single_room : rooms_in_row)
       {
-        std::cout << "\u2551";
+        std::cout << IO::Y_FRAME;
         const auto row_in_room = single_room->getRoomMap().at(current_row_in_room);
         for(const auto& tile : row_in_room)
         {
@@ -145,18 +145,18 @@ void MagicMaze::Game::printMap() const
         current_row_in_tile = 1;
         current_row_in_room++;
       }
-      std::cout << "\u2551" << std::endl;
+      std::cout << IO::Y_FRAME << std::endl;
     }
   }
   printHorizontalFrame();
 }
 
-void MagicMaze::Game::printHorizontalFrame() const
+void MagicMaze::Game::printHorizontalFrame() const noexcept
 {
   std::size_t number_rooms_in_row{ rooms_.at(0).size() };
   for (std::size_t i{0}; i < number_rooms_in_row; i++)
-    std::cout << "\u256C" << IO::FRAME;
-  std::cout << "\u256C" << std::endl;
+    std::cout << IO::DOUBLE_X_Y_FRAME << IO::HORIZONTAL_FRAME;
+  std::cout << IO::DOUBLE_X_Y_FRAME << std::endl;
 }
 
 std::string MagicMaze::Game::getPossibleMoveAsString() const
@@ -285,24 +285,24 @@ void MagicMaze::Game::move(std::vector<std::string>& input)
       continue;
 
     else
-      stopCharacterOnTile(first_tile, current_room, current_tile, character_to_move);
+      stopCharacterOnTile(character_to_move, first_tile, current_tile);
 
   }
 }
 
-void MagicMaze::Game::stopCharacterOnTile(std::shared_ptr<Tile>& first_tile, std::shared_ptr<Room>& current_room,
-                               std::shared_ptr<Tile>& current_tile, std::shared_ptr<Character>& moving_character)
+void MagicMaze::Game::stopCharacterOnTile(std::shared_ptr<Character>& moving_character,
+                                          std::shared_ptr<Tile>& first_tile, std::shared_ptr<Tile>& current_tile)
 {
   first_tile->setCharacter(nullptr);
   current_tile->setCharacter(moving_character);
   moving_character->setCurrentTile(current_tile);
 
-  checkIfNewRoomsNeedToBeRevealed(current_tile, current_room);
+  checkIfNewRoomsNeedToBeRevealed(current_tile);
   if (current_tile->getTileType() == TileType::HOURGLASS)
   {
-    useHourglass(current_tile, current_room, moving_character);
+    useHourglass(current_tile, moving_character);
   }
-  ifCharacterStoppedOnButton(current_tile, moving_character);
+  ifCharacterStoppedOnButton(moving_character, current_tile);
   if(checkIfAllCharactersOnButton())
   {
     setAllButtonsToPassage();
@@ -315,8 +315,8 @@ void MagicMaze::Game::stopCharacterOnTile(std::shared_ptr<Tile>& first_tile, std
     moving_character->setOnLoot(false);
 }
 
-void MagicMaze::Game::ifCharacterStoppedOnButton(const std::shared_ptr<Tile>& tile,
-                                                 const std::shared_ptr<Character>& character)
+void MagicMaze::Game::ifCharacterStoppedOnButton(const std::shared_ptr<Character>& character,
+                                                 const std::shared_ptr<Tile>& tile)
 {
   if (tile->getTileType() == TileType::FIGHTER_BUTTON && character->getCharacterType() == CharacterType::FIGHTER)
     character->setOnButton(true);
@@ -331,9 +331,9 @@ void MagicMaze::Game::ifCharacterStoppedOnButton(const std::shared_ptr<Tile>& ti
     character->setOnButton(false);
 }
 
-void MagicMaze::Game::useHourglass(std::shared_ptr<Tile>& tile, std::shared_ptr<Room>& room,
-                                   std::shared_ptr<Character>& character)
+void MagicMaze::Game::useHourglass(std::shared_ptr<Tile>& tile, std::shared_ptr<Character>& character)
 {
+  const auto& room{getRoomById(tile->getInsideRoomId())};
   if (flips_number_ >= 5)
     flips_number_ -= 5;
   else
@@ -356,7 +356,7 @@ void MagicMaze::Game::moveInputParsing(std::vector<std::string>& input, std::sha
   std::transform(direction_upper.begin(), direction_upper.end(), direction_upper.begin(), toupper);
 
   MagicMaze::DIRECTIONS direction;
-  if (!checkDirection(direction_upper, direction))
+  if (!GameParser::getInstance().checkDirection(direction_upper, direction))
     throw character_to_move->getFullName() + IO::MOVE_NOT_NOT_KNOWN_DIRECTION_MSG;
 
 
@@ -366,13 +366,8 @@ void MagicMaze::Game::moveInputParsing(std::vector<std::string>& input, std::sha
     {
       size_t index{0};
       distance = stoi(input.at(3), &index);
-      bool check_digit{true};
-      std::for_each(input.at(3).begin(), input.at(3).end(), [&check_digit](const char& c) -> void
-      {
-        if (!isdigit(c))
-          check_digit = false;
-      });
-      if (index != input.at(3).length() || distance <= 0 || !check_digit)
+
+      if (index != input.at(3).length() || distance <= 0)
         throw std::invalid_argument("");
     }
     catch(std::invalid_argument& e)
@@ -445,11 +440,12 @@ void MagicMaze::Game::getTilesOnTheWay(std::queue<std::shared_ptr<Tile>>& tiles_
   }
 }
 
-void MagicMaze::Game::checkIfNewRoomsNeedToBeRevealed(const std::shared_ptr<Tile>& current_tile,
-                                                      const std::shared_ptr<Room> current_room)
+void MagicMaze::Game::checkIfNewRoomsNeedToBeRevealed(const std::shared_ptr<Tile>& current_tile)
 {
   const int map_rows{ static_cast<int>(rooms_.size()) };
   const int map_cols{ static_cast<int>(rooms_.at(0).size()) };
+  const auto& current_room{getRoomById(current_tile->getInsideRoomId())};
+
   if (current_tile->getRow() == 0)
   {
     if (current_room->getRow() - 1 >= 0 && !rooms_.at(current_room->getRow() - 1)
@@ -496,13 +492,13 @@ void MagicMaze::Game::unlock()
   }
 }
 
-std::shared_ptr<Room> MagicMaze::Game::getNeighborsRoom(int game_row, int game_column)
+std::shared_ptr<Room> MagicMaze::Game::getNeighborsRoom(int neighbor_room_row, int neighbor_room_column)
 {
   std::shared_ptr<Room> neighbour_room;
 
   try
   {
-    neighbour_room = rooms_.at(game_row).at(game_column);
+    neighbour_room = rooms_.at(neighbor_room_row).at(neighbor_room_column);
   }
   catch(const std::out_of_range&)
   {
@@ -598,22 +594,6 @@ void MagicMaze::Game::fightMonster()
 }
 
 
-bool MagicMaze::Game::checkDirection(const std::string& direction, MagicMaze::DIRECTIONS& direction_type) const noexcept
-{
-  if(direction == "UP")
-    direction_type = DIRECTIONS::UP;
-  else if(direction == "DOWN")
-    direction_type = DIRECTIONS::DOWN;
-  else if(direction == "RIGHT")
-    direction_type = DIRECTIONS::RIGHT;
-  else if(direction == "LEFT")
-    direction_type = DIRECTIONS::LEFT;
-  else
-     return false;
-
-  return true;
-}
-
 void MagicMaze::Game::scryInputParsing(std::vector<std::string>& input, std::shared_ptr<Room>& room_to_scry,
                                        std::shared_ptr<Character> character) const
 {
@@ -629,7 +609,7 @@ void MagicMaze::Game::scryInputParsing(std::vector<std::string>& input, std::sha
   helper.clear();
   helper = input.at(2);
   std::transform(helper.begin(), helper.end(), helper.begin(), toupper);
-  if (!checkDirection(helper, direction))
+  if (!GameParser::getInstance().checkDirection(helper, direction))
     throw character->getFullName() + IO::SCRY_NOT_KNOWN_START_ROOM_MSG;
 
   try

@@ -45,7 +45,12 @@ void GameParser::parseRooms(const int argc, const char* const argv[])
      for (const std::shared_ptr<Room>& single_room : room_row)
        ifEveryRoomUnique(all_rooms, single_room);
 
-  ifRoomsFormRectangle(all_rooms);
+  unsigned long number_columns{all_rooms.at(0).size()};
+  std::for_each(all_rooms.begin(), all_rooms.end(), [number_columns](const auto& room_row) -> void
+  {
+    if (room_row.size() != number_columns)
+      throw Exceptions::InvalidConfiguration();
+  });
 }
 
 void GameParser::checkIfLetters(const std::string& rooms_row_string) const
@@ -88,14 +93,6 @@ void GameParser::ifEveryRoomUnique(const std::vector<std::vector<std::shared_ptr
     }
 }
 
-void GameParser::ifRoomsFormRectangle(const std::vector<std::vector<std::shared_ptr<Room>> >& all_rooms) const
-{
-  const unsigned long number_columns{ all_rooms.at(0).size() };
-
-  for (const std::vector<std::shared_ptr<Room>>& room_row : all_rooms)
-    if (room_row.size() != number_columns)
-      throw Exceptions::InvalidConfiguration();
-}
 
 void GameParser::parseInput(std::vector<std::string>& container, MagicMaze::COMMANDS& command, bool& if_eof)
 {
@@ -186,4 +183,20 @@ void GameParser::checkSizeOfInputParameters(const std::vector<std::string>& cont
     if(container.size() != 3)
       throw IO::NUMBER_PARAMETERS_MSG;
   }
+}
+
+bool GameParser::checkDirection(const std::string& direction, MagicMaze::DIRECTIONS& direction_type) const noexcept
+{
+  if(direction == "UP")
+    direction_type = MagicMaze::DIRECTIONS::UP;
+  else if(direction == "DOWN")
+    direction_type = MagicMaze::DIRECTIONS::DOWN;
+  else if(direction == "RIGHT")
+    direction_type = MagicMaze:: DIRECTIONS::RIGHT;
+  else if(direction == "LEFT")
+    direction_type = MagicMaze:: DIRECTIONS::LEFT;
+  else
+     return false;
+
+  return true;
 }

@@ -1,3 +1,12 @@
+//---------------------------------------------------------------------------------------------------------------------
+// Game.hpp
+//
+// Responsible for total game flow.
+//
+// Author: 12038719
+//---------------------------------------------------------------------------------------------------------------------
+//
+
 #ifndef GAME_HPP
 #define GAME_HPP
 
@@ -28,28 +37,133 @@ namespace MagicMaze
       unsigned flips_number_;
       bool show_map_;
 
-      void printHorizontalFrame() const;
+      //---------------------------------------------------------------------------------------------------------------------
+      ///
+      /// Prints gameboard's horizontal frame.
+      ///
+      //
+      void printHorizontalFrame() const noexcept;
+
+      //---------------------------------------------------------------------------------------------------------------------
+      ///
+      /// Shuffles cards, that represent direction, before the start of the game.
+      ///
+      //
       void shuffleCards();
 
+      //---------------------------------------------------------------------------------------------------------------------
+      ///
+      /// Places the characters on their starting positions, before the start of the game.
+      ///
+      //
       void placeCharactersOnStartingPositions();
-      void stopCharacterOnTile(std::shared_ptr<Tile>& first_tile, std::shared_ptr<Room>& current_room,
-                               std::shared_ptr<Tile>& current_tile, std::shared_ptr<Character>& moving_character);
-      void ifCharacterStoppedOnButton(const std::shared_ptr<Tile>& tile, const std::shared_ptr<Character>& character);
-      void useHourglass(std::shared_ptr<Tile>& tile, std::shared_ptr<Room>& room,
-                                   std::shared_ptr<Character>& character);
+
+      //---------------------------------------------------------------------------------------------------------------------
+      ///
+      /// Places character after the moving on the tile. If tile is magic and provides some feature, helper funtions
+      /// are called to use it.
+      ///
+      /// @param moving_character
+      /// @param first_tile Tile from that the player moved
+      /// @param current_tile Tile where the player finished his move
+      //
+      void stopCharacterOnTile(std::shared_ptr<Character>& moving_character, std::shared_ptr<Tile>& first_tile,
+                               std::shared_ptr<Tile>& current_tile);
+
+      //---------------------------------------------------------------------------------------------------------------------
+      ///
+      /// Checks if character stopped on his own button. if yes setter for character button is called.
+      ///
+      /// @param character
+      /// @param tile
+      //
+      void ifCharacterStoppedOnButton(const std::shared_ptr<Character>& character, const std::shared_ptr<Tile>& tile);
+
+      //---------------------------------------------------------------------------------------------------------------------
+      ///
+      /// Uses hourglass power, by reducing the flips by maximum 5, and minimum 0. Converts hourglass into 
+      /// normal pasage.
+      ///
+      /// @param tile hourglass
+      /// @param character character that moved to hourglass tile
+      //
+      void useHourglass(std::shared_ptr<Tile>& tile, std::shared_ptr<Character>& character);
+
+      //---------------------------------------------------------------------------------------------------------------------
+      ///
+      /// Parses input for the move command. If valid parameters are stored. Otherwise an error message is thrown.
+      ///
+      /// @param input User input
+      /// @param character_to_move
+      /// @param distance
+      //
       void moveInputParsing(std::vector<std::string>& input, std::shared_ptr<Character>& character_to_move,
                             int& distance);
+
+      //---------------------------------------------------------------------------------------------------------------------
+      ///
+      /// Stores next row and column depending on the direction.
+      ///
+      /// @param next_row
+      /// @param next_col
+      /// @param dir Direction
+      //
       void changeNextRowCol(int& next_row, int& next_col, const DIRECTIONS& dir) const;
+
+      //---------------------------------------------------------------------------------------------------------------------
+      ///
+      /// Stores tiles that are on the character's way to get to the wanted position. Throws if the tile does not
+      /// exist.
+      ///
+      /// @param tiles_on_way
+      /// @param character
+      /// @param distance Distance to move
+      //
       void getTilesOnTheWay(std::queue<std::shared_ptr<Tile>>& tiles_on_way,
                             const std::shared_ptr<Character>& character, const int& distance);
-      void checkIfNewRoomsNeedToBeRevealed(const std::shared_ptr<Tile>& current_tile,
-                                           const std::shared_ptr<Room> current_room);
+
+      //---------------------------------------------------------------------------------------------------------------------
+      ///
+      /// Reveals if new rooms need to be reveled, by checking the current player's position.
+      ///
+      /// @param tile Tile on that the character stopped
+      //
+      void checkIfNewRoomsNeedToBeRevealed(const std::shared_ptr<Tile>& current_tile);
+
+      //---------------------------------------------------------------------------------------------------------------------
+      ///
+      /// Parses input for the scry command. If valid the parameters are stored, otherwise a corresponding error
+      /// message is thrown.
+      ///
+      /// @param input
+      /// @param room_to_scry
+      /// @param character
+      //
       void scryInputParsing(std::vector<std::string>& input, std::shared_ptr<Room>& room_to_scry,
                             std::shared_ptr<Character> character) const;
-      bool checkDirection(const std::string& direction, MagicMaze::DIRECTIONS& direction_type) const noexcept;
+
+      //---------------------------------------------------------------------------------------------------------------------
+      ///
+      /// Checks if all characters are on their button positions.
+      ///
+      /// @return true, false
+      //
       bool checkIfAllCharactersOnButton() const;
+
+      //---------------------------------------------------------------------------------------------------------------------
+      ///
+      /// Removes all secret doors of all rooms, by converting them into normal passages.
+      ///
+      //
       void removeAllSecretDoors();
+
+      //---------------------------------------------------------------------------------------------------------------------
+      ///
+      /// Converts all buttons into normal passages.
+      ///
+      //
       void setAllButtonsToPassage();
+
       void checkCorrespondingTileType(const TileType tile_type, std::queue<std::shared_ptr<Tile>>& container,
        std::shared_ptr<Tile> current_tile);
       void checkNeighborsTile(const TileType tile_type, const int row, const int column,
@@ -58,9 +172,31 @@ namespace MagicMaze
        std::shared_ptr<Tile> current_tile);
       void checkTileType(const TileType tile_type, const int row, const int column,
        std::queue<std::shared_ptr<Tile>>& container, std::shared_ptr<Room> current_room, const int index);
-      std::shared_ptr<Room> getNeighborsRoom(int game_row, int game_column);
+
+      //---------------------------------------------------------------------------------------------------------------------
+      ///
+      /// Returns neighbor's room based on row and column.
+      ///
+      /// @param neighbor_room_row neighbor's room row
+      /// @param neighbor_room_column neighbor's room column
+      ///
+      /// @return neighbor room if exists, otherwise nullptr
+      //
+      std::shared_ptr<Room> getNeighborsRoom(int neighbor_room_row, int neighbor_room_column);
+
+      //---------------------------------------------------------------------------------------------------------------------
+      ///
+      /// Checks if all characters are on loot tiles.
+      ///
+      /// @return true, if game is over (with success), otherwise false
+      //
       bool endOfGame();
 
+      //---------------------------------------------------------------------------------------------------------------------
+      ///
+      /// Default Game class constructor.
+      ///
+      //
       Game();
 
     public:
@@ -90,7 +226,15 @@ namespace MagicMaze
       Game(const Game& copy) = delete;
       Game& operator=(const Game& game) = delete;
   };
-
+  //---------------------------------------------------------------------------------------------------------------------
+  ///
+  /// Overloads std::ostream operator for printing the whole gameboard.
+  ///
+  /// @param out
+  /// @param game
+  ///
+  /// @return std::ostream
+  //
   std::ostream& operator<<(std::ostream& out, const Game& game);
 }
 #endif // GAME_HPP
