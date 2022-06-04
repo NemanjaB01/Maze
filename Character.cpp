@@ -5,17 +5,17 @@ Character::Character(CharacterType type) noexcept
 {
   switch (type)
   {
-  case CharacterType::FIGHTER:
-    full_name_ = "Fighter";
-    break;
-  case CharacterType::THIEF:
-    full_name_ = "Thief";
-    break;
-  case CharacterType::SEER:
-    full_name_ = "Seer";
-    break;
-  case CharacterType::NONE:
-    break;
+    case CharacterType::FIGHTER:
+      full_name_ = "Fighter";
+      break;
+    case CharacterType::THIEF:
+      full_name_ = "Thief";
+      break;
+    case CharacterType::SEER:
+      full_name_ = "Seer";
+      break;
+    case CharacterType::NONE:
+      break;
   }
 }
 
