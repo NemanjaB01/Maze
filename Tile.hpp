@@ -41,13 +41,13 @@ class Tile
     /// The constructor initializes the members with the parameters values and set is_available_ and is_passable_ 
     /// on false.
     ///
-    /// @param type Initial value for the member type_
+    /// @param TileType Initial value for the member type_
     /// @param char Initial value for the member inside_room_id_
     /// @param int Initial value for the member row_
     /// @param int Initial value for the member column_
     /// @param bool Initial value for the member is_magic_
     //
-    Tile(TileType type, char room_id ,int row, int column, bool is_magic);
+    Tile(TileType type, char room_id,int row, int column, bool is_magic);
 
     //------------------------------------------------------------------------------------------------------------------
     ///

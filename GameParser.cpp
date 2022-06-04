@@ -34,7 +34,7 @@ void GameParser::parseRooms(const int argc, const char* const argv[])
     getline(s_stream, rooms_row_string, ',');
     checkRowLength(rooms_row_string);
     checkIfLetters(rooms_row_string);
-    MagicMaze::Game::getInstance().addRoom(rooms_row_string);
+    MagicMaze::Game::getInstance().addRoomsInRow(rooms_row_string);
 
     rooms_row_string.clear();
   }

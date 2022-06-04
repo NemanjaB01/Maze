@@ -4,7 +4,7 @@
 // In this class, magic fields (all tile types except wall and passage) and interaction with them are defined,
 // ie their role in the game.
 //
-// Author: 11837414, 12037057, 12038719
+// Authors: 11837414, 12037057, 12038719
 //---------------------------------------------------------------------------------------------------------------------
 //
 #ifndef MAGICTILE_HPP

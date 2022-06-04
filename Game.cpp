@@ -42,7 +42,7 @@ std::ostream& MagicMaze::operator<<(std::ostream& out, const Game& game)
   return out;
 }
 
-void MagicMaze::Game::addRoom(const std::string& rooms_row_string)
+void MagicMaze::Game::addRoomsInRow(const std::string& rooms_row_string)
 {
   std::vector<std::shared_ptr<Room>> rooms_row;
 
@@ -508,19 +508,19 @@ std::shared_ptr<Room> MagicMaze::Game::getNeighborsRoom(int neighbor_room_row, i
   return neighbour_room;
 }
 
-void MagicMaze::Game::checkNeighborsTile(const TileType tile_type, const int row, const int column,
+void MagicMaze::Game::checkTileType(const TileType tile_type, const int row, const int column,
   std::queue<std::shared_ptr<Tile>>& container, std::shared_ptr<Room> room)
 {
   if(room->getRoomMap().at(row).at(column)->getTileType() == tile_type)
     container.push(room->getRoomMap().at(row).at(column));
 }
 
-void MagicMaze::Game::checkTileType(const TileType tile_type, const int row, const int column,
+void MagicMaze::Game::checkNeighborTile(const TileType tile_type, const int row, const int column,
   std::queue<std::shared_ptr<Tile>>& container, std::shared_ptr<Room> current_room, const int index)
 {
   try
   {
-    checkNeighborsTile(tile_type, row, column, container, current_room);
+    checkTileType(tile_type, row, column, container, current_room);
   }
   catch(const std::out_of_range& e)
   {
@@ -532,22 +532,22 @@ void MagicMaze::Game::checkTileType(const TileType tile_type, const int row, con
       case DIRECTIONS::UP:
         neighbour_room = getNeighborsRoom(current_room->getRow() - 1, current_room->getColumn());
         if(neighbour_room)
-          checkNeighborsTile(tile_type, 4, column, container, neighbour_room);
+          checkTileType(tile_type, 4, column, container, neighbour_room);
         break;
       case DIRECTIONS::RIGHT:
          neighbour_room = getNeighborsRoom(current_room->getRow(), current_room->getColumn() + 1);
          if(neighbour_room)
-          checkNeighborsTile(tile_type, row, 0, container, neighbour_room);
+          checkTileType(tile_type, row, 0, container, neighbour_room);
         break;
       case DIRECTIONS::DOWN:
         neighbour_room = getNeighborsRoom(current_room->getRow() + 1, current_room->getColumn());
         if(neighbour_room)
-          checkNeighborsTile(tile_type, 0, column, container, neighbour_room);
+          checkTileType(tile_type, 0, column, container, neighbour_room);
         break;
       case DIRECTIONS::LEFT:
         neighbour_room = getNeighborsRoom(current_room->getRow(), current_room->getColumn() - 1);
         if(neighbour_room)
-          checkNeighborsTile(tile_type, row, 4, container, neighbour_room);
+          checkTileType(tile_type, row, 4, container, neighbour_room);
         break;
     }
   }
@@ -565,7 +565,7 @@ void MagicMaze::Game::checkCorrespondingTiles(const TileType tile_type, std::que
 
   for(unsigned n{0}; n < 4; n++)
   {
-    checkTileType(tile_type, row + row_values.at(n), column + col_values.at(n), container, current_room, n);
+    checkNeighborTile(tile_type, row + row_values.at(n), column + col_values.at(n), container, current_room, n);
   }
 }
 

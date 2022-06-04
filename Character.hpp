@@ -4,7 +4,7 @@
 // Characters (fighter, thief and seer), their role in the game and interaction with other elements of the game are
 // implemented in this class.
 //
-// Author: 11837414, 12037057, 12038719
+// Authors: 11837414, 12037057, 12038719
 //---------------------------------------------------------------------------------------------------------------------
 //
 
