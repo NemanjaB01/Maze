@@ -62,7 +62,6 @@ class IO
 
     inline static const std::string SCRY_ALREADY_KNOW_ROOM_MSG{": \"We already know that room...\""};
     inline static const std::string SCRY_NO_ROOM_MSG{": \"There is no room I can reveal at this position!\""};
-    inline static const std::string SCRY_NOT_KNOWN_START_ROOM_MSG;
     inline static const std::string SCRY_NO_CRISTAL_BALL_MSG{ ": \"I can't scry without my magic crystal ball!\"" };
 
     inline static const std::string Y_FRAME{"\u2551"};
@@ -71,6 +70,7 @@ class IO
     inline static const char* const INVALID_CONFIGURATION_MSG{ "Error: Invalid configuration!\n" };
     inline static const char* const BAD_ALLOC_MSG{ "Error: Not enough memory!\n" };
 
+    static const std::string SCRY_NOT_KNOWN_START_ROOM_MSG;
     static const std::string HORIZONTAL_FRAME;
     static const std::string NOT_KNOWN_COMMAND_MSG;
     static const std::string NUMBER_PARAMETERS_MSG;
