@@ -1,9 +1,9 @@
 //---------------------------------------------------------------------------------------------------------------------
 // main.cpp
 //
-// Contais main function that start the program.
+// Contais main function that starts the program.
 //
-// Author: 12038719
+// Author: 11837414, 12037057, 12038719
 //---------------------------------------------------------------------------------------------------------------------
 //
 
@@ -15,6 +15,15 @@
 
 enum class ReturnValues { OK, MEMORY_PROBLEM, INVALID_CONFIGURATION };
 
+//----------------------------------------------------------------------------------------------------------------------
+///
+/// Program's main function, responsible for starting the program.
+///
+/// @param argc number of command-line parameters
+/// @param argv command line parameters
+///
+/// @return error message if error occurs, otherwise 0 (ReturnValues::OK)
+//
 int main(int argc, char* argv[])
 {
   try
