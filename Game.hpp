@@ -232,58 +232,61 @@ namespace MagicMaze
       ///
       /// Returns an instance of the Game class (Singleton pattern).
       ///
+      /// @return Game instance (Singleto pattern)
       //
       static Game& getInstance() noexcept;
-      //---------------------------------------------------------------------------------------------------------------------
+      //----------------------------------------------------------------------------------------------------------------
       ///
       /// Via this method we add rooms that are in single row on the game board in member rooms_.
       ///
       /// @param rooms_row_string string that contains room IDs
       //
       void addRoomsInRow(const std::string& rooms_row_string);
-      //---------------------------------------------------------------------------------------------------------------------
+      //----------------------------------------------------------------------------------------------------------------
       ///
       /// Using this method we want to find corresponding room via room id.
       ///
       /// @param id room id
+      ///
+      /// @return room, otherwise nullptr
       //
       std::shared_ptr<Room> getRoomById(const char id) const;
-      //---------------------------------------------------------------------------------------------------------------------
+      //----------------------------------------------------------------------------------------------------------------
       //
       /// Getter for card placed on top of queue cards_.
       ///
       /// @return one of directions, in which we could move characters
       //
       DIRECTIONS getCurrentDirection() const { return cards_.front(); };
-      //---------------------------------------------------------------------------------------------------------------------
+      //----------------------------------------------------------------------------------------------------------------
       //
       /// Getter for member flips_number_.
       ///
       /// @return the member flips_number
       //
       unsigned getFlipsNumber() const { return flips_number_; }
-      //---------------------------------------------------------------------------------------------------------------------
+      //----------------------------------------------------------------------------------------------------------------
       //
       /// Based on return value of getCurrentDirection() method, we get that direction represented as string.
       ///
       /// @return current direction represented as string
       //
       std::string getPossibleMoveAsString() const;
-      //---------------------------------------------------------------------------------------------------------------------
+      //----------------------------------------------------------------------------------------------------------------
       //
       /// Getter for member rooms_.
       ///
       /// @return the member rooms_
       //
       std::vector<std::vector<std::shared_ptr<Room>> > getRooms() const { return rooms_; }
-      //---------------------------------------------------------------------------------------------------------------------
+      //----------------------------------------------------------------------------------------------------------------
       //
       /// Getter for member show_map_.
       ///
       /// @return the member show_map_ (true, when map is in active mode)
       //
       bool ifMapActivated() const { return show_map_; }
-      //---------------------------------------------------------------------------------------------------------------------
+      //----------------------------------------------------------------------------------------------------------------
       //
       /// Based on the character type, we get one of the corresponding characters
       ///
@@ -293,75 +296,75 @@ namespace MagicMaze
       //
       std::shared_ptr<Character> getCharacter(CharacterType type) const;
 
-      //---------------------------------------------------------------------------------------------------------------------
+      //----------------------------------------------------------------------------------------------------------------
       //
       /// Via this method we run a game.
       ///
       //
       void run();
-      //---------------------------------------------------------------------------------------------------------------------
+      //----------------------------------------------------------------------------------------------------------------
       //
       /// Calling this method all characters will be placed on starting positions, welcome message and statting
       /// informations will be displayed.
       ///
       //
       void prepareGame();
-      //---------------------------------------------------------------------------------------------------------------------
+      //----------------------------------------------------------------------------------------------------------------
       //
       /// Via this method we print game map and displayed it to the user via stdio.
       ///
       //
       void printMap() const;
-      //---------------------------------------------------------------------------------------------------------------------
+      //----------------------------------------------------------------------------------------------------------------
       //
       /// If user enters 'flip' command this method is activated and the current direction is changed to the next one.
       ///
       //
       void flip();
-      //---------------------------------------------------------------------------------------------------------------------
+      //----------------------------------------------------------------------------------------------------------------
       //
-      /// If user enters 'map' command in the next step will game map be displayed or not, regarding the previous state.
+      /// Setter for map.
       ///
-      /// @param map_activated if true map will be diplayed
+      /// @param map_activated
       //
       void setMapActivity(bool map_activated) { show_map_ = map_activated; }
-      //---------------------------------------------------------------------------------------------------------------------
+      //----------------------------------------------------------------------------------------------------------------
       //
       /// If user enters 'move' command with appropriate parameters, the character will be moved regarding on them, if
       /// parameters are valid.
       ///
       //
       void move(std::vector<std::string>& input);
-      //---------------------------------------------------------------------------------------------------------------------
+      //----------------------------------------------------------------------------------------------------------------
       //
       /// If user enters 'fight' command, fighter character will fight all monsters next to him.
       ///
       //
       void fightMonster();
-      //---------------------------------------------------------------------------------------------------------------------
+      //----------------------------------------------------------------------------------------------------------------
       //
       /// If user enters 'scry' command, seer character will scry unrevealed room, if parameters are valid.
       ///
       //
       void scry(std::vector<std::string>& input);
-      //---------------------------------------------------------------------------------------------------------------------
+      //----------------------------------------------------------------------------------------------------------------
       //
       /// If user enters 'unlock' command, thief character will unlock all horizontal or vertical doors next to him.
       ///
       //
       void unlock();
 
-      //------------------------------------------------------------------------------------------------------------------
+      //----------------------------------------------------------------------------------------------------------------
       ///
       /// Default destructor as we do not need to free dynamic memory.
       //
       ~Game() noexcept = default;
-      //---------------------------------------------------------------------------------------------------------------------
+      //----------------------------------------------------------------------------------------------------------------
       ///
       /// We do not allow initializing one Game object to another one.
       //
       Game(const Game& copy) = delete;
-      //------------------------------------------------------------------------------------------------------------------
+      //----------------------------------------------------------------------------------------------------------------
       ///
       /// We do not allow assigning one Game object to another one.
       //
