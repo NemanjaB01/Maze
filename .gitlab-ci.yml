@@ -10,3 +10,6 @@ test:
       - testreport_user.html
       - valgrind_logs/
       - valgrind_logs_user/
+      - playreport.html
+      - playlog.txt
+
