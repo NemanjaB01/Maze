@@ -135,7 +135,7 @@ class Room
     ///
     /// Copy constructor deleted.
     //
-    Room(const Room&) = delete;
+    Room(const Room&) = default;
 
     //------------------------------------------------------------------------------------------------------------------
     ///

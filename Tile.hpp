@@ -117,7 +117,7 @@ class Tile
     ///
     /// Copy constructor deleted.
     //
-    Tile(const Tile&) = delete;
+    Tile(const Tile&) = default;
 
     //------------------------------------------------------------------------------------------------------------------
     ///

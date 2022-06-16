@@ -39,7 +39,7 @@ class BasicTile : public Tile
     ///
     /// Copy constructor deleted.
     //
-    BasicTile(const BasicTile&) = delete;
+    BasicTile(const BasicTile&) = default;
     //------------------------------------------------------------------------------------------------------------------
     ///
     /// Copy operator deleted.

@@ -159,6 +159,10 @@ void GameParser::checkFirstParameter(const std::string& command_as_string, Magic
   {
     command = MagicMaze::COMMANDS::UNLOCK;
   }
+  else if(command_as_string == "PLAY")
+  {
+    command = MagicMaze::COMMANDS::PLAY;
+  }
   else
   {
     throw IO::NOT_KNOWN_COMMAND_MSG;

@@ -15,6 +15,7 @@
 #include "BasicTile.hpp"
 #include "GameParser.hpp"
 #include "IO.hpp"
+#include "AI.hpp"
 
 MagicMaze::Game::Game()
  : characters_{ std::make_shared<Character>(CharacterType::FIGHTER),
@@ -221,6 +222,9 @@ void MagicMaze::Game::run()
           break;
         case COMMANDS::SCRY:
           scry(container);
+          break;
+        case COMMANDS::PLAY:
+          AI::getInstance().play();
           break;
         default:
           break;

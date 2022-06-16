@@ -32,7 +32,7 @@ class MagicTile : public Tile
     ///
     /// We do not allow initializing one MagicTile object to another one.
     //
-    MagicTile(const MagicTile&) = delete;
+    MagicTile(const MagicTile&) = default;
 
     //------------------------------------------------------------------------------------------------------------------
     ///

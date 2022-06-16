@@ -24,7 +24,7 @@ namespace MagicMaze
 {
   enum class DIRECTIONS { UP, RIGHT, DOWN, LEFT };
 
-  enum class COMMANDS { HELP, QUIT, MAP, FLIP, MOVE, UNLOCK, FIGHT, SCRY };
+  enum class COMMANDS { HELP, QUIT, MAP, FLIP, MOVE, UNLOCK, FIGHT, SCRY, PLAY };
 
   const int CHARACTERS_NUMBER = 3;
 
@@ -353,6 +353,8 @@ namespace MagicMaze
       ///
       //
       void unlock();
+
+      void playInputParsing(const std::vector<std::string>& input, std::shared_ptr<Character>& character);
 
       //----------------------------------------------------------------------------------------------------------------
       ///
