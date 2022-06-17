@@ -186,6 +186,7 @@ void MagicMaze::Game::prepareGame()
 void MagicMaze::Game::run()
 {
   prepareGame();
+  AI::getInstance().copyGameboard();
   bool if_eof{false};
   COMMANDS command;
   std::vector<std::string> container{};
@@ -298,7 +299,9 @@ void MagicMaze::Game::stopCharacterOnTile(std::shared_ptr<Character>& moving_cha
                                           std::shared_ptr<Tile>& first_tile, std::shared_ptr<Tile>& current_tile)
 {
   first_tile->setCharacter(nullptr);
+  AI::getInstance().copySpecificTile(first_tile);
   current_tile->setCharacter(moving_character);
+  AI::getInstance().copySpecificTile(current_tile);
   moving_character->setCurrentTile(current_tile);
 
   checkIfNewRoomsNeedToBeRevealed(current_tile);
@@ -343,8 +346,11 @@ void MagicMaze::Game::useHourglass(std::shared_ptr<Tile>& tile, std::shared_ptr<
   else
     flips_number_ = 0;
   std::shared_ptr<MagicTile> hourglass = std::dynamic_pointer_cast<MagicTile>(tile);
+
   if (hourglass && hourglass->magicUsed())
     room->setTileToPassage(hourglass->getRow(), hourglass->getColumn(), character);
+
+  AI::getInstance().copySpecificTile(room->getRoomMap().at(hourglass->getRow()).at(hourglass->getColumn()));
 }
 
 void MagicMaze::Game::moveInputParsing(std::vector<std::string>& input, std::shared_ptr<Character>& character_to_move,
@@ -491,7 +497,11 @@ void MagicMaze::Game::unlock()
   {
     std::shared_ptr<MagicTile> door =  std::dynamic_pointer_cast<MagicTile>(doors.front());
     if(door && door->magicUsed())
-      getRoomById(door->getInsideRoomId())->setTileToPassage(door->getRow(), door->getColumn(), nullptr);
+    {
+      std::shared_ptr<Room> door_roow = getRoomById(door->getInsideRoomId());
+      door_roow->setTileToPassage(door->getRow(), door->getColumn(), nullptr);
+      AI::getInstance().copySpecificTile(door_roow->getRoomMap().at(door->getRow()).at(door->getColumn()));
+    }
     doors.pop();
   }
 }
@@ -592,6 +602,8 @@ void MagicMaze::Game::fightMonster()
       auto monster_room = getRoomById(monsters.front()->getInsideRoomId());
       monster_room->setTileToPassage(monster->getRow(), monster->getColumn(), nullptr);
       monster_room->decreaseNumMonsters();
+
+      AI::getInstance().copySpecificTile(monster_room->getRoomMap().at(monster->getRow()).at(monster->getColumn()));
     }
     monsters.pop();
   }
@@ -651,7 +663,11 @@ void MagicMaze::Game::scry(std::vector<std::string>& input)
   auto crystal_ball = std::dynamic_pointer_cast<MagicTile>(character_room->getRoomMap().at(row).at(col));
   if (crystal_ball && crystal_ball->magicUsed())
   {
-    character_room->setTileToPassage(crystal_ball->getRow(), crystal_ball->getColumn(), character);
+    const int row = crystal_ball->getRow();
+    const int col = crystal_ball->getColumn();
+
+    character_room->setTileToPassage(row, col, character);
+    AI::getInstance().copySpecificTile(character_room->getRoomMap().at(row).at(col));
   }
 }
 
@@ -676,7 +692,11 @@ void MagicMaze::Game::removeAllSecretDoors()
       {
         auto secret_door = secret_doors.back();
         if (secret_door->magicUsed())
+        {
           single_room->setTileToPassage(secret_door->getRow(), secret_door->getColumn(), nullptr);
+          AI::getInstance().copySpecificTile(single_room->getRoomMap().at(secret_door->getRow())
+                                                                      .at(secret_door->getColumn()));
+        }
         secret_doors.pop_back();
       }
     }
@@ -692,6 +712,8 @@ void MagicMaze::Game::setAllButtonsToPassage()
     {
       std::shared_ptr<Room> room = getRoomById(button->getInsideRoomId());
       room->setTileToPassage(button->getRow(), button->getColumn(), characters_.at(index));
+
+      AI::getInstance().copySpecificTile(room->getRoomMap().at(button->getRow()).at(button->getColumn()));
     }
   }
 }

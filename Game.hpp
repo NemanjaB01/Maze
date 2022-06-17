@@ -296,6 +296,8 @@ namespace MagicMaze
       //
       std::shared_ptr<Character> getCharacter(CharacterType type) const;
 
+      std::array<std::shared_ptr<Character>, 3> getAllCharacters() const { return characters_; };
+
       //----------------------------------------------------------------------------------------------------------------
       //
       /// Via this method we run a game.

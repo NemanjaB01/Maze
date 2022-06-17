@@ -17,7 +17,7 @@ class CharacterAI
 
   public:
     CharacterAI(const std::shared_ptr<Character>& character)
-     : character_{std::make_shared<Character>(*character)}, priority_{PRIORITY::LOOT} {}
+     : character_{character}, priority_{PRIORITY::LOOT} {}
 
     std::shared_ptr<Character> getCharacter() const { return character_; }
     std::weak_ptr<Tile> getTile() const { return tile_; }

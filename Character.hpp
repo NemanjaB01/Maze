@@ -33,7 +33,7 @@ class Character
     ///
     /// We do not allow initializing one Character object to another one.
     //
-    Character(const Character&) = default;
+    Character(const Character&) = delete;
     //------------------------------------------------------------------------------------------------------------------
     ///
     /// The constructor initializes the members with the parameters' values.
