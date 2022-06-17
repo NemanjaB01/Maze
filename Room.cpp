@@ -4,7 +4,7 @@
 
 
 Room::Room(char room_id, const std::string& room_info_str,  int row_, int column)
- : room_id_{room_id}, revealed_{false}, row_{row_}, col_{column}, num_of_monsters_{0}
+ : room_id_{room_id}, revealed_{false}, row_{row_}, col_{column}, num_of_monsters_{0}, contains_button_{false}
 {
   int row{0};
   int col{0};
@@ -21,8 +21,11 @@ Room::Room(char room_id, const std::string& room_info_str,  int row_, int column
       if (type == TileType::MONSTER)
         num_of_monsters_++;
 
-      if (type == TileType::SECRET_DOOR)
+      else if (type == TileType::SECRET_DOOR)
         secret_doors_.push_back(std::dynamic_pointer_cast<MagicTile>(room_map_.at(row).at(col)));
+
+      else if (type == TileType::SEER_BUTTON || type == TileType::FIGHTER_BUTTON || type == TileType::THIEF_BUTTON)
+        contains_button_ = true;
     }
 
     col += 1;

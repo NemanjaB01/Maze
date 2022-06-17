@@ -7,23 +7,25 @@
 
 enum class PRIORITY { LOOT, FIGHT, LEAVE_TILE, REVEAL, BUTTON , UNLOCK };
 
-class CharacterAI
+class CharacterAI : public Character
 {
   private:
-    std::shared_ptr<Character> character_;
     std::weak_ptr<Tile> goal_tile_;
     PRIORITY priority_;
 
   public:
-    CharacterAI(const std::shared_ptr<Character>& character)
-     : character_{character}, priority_{PRIORITY::LOOT} {}
+    CharacterAI(const std::shared_ptr<Character>& character);
 
-    std::shared_ptr<Character> getCharacter() const { return character_; }
-    std::weak_ptr<Tile> getTile() const { return goal_tile_; }
     PRIORITY getPriority() const { return priority_; }
+    std::shared_ptr<Tile> getGoalTile() const { return goal_tile_.lock(); };
+    bool hasGoal() const { return goal_tile_.expired() ? false : true; }
 
-    void setTile(const std::shared_ptr<Tile>& tile) { goal_tile_ = tile; }
+    void updateCurrentTile(const std::shared_ptr<Character>& character);
+    void setGoalTile(const std::shared_ptr<Tile>& goal_tile) { this->goal_tile_ = goal_tile; }
     void setPriority(PRIORITY priority) { priority_ = priority; }
+
+    ~CharacterAI() noexcept override = default;
+    CharacterAI() = delete;
 };
 
 #endif

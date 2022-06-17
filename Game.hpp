@@ -100,15 +100,6 @@ namespace MagicMaze
       void moveInputParsing(std::vector<std::string>& input, std::shared_ptr<Character>& character_to_move,
                             int& distance);
 
-      //----------------------------------------------------------------------------------------------------------------
-      ///
-      /// Stores next row and column depending on the direction.
-      ///
-      /// @param next_row
-      /// @param next_col
-      /// @param dir Direction
-      //
-      void changeNextRowCol(int& next_row, int& next_col, const DIRECTIONS& dir) const;
 
       //----------------------------------------------------------------------------------------------------------------
       ///
@@ -141,14 +132,6 @@ namespace MagicMaze
       //
       void scryInputParsing(std::vector<std::string>& input, std::shared_ptr<Room>& room_to_scry,
                             std::shared_ptr<Character> character) const;
-
-      //----------------------------------------------------------------------------------------------------------------
-      ///
-      /// Checks if all characters are on their button positions.
-      ///
-      /// @return true, false
-      //
-      bool checkIfAllCharactersOnButton() const;
 
       //----------------------------------------------------------------------------------------------------------------
       ///
@@ -242,6 +225,26 @@ namespace MagicMaze
       /// @param rooms_row_string string that contains room IDs
       //
       void addRoomsInRow(const std::string& rooms_row_string);
+
+      bool ifAllButtonsVisible() const;
+
+      //----------------------------------------------------------------------------------------------------------------
+      ///
+      /// Stores next row and column depending on the direction.
+      ///
+      /// @param next_row
+      /// @param next_col
+      /// @param dir Direction
+      //
+      static void changeNextRowCol(int& next_row, int& next_col, const DIRECTIONS& dir);
+
+      //----------------------------------------------------------------------------------------------------------------
+      ///
+      /// Checks if all characters are on their button positions.
+      ///
+      /// @return true, false
+      //
+      bool checkIfAllCharactersOnButton() const;
       //----------------------------------------------------------------------------------------------------------------
       ///
       /// Using this method we want to find corresponding room via room id.

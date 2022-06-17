@@ -21,7 +21,7 @@ class Tile;
 
 class Character
 {
-  private:
+  protected:
     CharacterType type_;
     std::string full_name_;
     std::weak_ptr<Tile> current_tile_;

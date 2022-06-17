@@ -179,6 +179,8 @@ std::string MagicMaze::Game::getPossibleMoveAsString() const
 void MagicMaze::Game::prepareGame()
 {
   placeCharactersOnStartingPositions();
+  AI::getInstance().copyGameboard();
+
   std::cout << IO::WELCOME_MSG << std::endl;
   std::cout << *this << std::endl;
 }
@@ -186,11 +188,10 @@ void MagicMaze::Game::prepareGame()
 void MagicMaze::Game::run()
 {
   prepareGame();
-  AI::getInstance().copyGameboard();
   bool if_eof{false};
   COMMANDS command;
   std::vector<std::string> container{};
-  while(1)
+  while(true)
   {
     try
     {
@@ -301,8 +302,9 @@ void MagicMaze::Game::stopCharacterOnTile(std::shared_ptr<Character>& moving_cha
   first_tile->setCharacter(nullptr);
   AI::getInstance().copySpecificTile(first_tile);
   current_tile->setCharacter(moving_character);
-  AI::getInstance().copySpecificTile(current_tile);
   moving_character->setCurrentTile(current_tile);
+
+  AI::getInstance().copySpecificTile(current_tile, moving_character);
 
   checkIfNewRoomsNeedToBeRevealed(current_tile);
   if (current_tile->getTileType() == TileType::HOURGLASS)
@@ -350,7 +352,7 @@ void MagicMaze::Game::useHourglass(std::shared_ptr<Tile>& tile, std::shared_ptr<
   if (hourglass && hourglass->magicUsed())
     room->setTileToPassage(hourglass->getRow(), hourglass->getColumn(), character);
 
-  AI::getInstance().copySpecificTile(room->getRoomMap().at(hourglass->getRow()).at(hourglass->getColumn()));
+  AI::getInstance().copySpecificTile(room->getRoomMap().at(hourglass->getRow()).at(hourglass->getColumn()), character);
 }
 
 void MagicMaze::Game::moveInputParsing(std::vector<std::string>& input, std::shared_ptr<Character>& character_to_move,
@@ -389,7 +391,7 @@ void MagicMaze::Game::moveInputParsing(std::vector<std::string>& input, std::sha
     throw character_to_move->getFullName() + IO::MOVE_WRONG_DIRECTION_MSG;
 }
 
-void MagicMaze::Game::changeNextRowCol(int& next_row, int& next_col, const MagicMaze::DIRECTIONS& dir) const
+void MagicMaze::Game::changeNextRowCol(int& next_row, int& next_col, const MagicMaze::DIRECTIONS& dir)
 {
   switch(dir)
     {
@@ -667,7 +669,7 @@ void MagicMaze::Game::scry(std::vector<std::string>& input)
     const int col = crystal_ball->getColumn();
 
     character_room->setTileToPassage(row, col, character);
-    AI::getInstance().copySpecificTile(character_room->getRoomMap().at(row).at(col));
+    AI::getInstance().copySpecificTile(character_room->getRoomMap().at(row).at(col), character);
   }
 }
 
@@ -728,4 +730,14 @@ bool MagicMaze::Game::endOfGame()
     return true;
 
   return false;
+}
+
+bool MagicMaze::Game::ifAllButtonsVisible() const
+{
+  for (auto& row_of_rooms : rooms_)
+    for (auto& room : row_of_rooms)
+      if (room->ifContainsButton() && !room->isRevealed())
+        return false;
+
+  return true;
 }

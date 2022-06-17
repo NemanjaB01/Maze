@@ -11,23 +11,12 @@
 #include "Tile.hpp"
 #include "map"
 #include "queue"
+#include <exception>
 
 AI& AI::getInstance()
 {
   static AI instance{};
   return instance;
-}
-
-TileComplex::TileComplex(int row, int col, const std::shared_ptr<Tile>& tile)
-   : row_{row}, col_{col}, visited_(false)
-{
-  std::shared_ptr<MagicTile> magic = std::dynamic_pointer_cast<MagicTile>(tile);
-  std::shared_ptr<BasicTile> basic = std::dynamic_pointer_cast<BasicTile>(tile);
-
-  if (magic)
-    tile_ = std::make_shared<MagicTile>(*magic);
-  else
-    tile_ = std::make_shared<BasicTile>(*basic);
 }
 
 void AI::copyGameboard()
@@ -39,7 +28,7 @@ void AI::copyGameboard()
   {
     for (int i{0}; i < 5; i++)
     {
-      std::vector<std::shared_ptr<TileComplex>> gameboard_row;
+      std::vector<std::shared_ptr<Tile>> gameboard_row;
       int board_col{0};
 
       for (std::shared_ptr<Room>& room : row_of_rooms)
@@ -47,7 +36,13 @@ void AI::copyGameboard()
         for (int room_row_iterations{0}; room_row_iterations < 5; room_row_iterations++)
         {
           std::shared_ptr<Tile> current_tile = room->getRoomMap().at(board_row % 5).at(board_col % 5);
-          gameboard_row.push_back(std::make_shared<TileComplex>(board_row, board_col, current_tile));
+
+          if (std::dynamic_pointer_cast<BasicTile>(current_tile))
+            gameboard_row.push_back(std::make_shared<BasicTile>(current_tile->getTileType(),
+                                      current_tile->getInsideRoomId(), board_row, board_col));
+          else
+            gameboard_row.push_back(std::make_shared<MagicTile>(current_tile->getTileType(),
+                                      current_tile->getInsideRoomId(), board_row, board_col));
           board_col++;
         }
       }
@@ -60,141 +55,160 @@ void AI::copyGameboard()
   for (int counter{0}; counter < MagicMaze::CHARACTERS_NUMBER; counter++)
   {
     characters_.at(counter) = std::make_shared<CharacterAI>(characters.at(counter));
+    characters_.at(counter)->updateCurrentTile(characters.at(counter));
   }
 }
-
 
 void AI::copySpecificTile(std::shared_ptr<Tile>& tile)
 {
   const std::shared_ptr<Room> room = MagicMaze::Game::getInstance().getRoomById(tile->getInsideRoomId());
 
-  const int board_row{ tile->getRow() + room->getRow() * 5 };
-  const int board_col{ tile->getColumn() + room->getColumn() * 5 };
+  const int row{ tile->getRow() + room->getRow() * 5 };
+  const int col{ tile->getColumn() + room->getColumn() * 5 };
 
-  std::shared_ptr<Tile> searched_tile = room->getRoomMap().at(tile->getRow()).at(tile->getColumn());
+  if (std::dynamic_pointer_cast<BasicTile>(tile))
+    gameboard_.at(row).at(col) = std::make_shared<BasicTile>(tile->getTileType(), tile->getInsideRoomId(), row, col);
+  else
+    gameboard_.at(row).at(col) = std::make_shared<MagicTile>(tile->getTileType(), tile->getInsideRoomId(), row, col);
+}
 
-  gameboard_.at(board_row).at(board_col) = std::make_shared<TileComplex>(board_row, board_col, searched_tile);
+std::shared_ptr<CharacterAI> AI::getCharacterAIById(const char& id)
+{
+  switch(id)
+  {
+    case 'F':
+      return characters_.at(0);
+    case 'T':
+      return characters_.at(1);
+    case 'S':
+      return characters_.at(2);
+  }
+  return nullptr;
+}
+
+void AI::copySpecificTile(std::shared_ptr<Tile>& tile, const std::shared_ptr<Character>& character)
+{
+  copySpecificTile(tile);
+  std::shared_ptr<CharacterAI> current_ai_character{ getCharacterAIById(character->getCharacterTypeAsChar()) };
+
+  current_ai_character->updateCurrentTile(character);
+}
+
+
+void AI::determineHighPriorities()
+{
+  const bool buttons_visible{MagicMaze::Game::getInstance().ifAllButtonsVisible()};
+
+  if (!MagicMaze::Game::getInstance().getRoomById('L')->isRevealed() || !buttons_visible)
+  {
+    for (auto& character : characters_)
+      character->setPriority(PRIORITY::REVEAL);
+  }
+  else if (buttons_visible && !MagicMaze::Game::getInstance().checkIfAllCharactersOnButton())
+  {
+    for (auto& character : characters_)
+      character->setPriority(PRIORITY::BUTTON);
+  }
+  else
+    for (auto& character : characters_)
+      character->setPriority(PRIORITY::LOOT);
 }
 
 
 void AI::play()
-{}
-
-void AI::checkSidesOfTile(std::queue<std::shared_ptr<TileComplex>>& neighbour_tiles,
-                           std::shared_ptr<TileComplex> current_tile)
 {
-  int row = current_tile->tile_->getRow();
-  int column = current_tile->tile_->getColumn();
-  
+  determineHighPriorities();
+}
 
-  std::array<int, 4> row_values { -1, 0,  1,  0}; // UP  RIGHT  DOWN  LEFT
-  std::array<int, 4> col_values {  0, 1,  0, -1};
+void AI::checkSidesOfTile(std::queue<std::shared_ptr<Tile>>& tiles, std::vector<std::vector<bool>>& visited)
+{
+  const int row = tiles.front()->getRow();
+  const int column = tiles.front()->getColumn();
+
+  static const std::array<int, 4> ROW_VALUES { -1, 0, 1, 0}; // UP  RIGHT  DOWN  LEFT
+  static const std::array<int, 4> COL_VALUES { 0, 1, 0, -1};
 
   for(int n{0}; n < 4; n++)
   {
-    std::shared_ptr<TileComplex> tile = gameboard_.at(row + row_values.at(n)).at(column + col_values.at(n));
-    if(tile->visited_ == false && tile->tile_->getTileType() != TileType::WALL)
+    try
     {
-      tile->visited_ = true;
-      neighbour_tiles.push(tile);
+      std::shared_ptr<Tile> tile = gameboard_.at(row + ROW_VALUES.at(n)).at(column + COL_VALUES.at(n));
+      if(!visited.at(tile->getRow()).at(tile->getColumn()) && tile->getTileType() != TileType::WALL)
+      {
+        visited.at(tile->getRow()).at(tile->getColumn()) = true;
+        tiles.push(tile);
+      }
+    }
+    catch(std::out_of_range& e)
+    {
+      continue;
     }
   }
 }
 
-void AI::checkPriority(std::shared_ptr<CharacterAI> character, bool& find_goal,
-                       std::queue<std::shared_ptr<TileComplex>>& current_tiles,
-                       std::queue<std::shared_ptr<TileComplex>>& tiles_to_check)
+void AI::checkPriority(const std::shared_ptr<CharacterAI> character, bool& goal_found,
+                       const std::shared_ptr<Tile>& current_tile)
 {
-  PRIORITY priority = character->getPriority();
+  const PRIORITY priority = character->getPriority();
+  const TileType type = current_tile->getTileType();
 
-  while(tiles_to_check.empty())
+  if(priority == PRIORITY::LOOT && type == TileType::LOOT)
   {
-    TileType type = tiles_to_check.front()->tile_->getTileType();
-    
-    if(priority == PRIORITY::LOOT && type == TileType::LOOT)
-    {
-      character->setTile(tiles_to_check.front()->tile_);
-      find_goal = true;
-    }
-    
-    switch(character->getCharacter()->getCharacterType())
-    {
-      case CharacterType::FIGHTER:
-        if((type == TileType::FIGHTER_BUTTON && priority == PRIORITY::BUTTON) ||
-           (type == TileType::MONSTER && priority == PRIORITY::FIGHT))
-         {
-            character->setTile(tiles_to_check.front()->tile_);
-            find_goal = true;
-         }
-         break;
-      case CharacterType::SEER:
-        if((type == TileType::SEER_BUTTON && priority == PRIORITY::BUTTON) ||
-           (type == TileType::CRYSTAL_BALL && priority == PRIORITY::REVEAL))
-        {
-          character->setTile(tiles_to_check.front()->tile_);
-          find_goal = true;
-        }
-        break;
-      case CharacterType::THIEF:
-        if((type == TileType::THIEF_BUTTON && priority == PRIORITY::BUTTON) ||
-           ((TileType::SECRET_DOOR == type || TileType::VERTICAL_DOOR == type) && priority == PRIORITY::UNLOCK))
-        {
-          character->setTile(tiles_to_check.front()->tile_);
-          find_goal = true;
-        }
-        break;
-      case CharacterType::NONE:
-        break;
-    }
-
-    if(find_goal == true)
-      break;
-
-    current_tiles.push(tiles_to_check.front());
-    tiles_to_check.pop();
+    character->setGoalTile(current_tile);
+    goal_found = true;
   }
-
-  deleteQueue(current_tiles, tiles_to_check);
-}
-
-
-void AI::deleteQueue(std::queue<std::shared_ptr<TileComplex>>& first, 
-                     std::queue<std::shared_ptr<TileComplex>>& second)
-{
-  while(first.empty())
-    first.pop();
-
-  while(second.empty())
-    second.pop();
-
-  for(auto& game_board_row : gameboard_)
-    for(auto& tile : game_board_row)
-      tile->visited_ = false;
+  switch(character->getCharacterType())
+  {
+    case CharacterType::FIGHTER:
+      if((type == TileType::FIGHTER_BUTTON && priority == PRIORITY::BUTTON) ||
+          (type == TileType::MONSTER && priority == PRIORITY::FIGHT))
+        {
+          character->setGoalTile(current_tile);
+          goal_found = true;
+        }
+        break;
+    case CharacterType::SEER:
+      if((type == TileType::SEER_BUTTON && priority == PRIORITY::BUTTON) ||
+          (type == TileType::CRYSTAL_BALL && priority == PRIORITY::REVEAL))
+      {
+        character->setGoalTile(current_tile);
+        goal_found = true;
+      }
+      break;
+    case CharacterType::THIEF:
+      if((type == TileType::THIEF_BUTTON && priority == PRIORITY::BUTTON) ||
+          ((TileType::HORIZONTAL_DOOR == type || TileType::VERTICAL_DOOR == type) && priority == PRIORITY::UNLOCK))
+      {
+        character->setGoalTile(current_tile);
+        goal_found = true;
+      }
+      break;
+    case CharacterType::NONE:
+      break;
+  }
 }
 
 void AI::findGoalTile(const std::shared_ptr<CharacterAI>& character)
 {
-  std::shared_ptr<Tile> tile = character->getTile().lock();
-  int row = tile->getRow();
-  int column = tile->getColumn();
-  bool find_goal= false;
+  std::shared_ptr<Tile> tile = character->getCurrentile().lock();
+  const int row = tile->getRow();
+  const int column = tile->getColumn();
+  bool goal_found = false;
 
-  std::shared_ptr<TileComplex> first_tile{gameboard_.at(row).at(column)};
-  std::queue<std::shared_ptr<TileComplex>> current_tiles;
-  std::queue<std::shared_ptr<TileComplex>> tiles_to_check;
-  current_tiles.push(first_tile);
+  std::vector<std::vector<bool>> visited(gameboard_.size(), std::vector<bool>(gameboard_.at(0).size(), false));
+  std::queue<std::shared_ptr<Tile>> current_tiles;
 
+  current_tiles.push(gameboard_.at(row).at(column));
+  visited.at(row).at(column) = true;
 
-  while(!find_goal)
+  while(current_tiles.empty())
   {
-    while(current_tiles.empty())
-    {
-      checkSidesOfTile(tiles_to_check, current_tiles.front());
-      current_tiles.pop();
-    }
+    checkSidesOfTile(current_tiles, visited);
 
-    checkPriority(character, find_goal, current_tiles, tiles_to_check);
+    checkPriority(character, goal_found, current_tiles.front());
+    if (goal_found)
+      break;
+
+    current_tiles.pop();
   }
-
-
 }
