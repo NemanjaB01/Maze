@@ -4,7 +4,7 @@
 #include "AI.hpp"
 
 CharacterAI::CharacterAI(const std::shared_ptr<Character>& character)
-  : Character(character->getCharacterType()), priority_{PRIORITY::LOOT}
+  : Character(character->getCharacterType()), priority_{PRIORITY::NONE}
 {
   updateCurrentTile(character);
 }

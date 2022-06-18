@@ -9,9 +9,8 @@
 #include <vector>
 #include <memory>
 #include "Tile.hpp"
-#include "map"
-#include "queue"
 #include <exception>
+#include <algorithm>
 
 AI& AI::getInstance()
 {
@@ -98,19 +97,26 @@ void AI::copySpecificTile(std::shared_ptr<Tile>& tile, const std::shared_ptr<Cha
 void AI::determineHighPriorities()
 {
   const bool buttons_visible{MagicMaze::Game::getInstance().ifAllButtonsVisible()};
+  std::vector<std::shared_ptr<CharacterAI>> characters_without_specific_goal;
+  for (auto& character : characters_)
+  {
+    if (character->getPriority() == PRIORITY::LOOT || character->getPriority() == PRIORITY::BUTTON ||
+        character->getPriority() == PRIORITY::REVEAL || character->getPriority() == PRIORITY::NONE)
+      characters_without_specific_goal.push_back(character);
+  }
 
   if (!MagicMaze::Game::getInstance().getRoomById('L')->isRevealed() || !buttons_visible)
   {
-    for (auto& character : characters_)
+    for (auto& character : characters_without_specific_goal)
       character->setPriority(PRIORITY::REVEAL);
   }
   else if (buttons_visible && !MagicMaze::Game::getInstance().checkIfAllCharactersOnButton())
   {
-    for (auto& character : characters_)
+    for (auto& character : characters_without_specific_goal)
       character->setPriority(PRIORITY::BUTTON);
   }
   else
-    for (auto& character : characters_)
+    for (auto& character : characters_without_specific_goal)
       character->setPriority(PRIORITY::LOOT);
 }
 
@@ -118,9 +124,87 @@ void AI::determineHighPriorities()
 void AI::play()
 {
   determineHighPriorities();
+  giveGoalsToCharacters();
 }
 
-void AI::checkSidesOfTile(std::queue<std::shared_ptr<Tile>>& tiles, std::vector<std::vector<bool>>& visited)
+void AI::giveGoalsToCharacters()
+{
+  for (auto& character : characters_)
+  {
+    if (!ifGoalCorrespondsToPriority(character))
+      findGoalTile(character);
+    else if (character->getPriority() == PRIORITY::LEAVE_TILE)
+      leaveTileIfPossible(character);
+    std::cout << character->getFullName() << "| Goal row:" << character->getGoalTile()->getRow() << " col:" << character->getGoalTile()->getColumn() << std::endl;
+  }
+}
+
+bool AI::ifGoalCorrespondsToPriority(const std::shared_ptr<CharacterAI>& character)
+{
+  if (!character->hasGoal())
+    return false;
+  TileType goal_tile_type{ character->getGoalTile()->getTileType() };
+  PRIORITY priority{ character->getPriority() };
+
+  if (priority == PRIORITY::LOOT)
+  {
+    if (goal_tile_type == TileType::LOOT)
+      return true;
+  }
+  else if (priority == PRIORITY::REVEAL)
+  {
+    if (ifTileReveals(character->getGoalTile()) || (goal_tile_type == TileType::CRYSTAL_BALL && 
+                                                    character->getCharacterType() == CharacterType::SEER))
+      return true;
+  }
+  else if (character->getCharacterType() == CharacterType::FIGHTER && priority == PRIORITY::FIGHT)
+  {
+    if (goal_tile_type == TileType::MONSTER)
+      return true;
+  }
+  else if (character->getCharacterType() == CharacterType::THIEF && priority == PRIORITY::UNLOCK)
+  {
+    if (goal_tile_type == TileType::HORIZONTAL_DOOR || goal_tile_type == TileType::VERTICAL_DOOR)
+      return true;
+  }
+  else if (priority == PRIORITY::BUTTON)
+  {
+    if ((character->getCharacterType() == CharacterType::FIGHTER && goal_tile_type == TileType::FIGHTER_BUTTON) ||
+        (character->getCharacterType() == CharacterType::SEER && goal_tile_type == TileType::SEER_BUTTON) ||
+        (character->getCharacterType() == CharacterType::THIEF && goal_tile_type == TileType::THIEF_BUTTON))
+      return true;
+  }
+  else if (priority == PRIORITY::LEAVE_TILE)
+    return true;
+
+  return false;
+}
+
+bool AI::ifTileReveals(const std::shared_ptr<Tile>& tile)
+{
+  static const std::array<int, 4> ROW_VALUES { -1, 0, 1, 0};
+  static const std::array<int, 4> COL_VALUES { 0, 1, 0, -1};
+  const int row{tile->getRow()};
+  const int col{tile->getColumn()};
+
+  for (int i{0}; i < 4; i++)
+  {
+    try
+    {
+      std::shared_ptr<Tile> neighor{ gameboard_.at(row + ROW_VALUES.at(i)).at(col + COL_VALUES.at(i)) };
+      if (!MagicMaze::Game::getInstance().getRoomById(neighor->getInsideRoomId())->isRevealed())
+        return true;
+    }
+    catch(std::out_of_range& e)
+    {
+      continue;
+    }
+  }
+  return false;
+}
+
+
+void AI::collectNeighborTiles(std::queue<std::shared_ptr<Tile>>& tiles, std::vector<std::vector<bool>>& visited)
 {
   const int row = tiles.front()->getRow();
   const int column = tiles.front()->getColumn();
@@ -133,7 +217,8 @@ void AI::checkSidesOfTile(std::queue<std::shared_ptr<Tile>>& tiles, std::vector<
     try
     {
       std::shared_ptr<Tile> tile = gameboard_.at(row + ROW_VALUES.at(n)).at(column + COL_VALUES.at(n));
-      if(!visited.at(tile->getRow()).at(tile->getColumn()) && tile->getTileType() != TileType::WALL)
+      if(!visited.at(tile->getRow()).at(tile->getColumn()) && tile->getTileType() != TileType::WALL && 
+        MagicMaze::Game::getInstance().getRoomById(tile->getInsideRoomId())->isRevealed())
       {
         visited.at(tile->getRow()).at(tile->getColumn()) = true;
         tiles.push(tile);
@@ -154,6 +239,11 @@ void AI::checkPriority(const std::shared_ptr<CharacterAI> character, bool& goal_
 
   if(priority == PRIORITY::LOOT && type == TileType::LOOT)
   {
+    character->setGoalTile(current_tile);
+    goal_found = true;
+  }
+  else if (priority == PRIORITY::REVEAL && type != TileType::CRYSTAL_BALL && ifTileReveals(current_tile))
+  { // check if this character is the best for this reveal tile
     character->setGoalTile(current_tile);
     goal_found = true;
   }
@@ -201,14 +291,10 @@ void AI::findGoalTile(const std::shared_ptr<CharacterAI>& character)
   current_tiles.push(gameboard_.at(row).at(column));
   visited.at(row).at(column) = true;
 
-  while(current_tiles.empty())
+  while(!goal_found && !current_tiles.empty())
   {
-    checkSidesOfTile(current_tiles, visited);
-
     checkPriority(character, goal_found, current_tiles.front());
-    if (goal_found)
-      break;
-
+    collectNeighborTiles(current_tiles, visited);
     current_tiles.pop();
   }
 }
@@ -220,18 +306,18 @@ void AI::getMaxPoint(int& max_cut_points, const std::shared_ptr<Tile>& goal_tile
 
     try
     {
-        while(true)
-        {
-            MagicMaze::Game::changeNextRowCol(next_row, next_col, dir);
-            if (!gameboard_.at(next_row).at(next_col)->ifAvailable())
-                return;
-            else
-                max_cut_points++;
-        }
+      while(true)
+      {
+        MagicMaze::Game::changeNextRowCol(next_row, next_col, dir);
+        if (!gameboard_.at(next_row).at(next_col)->ifAvailable())
+          return;
+        else
+          max_cut_points++;
+      }
     }
     catch(std::exception& e)
     {
-        return;
+      return;
     }
 }
 
@@ -295,3 +381,174 @@ bool AI::checkIfCuts(CUT_TYPE& cut, const std::shared_ptr<CharacterAI>& characte
     return true;
 }
 
+bool AI::checkIfCutsInPossibleDirection(const CUT_TYPE& cut, const int& total_iterations)
+{
+  MagicMaze::DIRECTIONS current_direction{ MagicMaze::Game::getInstance().getCurrentDirection() };
+
+  if (cut == CUT_TYPE::HORIZONTAL && total_iterations < 0 && current_direction == MagicMaze::DIRECTIONS::LEFT)
+    return true;
+  else if (cut == CUT_TYPE::HORIZONTAL && total_iterations > 0 && current_direction == MagicMaze::DIRECTIONS::RIGHT)
+    return true;
+  else if (cut == CUT_TYPE::VERTICAL && total_iterations < 0 && current_direction == MagicMaze::DIRECTIONS::UP)
+    return true;
+  else if (cut == CUT_TYPE::VERTICAL && total_iterations > 0 && current_direction == MagicMaze::DIRECTIONS::DOWN)
+    return true;
+
+  return false;
+}
+
+bool AI::checkTilesWayForAvailability(const std::shared_ptr<CharacterAI>& character, CUT_TYPE cut,
+                                      bool& currently_best_way)
+{
+  std::shared_ptr<Tile> goal_tile{ character->getGoalTile() };
+  std::shared_ptr<Tile> character_tile{ character->getCurrentile().lock() };
+  const int total_iterations = (cut == CUT_TYPE::HORIZONTAL ? goal_tile->getColumn() - character_tile->getColumn() :
+                                                              goal_tile->getRow() - character_tile->getRow());
+
+  int next_row{character_tile->getRow()};
+  int next_col{character_tile->getColumn()};
+
+  const int iterations = (total_iterations > 0) ? total_iterations : -total_iterations;
+
+  for (int i{0}; i < iterations; i++)
+  {
+    if (cut == CUT_TYPE::HORIZONTAL && total_iterations < 0)
+      next_col--;
+    else if (cut == CUT_TYPE::HORIZONTAL && total_iterations > 0)
+      next_col++;
+    else if (cut == CUT_TYPE::VERTICAL && total_iterations < 0)
+      next_row--;
+    else if (cut == CUT_TYPE::VERTICAL && total_iterations > 0)
+      next_row++;
+
+    std::shared_ptr<Tile> tile{ gameboard_.at(next_row).at(next_col) };
+
+    if (!tile->ifAvailable() && !tile->ifContainsCharacter())
+      return false;
+
+    else if (tile->ifContainsCharacter() && i == total_iterations - 1)
+    {
+      std::shared_ptr<CharacterAI> ai_character = getCharacterAIById(tile->getCharacter()->getCharacterTypeAsChar());
+      ai_character->setPriority(PRIORITY::LEAVE_TILE);
+      leaveTileIfPossible(ai_character);
+      return false;
+    }
+  }
+  if (!checkIfCutsInPossibleDirection(cut, total_iterations))
+    currently_best_way = false;
+
+  return true;
+}
+
+bool AI::checkIfPossibleCut(const std::shared_ptr<CharacterAI>& character, CUT_TYPE& cut, bool& currently_best_way)
+{
+  if (checkIfCuts(cut, character))
+  {
+    if (cut == CUT_TYPE::BOTH)
+    {
+      bool best_horizontal{true};
+      bool best_vertical{true};
+      if (checkTilesWayForAvailability(character, CUT_TYPE::HORIZONTAL, best_horizontal) && best_horizontal)
+      {
+        cut = CUT_TYPE::HORIZONTAL;
+        return true;
+      }
+      else if (checkTilesWayForAvailability(character, CUT_TYPE::VERTICAL, best_vertical) && best_vertical)
+      {
+        cut = CUT_TYPE::VERTICAL;
+        return true;
+      }
+      else
+      {
+        currently_best_way = false;
+        return true;
+      }
+    }
+    else if (checkTilesWayForAvailability(character, cut, currently_best_way))
+      return true;
+  }
+  return false;
+}
+
+void AI::leaveTileIfPossible(std::shared_ptr<CharacterAI>& character)
+{
+  int free_space{0};
+  countFreeSpaceInCertainDirection(character, MagicMaze::Game::getInstance().getCurrentDirection(), free_space);
+  if (free_space == 2)
+  {
+    // call move
+    character->setPriority(PRIORITY::NONE);
+  }
+  else
+  {
+    int free_space_other_directions{0};
+    checkForBestLeave(character, free_space_other_directions, free_space);
+    if (free_space <= free_space_other_directions)
+    {
+      // call move
+      character->setPriority(PRIORITY::NONE);
+    }
+  }
+}
+
+void AI::countFreeSpaceInCertainDirection(const std::shared_ptr<CharacterAI>& character,
+                                          MagicMaze::DIRECTIONS direction, int& free_space)
+{
+  std::shared_ptr<Tile> character_tile{ character->getCurrentile().lock() };
+  const int t_row{ character_tile->getRow() };
+  const int t_column{ character_tile->getColumn() };
+
+  free_space = 0;
+
+  for (int i{0}; i < 2; i++)
+  {
+    int next_row{t_row};
+    int next_col{t_column};
+    try
+    {
+      MagicMaze::Game::getInstance().changeNextRowCol(next_row, next_col, direction);
+      std::shared_ptr<Tile> next_tile{ gameboard_.at(next_row).at(next_col) };
+
+      // todo: check for monsters
+      if (MagicMaze::Game::getInstance().getRoomById(next_tile->getInsideRoomId())->isRevealed())
+        break;
+      else if (next_tile->ifAvailable())
+        free_space++;
+      else if (!next_tile->ifAvailable() && next_tile->ifContainsCharacter() && i == 0)
+        continue;
+      else
+        break;
+    }
+    catch(std::out_of_range& e)
+    {
+      if (!free_space)
+        return;
+    }
+  }
+}
+
+void AI::checkForBestLeave(std::shared_ptr<CharacterAI>& character, int& other_free_spaces, const int& free_space)
+{
+  std::shared_ptr<Tile> character_tile{ character->getCurrentile().lock() };
+  static std::vector<MagicMaze::DIRECTIONS> directions { MagicMaze::DIRECTIONS::UP, MagicMaze::DIRECTIONS::DOWN,
+                                                         MagicMaze::DIRECTIONS::LEFT, MagicMaze::DIRECTIONS::RIGHT };
+
+  for (int i{0}; i < 4; i++)
+  {
+    if (directions.at(i) == MagicMaze::Game::getInstance().getCurrentDirection())
+      continue;
+
+    countFreeSpaceInCertainDirection(character, directions.at(i), other_free_spaces);
+
+    if (other_free_spaces > free_space)
+      return;
+  }
+}
+
+void AI::printCommand(const std::vector<std::string>& command_input) const noexcept
+{
+  std::cout << "AI:";
+  for (auto& str : command_input)
+    std::cout << " " + str;
+  std::cout << std::endl;
+}

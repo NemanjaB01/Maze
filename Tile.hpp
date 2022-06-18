@@ -173,6 +173,8 @@ class Tile
     /// @return line of Tile
     //
     std::string getLineOfTile(int index, bool is_room_revealed);
+
+    std::shared_ptr<Character> getCharacter() const { return character_ ? character_ : nullptr; }
 };
 
 #endif

@@ -5,7 +5,7 @@
 #include "Tile.hpp"
 #include <memory>
 
-enum class PRIORITY { LOOT, FIGHT, LEAVE_TILE, REVEAL, BUTTON , UNLOCK };
+enum class PRIORITY { LOOT, FIGHT, LEAVE_TILE, REVEAL, BUTTON , UNLOCK, NONE };
 
 class CharacterAI : public Character
 {

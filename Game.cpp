@@ -715,7 +715,8 @@ void MagicMaze::Game::setAllButtonsToPassage()
       std::shared_ptr<Room> room = getRoomById(button->getInsideRoomId());
       room->setTileToPassage(button->getRow(), button->getColumn(), characters_.at(index));
 
-      AI::getInstance().copySpecificTile(room->getRoomMap().at(button->getRow()).at(button->getColumn()));
+      AI::getInstance().copySpecificTile(room->getRoomMap().at(button->getRow()).at(button->getColumn()),
+                                         characters_.at(index));
     }
   }
 }
