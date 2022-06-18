@@ -6,6 +6,7 @@
 #include "BasicTile.hpp"
 #include "MagicTile.hpp"
 #include <queue>
+#include <string>
 #include <vector>
 #include <memory>
 #include "Tile.hpp"
@@ -121,10 +122,94 @@ void AI::determineHighPriorities()
 }
 
 
+
+void AI::callMove(std::shared_ptr<CharacterAI>& character, CUT_TYPE& cut, std::shared_ptr<Tile>& q_finder)
+{
+  std::vector<std::string> move_input;
+  move_input.push_back("move");
+
+  std::string character_letter {character->getCharacterTypeAsChar()};
+  move_input.push_back(character_letter);
+  int distance;
+  std::string direction;
+  std::shared_ptr<Tile> character_tile {character->getCurrentile().lock()};
+
+  switch(cut)
+  {
+    case CUT_TYPE::HORIZONTAL:
+      if(q_finder->getColumn() > character_tile->getColumn())
+      {
+        direction = "right";
+        distance = q_finder->getColumn() - character_tile->getColumn();
+      }
+      else
+      {
+        direction = "left";
+        distance = character_tile->getColumn() - q_finder->getColumn();
+      }
+      break;
+    case CUT_TYPE::VERTICAL:
+      if(q_finder->getRow() > character_tile->getRow())
+      {
+        direction = "down";
+        distance = q_finder->getRow() - character_tile->getRow();
+      }
+      else
+      {
+        direction = "up";
+        distance = character_tile->getRow() - q_finder->getRow();
+      }
+      break;
+    case CUT_TYPE::NONE:
+      break;
+    case CUT_TYPE::BOTH:
+      break;
+  }
+
+  move_input.push_back(direction);
+  std::string distance_as_string = std::to_string(distance);
+  move_input.push_back(distance_as_string);
+
+  MagicMaze::Game::getInstance().move(move_input);
+}
+
+void AI::playNextMove(std::shared_ptr<CharacterAI>& character)
+{
+  std::queue<std::shared_ptr<Tile>> q_finder;
+  q_finder.push(character->getGoalTile());
+  bool best_way {false};
+
+  std::vector<std::vector<bool>> finder_visited(gameboard_.size(),std::vector<bool>(gameboard_[0].size() ,false));
+  CUT_TYPE cut{CUT_TYPE::NONE};
+
+  while(q_finder.empty())
+  {
+    finder_visited.at(q_finder.front()->getRow()).at(q_finder.front()->getColumn()) = true;
+
+    if(checkIfPossibleCut(character, cut, best_way))
+    {
+      if(!best_way)
+        return;
+
+      if(cut == CUT_TYPE::HORIZONTAL || cut == CUT_TYPE::VERTICAL)
+      {
+        callMove(character, cut, q_finder.front());
+        return;
+      }
+
+      collectNeighborTiles(q_finder, finder_visited);
+      q_finder.pop();
+    }
+  }
+}
+
 void AI::play()
 {
   determineHighPriorities();
   giveGoalsToCharacters();
+
+  for(auto& character : characters_)
+    playNextMove(character);
 }
 
 void AI::giveGoalsToCharacters()

@@ -52,6 +52,8 @@ class AI
                        const std::shared_ptr<Tile>& current_tile);
 
     void printCommand(const std::vector<std::string>& command_input) const noexcept;
+    void playNextMove(std::shared_ptr<CharacterAI>& character);
+    void callMove(std::shared_ptr<CharacterAI>& character, CUT_TYPE& cut, std::shared_ptr<Tile>& q_finder);
 
   public:
     static AI& getInstance();
