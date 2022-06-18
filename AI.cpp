@@ -212,3 +212,86 @@ void AI::findGoalTile(const std::shared_ptr<CharacterAI>& character)
     current_tiles.pop();
   }
 }
+
+void AI::getMaxPoint(int& max_cut_points, const std::shared_ptr<Tile>& goal_tile, const MagicMaze::DIRECTIONS& dir)
+{
+    int next_row{goal_tile->getRow()};
+    int next_col{goal_tile->getColumn()};
+
+    try
+    {
+        while(true)
+        {
+            MagicMaze::Game::changeNextRowCol(next_row, next_col, dir);
+            if (!gameboard_.at(next_row).at(next_col)->ifAvailable())
+                return;
+            else
+                max_cut_points++;
+        }
+    }
+    catch(std::exception& e)
+    {
+        return;
+    }
+}
+
+void AI::getMaxCutPoints(CutPoints& max_cut_points, const std::shared_ptr<Tile>& goal_tile)
+{
+    std::array<MagicMaze::DIRECTIONS, 4> directions{ MagicMaze::DIRECTIONS::DOWN, MagicMaze::DIRECTIONS::RIGHT,
+                                                     MagicMaze::DIRECTIONS::LEFT, MagicMaze::DIRECTIONS::UP };
+
+    for (int i{0}; i < 4; i++)
+    {
+        switch(directions.at(i))
+        {
+            case MagicMaze::DIRECTIONS::DOWN:
+                getMaxPoint(max_cut_points.y_bottom_, goal_tile, directions.at(i));
+                break;
+            case MagicMaze::DIRECTIONS::RIGHT:
+                getMaxPoint(max_cut_points.x_right_, goal_tile, directions.at(i));
+                break;
+            case MagicMaze::DIRECTIONS::LEFT:
+                getMaxPoint(max_cut_points.x_left_, goal_tile, directions.at(i));
+                break;
+            case MagicMaze::DIRECTIONS::UP:
+                getMaxPoint(max_cut_points.y_top_, goal_tile, directions.at(i));
+                break;
+        }
+    }
+}
+
+bool AI::checkIfCuts(CUT_TYPE& cut, const std::shared_ptr<CharacterAI>& character)
+{
+    const std::shared_ptr<Tile> character_tile{ character->getCurrentile().lock() };
+    const std::shared_ptr<Tile> goal_tile{ character->getGoalTile() };
+    CutPoints max_cut_points{};
+
+    getMaxCutPoints(max_cut_points, goal_tile);
+
+
+    bool horizontal_cut = false;
+    bool vertical_cut = false;
+
+    if (character_tile->getRow() <= goal_tile->getRow() + max_cut_points.y_bottom_ &&
+        character_tile->getRow() >= goal_tile->getRow() - max_cut_points.y_top_)
+    {
+      horizontal_cut = true;
+    }
+    if (character_tile->getColumn() >= goal_tile->getColumn() - max_cut_points.x_left_ &&
+        character_tile->getColumn() <= goal_tile->getColumn() + max_cut_points.x_right_)
+    {
+      vertical_cut = true;
+    }
+
+    if (horizontal_cut && vertical_cut)
+        cut = CUT_TYPE::BOTH;
+    else if (horizontal_cut)
+        cut = CUT_TYPE::HORIZONTAL;
+    else if (vertical_cut)
+        cut = CUT_TYPE::VERTICAL;
+    else
+        return false;
+
+    return true;
+}
+

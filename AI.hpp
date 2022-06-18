@@ -45,9 +45,12 @@ class AI
 
     std::vector<std::vector<std::shared_ptr<Tile> >> getGameboard() const { return gameboard_; }
     std::shared_ptr<CharacterAI> getCharacterAIById(const char& id);
+    void getMaxPoint(int& max_cut_points, const std::shared_ptr<Tile>& goal_tile, const MagicMaze::DIRECTIONS& dir);
+    void getMaxCutPoints(CutPoints& max_cut_points, const std::shared_ptr<Tile>& goal_tile);
+    bool checkIfCuts(CUT_TYPE& cut, const std::shared_ptr<CharacterAI>& character);
 
     AI(AI&) = delete;
-    AI& operator=(AI&) = delete;
+    AI& operator=(const AI&) = delete;
 };
 
 #endif
