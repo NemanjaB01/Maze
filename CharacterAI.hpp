@@ -25,6 +25,7 @@ class CharacterAI : public Character
     void setPriority(PRIORITY priority) { priority_ = priority; }
 
     ~CharacterAI() noexcept override = default;
+    CharacterAI(const CharacterAI& copy);
     CharacterAI() = delete;
 };
 

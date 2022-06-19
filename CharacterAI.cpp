@@ -9,6 +9,13 @@ CharacterAI::CharacterAI(const std::shared_ptr<Character>& character)
   updateCurrentTile(character);
 }
 
+CharacterAI::CharacterAI(const CharacterAI& copy)
+ : Character(copy.getCharacterType()), priority_{copy.priority_}
+{
+  this->current_tile_ = copy.current_tile_.lock();
+  this->goal_tile_ = copy.goal_tile_;
+}
+
 void CharacterAI::updateCurrentTile(const std::shared_ptr<Character>& character)
 {
   std::shared_ptr<Tile> tile{ character->getCurrentile().lock() };
@@ -19,4 +26,5 @@ void CharacterAI::updateCurrentTile(const std::shared_ptr<Character>& character)
 
   current_tile_ = AI::getInstance().getGameboard().at(row).at(col);
   current_tile_.lock()->setCharacter(AI::getInstance().getCharacterAIById(character->getCharacterTypeAsChar()));
+  current_tile_.lock()->setAvailable(false);
 }

@@ -21,6 +21,9 @@ struct CutPoints
   CutPoints() : x_right_{0}, x_left_{0}, y_top_{0}, y_bottom_{0} {}
 };
 
+const std::array<int, 4> ROW_VALUES { -1, 0, 1, 0}; // UP  RIGHT  DOWN  LEFT
+const std::array<int, 4> COL_VALUES { 0, 1, 0, -1};
+
 class AI
 {
   private:
@@ -35,12 +38,12 @@ class AI
 
     bool checkIfCutsInPossibleDirection(const CUT_TYPE& cut, const int& total_iterations);
     bool checkTilesWayForAvailability(const std::shared_ptr<CharacterAI>& character, CUT_TYPE cut,
-        bool& currently_best_way);
-    bool checkIfPossibleCut(const std::shared_ptr<CharacterAI>& character, CUT_TYPE& cut, bool& currently_best_way);
+         bool& currently_best_way, int& distance);
+    bool checkIfPossibleCut(const std::shared_ptr<CharacterAI>& character, CUT_TYPE& cut, bool& currently_best_way,
+          int& distance);
     void leaveTileIfPossible(std::shared_ptr<CharacterAI>& character);
     void countFreeSpaceInCertainDirection(const std::shared_ptr<CharacterAI>& character,
         MagicMaze::DIRECTIONS direction, int& free_space);
-    void checkForBestLeave(std::shared_ptr<CharacterAI>& character, int& other_free_spaces, const int& free_space);
 
     void getMaxPoint(int& max_cut_points, const std::shared_ptr<Tile>& goal_tile, const MagicMaze::DIRECTIONS& dir);
     void getMaxCutPoints(CutPoints& max_cut_points, const std::shared_ptr<Tile>& goal_tile);
@@ -48,12 +51,18 @@ class AI
 
     void findGoalTile(const std::shared_ptr<CharacterAI>& character);
     void collectNeighborTiles(std::queue<std::shared_ptr<Tile>>& tiles, std::vector<std::vector<bool>>& visited);
-    void checkPriority(const std::shared_ptr<CharacterAI> character, bool& goal_found,
+    void checkPriority(std::shared_ptr<CharacterAI> character, bool& goal_found,
                        const std::shared_ptr<Tile>& current_tile);
 
     void printCommand(const std::vector<std::string>& command_input) const noexcept;
     void playNextMove(std::shared_ptr<CharacterAI>& character);
-    void callMove(std::shared_ptr<CharacterAI>& character, CUT_TYPE& cut, std::shared_ptr<Tile>& q_finder);
+    void callMove(std::shared_ptr<CharacterAI>& character, const int& distance);
+    void optimizePriority(std::shared_ptr<CharacterAI>& character);
+    void optimizeReveal(std::shared_ptr<CharacterAI>& character);
+    void checkWhoIsInBetterPossition(std::shared_ptr<CharacterAI>& current_character,
+                                     std::shared_ptr<CharacterAI>& other_character, const bool& same_goal_tile);
+
+    bool ifDirectHit(const std::shared_ptr<CharacterAI>& character, const CUT_TYPE& cut);
 
   public:
     static AI& getInstance();
