@@ -274,7 +274,7 @@ namespace MagicMaze
       ///
       /// @return current direction represented as string
       //
-      std::string getPossibleMoveAsString() const;
+      static std::string getDirectionAsString(MagicMaze::DIRECTIONS direction);
       //----------------------------------------------------------------------------------------------------------------
       //
       /// Getter for member rooms_.

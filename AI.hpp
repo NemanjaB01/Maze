@@ -63,6 +63,11 @@ class AI
                                      std::shared_ptr<CharacterAI>& other_character, const bool& same_goal_tile);
 
     bool ifDirectHit(const std::shared_ptr<CharacterAI>& character, const CUT_TYPE& cut);
+    void callCommand(MagicMaze::COMMANDS command);
+    bool callScry();
+    void getScryFromRoomId(const int& goal_row, const int& goal_col, std::vector<std::string>& scry_input);
+    void invertDirection(MagicMaze::DIRECTIONS& direction);
+    bool checkIfPowerCouldBeUsed(const std::shared_ptr<CharacterAI>& character);
 
   public:
     static AI& getInstance();

@@ -38,7 +38,7 @@ std::ostream& MagicMaze::operator<<(std::ostream& out, const Game& game)
   out << "Card Flip Counter:" << std::setw(4) << game.getFlipsNumber() << std::endl;
   if (game.ifMapActivated())
     game.printMap();
-  out << "Possible move: " << game.getPossibleMoveAsString();
+  out << "Possible move: " << MagicMaze::Game::getDirectionAsString(game.getCurrentDirection());
 
   return out;
 }
@@ -160,9 +160,9 @@ void MagicMaze::Game::printHorizontalFrame() const noexcept
   std::cout << IO::DOUBLE_X_Y_FRAME << std::endl;
 }
 
-std::string MagicMaze::Game::getPossibleMoveAsString() const
+std::string MagicMaze::Game::getDirectionAsString(MagicMaze::DIRECTIONS direction)
 {
-  switch (getCurrentDirection())
+  switch (direction)
   {
   case DIRECTIONS::UP:
     return "up";

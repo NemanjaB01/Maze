@@ -124,12 +124,16 @@ void AI::determineHighPriorities()
 
 void AI::callMove(std::shared_ptr<CharacterAI>& character, const int& distance)
 {
-  std::vector<std::string> move_input{std::string{"move"}, std::string{character->getCharacterTypeAsChar()},
-                        MagicMaze::Game::getInstance().getPossibleMoveAsString(), std::to_string(distance)};
+  using namespace MagicMaze;
+  std::vector<std::string> move_input{std::string{"move"}, std::string{character->getCharacterTypeAsChar()}};
+
+  move_input.push_back(Game::getInstance().getDirectionAsString(Game::getInstance().getCurrentDirection()));
+  move_input.push_back(std::to_string(distance));
 
   MagicMaze::Game::getInstance().move(move_input);
   printCommand(move_input);
 }
+
 
 void AI::playNextMove(std::shared_ptr<CharacterAI>& character)
 {
@@ -186,7 +190,10 @@ void AI::play()
   for(auto& character : characters_)
   {
     if (character->hasGoal())
+    {
       playNextMove(character);
+      checkIfPowerCouldBeUsed(character);
+    }
   }
 }
 
@@ -702,4 +709,114 @@ bool AI::ifDirectHit(const std::shared_ptr<CharacterAI>& character, const CUT_TY
   else if (goal->getColumn() == current->getColumn() && cut == CUT_TYPE::VERTICAL)
     return true;
   return false;
+}
+
+bool AI::checkIfPowerCouldBeUsed(const std::shared_ptr<CharacterAI>& character)
+{
+  TileType current = character->getCurrentile().lock()->getTileType();
+  // here only for seer and crystal ball
+  if (current == TileType::CRYSTAL_BALL)
+      return callScry();
+
+  return false;
+}
+
+void AI::callCommand(MagicMaze::COMMANDS command)
+{
+  using namespace MagicMaze;
+  if (command == COMMANDS::FLIP)
+    Game::getInstance().flip();
+  else if (command == COMMANDS::FIGHT)
+    Game::getInstance().fightMonster();
+  else if (command == COMMANDS::UNLOCK)
+    Game::getInstance().unlock();
+}
+
+bool AI::callScry()
+{
+  std::shared_ptr<CharacterAI> seer{ getCharacterAIById('S') };
+  seer->setGoalTile(nullptr);
+  auto rooms{ MagicMaze::Game::getInstance().getRooms() };
+
+  std::shared_ptr<Room> goal_room{nullptr};
+  for (auto& row_of_rooms : rooms)
+    for (auto& single_room : row_of_rooms)
+    {
+      if (!single_room->isRevealed())
+      {
+        goal_room = single_room;
+        break;
+      }
+    }
+  if (!goal_room)
+  {
+    std::shared_ptr<Tile> tile = seer->getCurrentile().lock();
+    const int row{tile->getRow()};
+    const int col{tile->getColumn()};
+
+    gameboard_.at(row).at(tile->getColumn()) = std::make_shared<BasicTile>(tile->getTileType(), tile->getInsideRoomId(),
+       row, col);
+
+    seer->updateCurrentTile(MagicMaze::Game::getInstance().getCharacter(CharacterType::SEER));
+    return false;
+  }
+  std::vector<std::string> scry_input{ std::string{"scry"}};
+  getScryFromRoomId(goal_room->getRow(), goal_room->getColumn(), scry_input);
+
+  MagicMaze::Game::getInstance().scry(scry_input);
+  printCommand(scry_input);
+
+  return true;
+}
+
+void AI::getScryFromRoomId(const int& goal_row, const int& goal_col, std::vector<std::string>& scry_input)
+{
+  using namespace MagicMaze;
+
+  std::shared_ptr<Room> scry_from_room{nullptr};
+  auto rooms{ Game::getInstance().getRooms() };
+  std::vector<DIRECTIONS> directions{ DIRECTIONS::UP, DIRECTIONS::DOWN, DIRECTIONS::RIGHT, DIRECTIONS::LEFT };
+
+  for (int i{0}; i < 4 && !scry_from_room; i++)
+  {
+    int next_row{goal_row};
+    int next_col{goal_col};
+    try
+    {
+      DIRECTIONS direction{ directions.at(i) };
+      Game::changeNextRowCol(next_row, next_col, direction);
+
+      std::shared_ptr<Room> room{ rooms.at(next_row).at(next_col) };
+      if (room->isRevealed())
+      {
+        scry_input.push_back(std::string{room->getRoomId()});
+        invertDirection(direction);
+        scry_input.push_back(MagicMaze::Game::getDirectionAsString(direction));
+        return;
+      }
+    }
+    catch(std::out_of_range& e)
+    {
+      continue;
+    }
+  }
+}
+
+void AI::invertDirection(MagicMaze::DIRECTIONS& direction)
+{
+  switch (direction)
+  {
+    case MagicMaze::DIRECTIONS::LEFT:
+      direction = MagicMaze::DIRECTIONS::RIGHT;
+      break;
+    case MagicMaze::DIRECTIONS::RIGHT:
+      direction = MagicMaze::DIRECTIONS::LEFT;
+      break;
+    case MagicMaze::DIRECTIONS::UP:
+      direction = MagicMaze::DIRECTIONS::DOWN;
+      break;
+    case MagicMaze::DIRECTIONS::DOWN:
+      direction = MagicMaze::DIRECTIONS::UP;
+      break;
+  }
 }
