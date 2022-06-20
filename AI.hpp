@@ -9,6 +9,7 @@
 #include "Tile.hpp"
 #include "CharacterAI.hpp"
 #include "Game.hpp"
+#include <map>
 
 enum class CUT_TYPE{ HORIZONTAL, VERTICAL, BOTH, NONE};
 
@@ -50,24 +51,29 @@ class AI
     bool checkIfCuts(CUT_TYPE& cut, const std::shared_ptr<CharacterAI>& character);
 
     void findGoalTile(const std::shared_ptr<CharacterAI>& character);
-    void collectNeighborTiles(std::queue<std::shared_ptr<Tile>>& tiles, std::vector<std::vector<bool>>& visited);
+    void collectNeighborTiles(std::queue<std::shared_ptr<Tile>>& tiles, std::vector<std::vector<bool>>& visited,
+         CharacterType character_type);
     void checkPriority(std::shared_ptr<CharacterAI> character, bool& goal_found,
                        const std::shared_ptr<Tile>& current_tile);
 
     void printCommand(const std::vector<std::string>& command_input) const noexcept;
     void playNextMove(std::shared_ptr<CharacterAI>& character);
     void callMove(std::shared_ptr<CharacterAI>& character, const int& distance);
-    void optimizePriority(std::shared_ptr<CharacterAI>& character);
-    void optimizeReveal(std::shared_ptr<CharacterAI>& character);
-    void checkWhoIsInBetterPossition(std::shared_ptr<CharacterAI>& current_character,
-                                     std::shared_ptr<CharacterAI>& other_character, const bool& same_goal_tile);
+    void optimizePriority(std::shared_ptr<CharacterAI>& character, const std::shared_ptr<Tile>& test_tile);
+    void optimizeReveal(std::shared_ptr<CharacterAI>& character, const std::shared_ptr<Tile>& test_tile);
+    bool checkIfInBetterPosition(std::shared_ptr<CharacterAI>& current_character,
+                std::shared_ptr<CharacterAI>& other_character, const std::shared_ptr<Tile>& test_tile);
 
     bool ifDirectHit(const std::shared_ptr<CharacterAI>& character, const CUT_TYPE& cut);
     void callCommand(MagicMaze::COMMANDS command);
     bool callScry();
     void getScryFromRoomId(const int& goal_row, const int& goal_col, std::vector<std::string>& scry_input);
     void invertDirection(MagicMaze::DIRECTIONS& direction);
-    bool checkIfPowerCouldBeUsed(const std::shared_ptr<CharacterAI>& character);
+    bool checkIfPowerCouldBeUsed(std::shared_ptr<CharacterAI>& character);
+
+    bool ifCharacterAllowsToCollectTile(CharacterType character_type, const std::shared_ptr<Tile>& tile);
+    bool useCertainPower(std::shared_ptr<CharacterAI>& character, MagicMaze::COMMANDS command);
+    void runCharacter(std::shared_ptr<CharacterAI>& character);
 
   public:
     static AI& getInstance();
