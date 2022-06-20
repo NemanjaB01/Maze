@@ -163,6 +163,10 @@ void GameParser::checkFirstParameter(const std::string& command_as_string, Magic
   {
     command = MagicMaze::COMMANDS::PLAY;
   }
+  else if (command_as_string == "WHOAMI")
+  {
+    command = MagicMaze::COMMANDS::WHOAMI;
+  }
   else
   {
     throw IO::NOT_KNOWN_COMMAND_MSG;

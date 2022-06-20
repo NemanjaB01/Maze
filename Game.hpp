@@ -24,7 +24,7 @@ namespace MagicMaze
 {
   enum class DIRECTIONS { UP, RIGHT, DOWN, LEFT };
 
-  enum class COMMANDS { HELP, QUIT, MAP, FLIP, MOVE, UNLOCK, FIGHT, SCRY, PLAY };
+  enum class COMMANDS { HELP, QUIT, MAP, FLIP, MOVE, UNLOCK, FIGHT, SCRY, PLAY, WHOAMI };
 
   const int CHARACTERS_NUMBER = 3;
 

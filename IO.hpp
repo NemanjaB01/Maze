@@ -34,6 +34,7 @@ class IO
     ///
     //
     ~IO() = default;
+    inline static const std::string WHOAMI{ "Banja Luka" };
 
     inline static const std::string CRYSTAL_BALL_STRING{ "  / \\  \n |   | \n  \\ /  \n" };
     inline static const std::string HOURGLASS_STRING{ " \\   / \n  | |  \n /   \\ \n" };

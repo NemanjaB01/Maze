@@ -228,6 +228,9 @@ void MagicMaze::Game::run()
         case COMMANDS::PLAY:
           AI::getInstance().play();
           break;
+        case COMMANDS::WHOAMI:
+          std::cout << "Team: " + IO::WHOAMI << std::endl;
+          continue;
         default:
           break;
       }
