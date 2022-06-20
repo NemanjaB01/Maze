@@ -4,13 +4,20 @@
 #include "AI.hpp"
 
 CharacterAI::CharacterAI(const std::shared_ptr<Character>& character)
-  : Character(character->getCharacterType()), priority_{PRIORITY::NONE}
+  : Character(character->getCharacterType()),
+    priority_{PRIORITY::NONE}, 
+    blocked_direction_{MagicMaze::DIRECTIONS::NONE},
+    blocked_way_{false}, blocking_character_{CharacterType::NONE}
 {
   updateCurrentTile(character);
 }
 
 CharacterAI::CharacterAI(const CharacterAI& copy)
- : Character(copy.getCharacterType()), priority_{copy.priority_}
+ : Character(copy.getCharacterType()),
+   priority_{copy.priority_},
+   blocked_direction_{copy.blocked_direction_},
+   blocked_way_{copy.blocked_way_},
+   blocking_character_{copy.blocking_character_}
 {
   this->current_tile_ = copy.current_tile_.lock();
   this->goal_tile_ = copy.goal_tile_;

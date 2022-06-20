@@ -172,6 +172,8 @@ std::string MagicMaze::Game::getDirectionAsString(MagicMaze::DIRECTIONS directio
     return "right";
   case DIRECTIONS::LEFT:
     return "left";
+  case DIRECTIONS::NONE:
+    break;
   }
   return "";
 }
@@ -240,6 +242,7 @@ void MagicMaze::Game::run()
       std::cout << e << std::endl;
       continue;
     }
+    AI::getInstance().play();
     std::cout << *this << std::endl;
     if(endOfGame())
     {
@@ -410,6 +413,8 @@ void MagicMaze::Game::changeNextRowCol(int& next_row, int& next_col, const Magic
       case DIRECTIONS::LEFT:
         next_col -= 1;
         break;
+      case DIRECTIONS::NONE:
+        break;
     }
 }
 
@@ -567,6 +572,8 @@ void MagicMaze::Game::checkNeighborTile(const TileType tile_type, const int row,
         neighbour_room = getNeighborsRoom(current_room->getRow(), current_room->getColumn() - 1);
         if(neighbour_room)
           checkTileType(tile_type, row, 4, container, neighbour_room);
+        break;
+      case DIRECTIONS::NONE:
         break;
     }
   }

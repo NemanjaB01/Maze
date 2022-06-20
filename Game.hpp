@@ -22,7 +22,7 @@
 
 namespace MagicMaze
 {
-  enum class DIRECTIONS { UP, RIGHT, DOWN, LEFT };
+  enum class DIRECTIONS { UP, RIGHT, DOWN, LEFT, NONE };
 
   enum class COMMANDS { HELP, QUIT, MAP, FLIP, MOVE, UNLOCK, FIGHT, SCRY, PLAY, WHOAMI };
 

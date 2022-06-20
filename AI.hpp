@@ -42,7 +42,6 @@ class AI
          bool& currently_best_way, int& distance);
     bool checkIfPossibleCut(const std::shared_ptr<CharacterAI>& character, CUT_TYPE& cut, bool& currently_best_way,
           int& distance);
-    void leaveTileIfPossible(std::shared_ptr<CharacterAI>& character);
     void countFreeSpaceInCertainDirection(const std::shared_ptr<CharacterAI>& character,
         MagicMaze::DIRECTIONS direction, int& free_space);
 
@@ -74,10 +73,12 @@ class AI
 
     bool ifCharacterAllowsToCollectTile(CharacterType character_type, const std::shared_ptr<Tile>& tile);
     bool useCertainPower(std::shared_ptr<CharacterAI>& character, MagicMaze::COMMANDS command);
-    bool ifMonsterBlocksRoom(std::shared_ptr<CharacterAI>& character);
+    void checkifMonsterBlocksGoalRoom(std::shared_ptr<CharacterAI>& character);
     void runCharacter(std::shared_ptr<CharacterAI>& character);
 
     bool ifDoorBlocksWay(const std::shared_ptr<Tile>& tile);
+    bool checkIfCharactersBlockingWays(std::shared_ptr<CharacterAI>& character);
+    bool decideWhoLeavesTile(std::pair<std::shared_ptr<CharacterAI>, std::shared_ptr<CharacterAI>>& characters);
 
   public:
     static AI& getInstance();
