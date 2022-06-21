@@ -876,7 +876,7 @@ bool AI::checkIfInBetterPosition(std::shared_ptr<CharacterAI>& original_current_
     collectNeighborTiles(q_tracker, visited, CharacterType::NONE);
     q_tracker.pop();
   }
-  return false;
+  return false; 
 }
 
 
