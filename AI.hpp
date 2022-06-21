@@ -81,6 +81,7 @@ class AI
     bool decideWhoLeavesTile(std::pair<std::shared_ptr<CharacterAI>, std::shared_ptr<CharacterAI>>& characters);
 
     void callFigherToFight();
+    bool ifDoorAtRoomEdge(const std::shared_ptr<Room>& room, const std::shared_ptr<Tile>& tile);
 
   public:
     static AI& getInstance();

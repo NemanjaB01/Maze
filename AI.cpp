@@ -203,16 +203,11 @@ bool AI::playNextMove(std::shared_ptr<CharacterAI>& character)
 
 void AI::runCharacter(std::shared_ptr<CharacterAI>& character)
 {
-  MagicMaze::DIRECTIONS current_dir{ MagicMaze::Game::getInstance().getCurrentDirection() };
-  while (character->hasGoal() && character->getBlockedDirection() != current_dir && playNextMove(character))
+  while (character->hasGoal() && character->getBlockingCharacter() == CharacterType::NONE && playNextMove(character))
   {
     checkIfPowerCouldBeUsed(character);
     determineHighPriorities();
     findGoalTile(character);
-  }
-  if (character->getBlockedDirection() == current_dir)
-  {
-    character->setBlockedDirection(MagicMaze::DIRECTIONS::NONE);
   }
   checkIfPowerCouldBeUsed(character);
 }
@@ -264,7 +259,6 @@ bool AI::decideWhoLeavesTile(std::pair<std::shared_ptr<CharacterAI>, std::shared
     if (second_free_space) // first always has goal
     {
       callMove(characters.second, 1);
-      characters.second->setBlockedDirection(direction);
       return true;
     }
     return false;
@@ -272,8 +266,6 @@ bool AI::decideWhoLeavesTile(std::pair<std::shared_ptr<CharacterAI>, std::shared
   else if (first_free_space || second_free_space)
   {
     first_free_space ? callMove(characters.first, 1) : callMove(characters.second, 1);
-    first_free_space ? characters.first->setBlockedDirection(direction) :
-                       characters.second->setBlockedDirection(direction);
     return true;
   }
   return false;
@@ -401,6 +393,11 @@ void AI::collectNeighborTiles(std::queue<std::shared_ptr<Tile>>& tiles, std::vec
         continue;
       if (room->getNumOfMonsters() && character_type != CharacterType::NONE && character_type != CharacterType::FIGHTER)
       {
+        if (ifDoorAtRoomEdge(room, tile) && ifCharacterAllowsToCollectTile(character_type, tile))
+        {
+          visited.at(tile->getRow()).at(tile->getColumn()) = true;
+          tiles.push(tile);
+        }
         callFigherToFight();
         continue;
       }
@@ -420,6 +417,18 @@ void AI::collectNeighborTiles(std::queue<std::shared_ptr<Tile>>& tiles, std::vec
       continue;
     }
   }
+}
+
+bool AI::ifDoorAtRoomEdge(const std::shared_ptr<Room>& room, const std::shared_ptr<Tile>& tile)
+{
+  if (tile->getTileType() == TileType::HORIZONTAL_DOOR || tile->getTileType() == TileType::VERTICAL_DOOR)
+  {
+    const int row{ tile->getRow() - room->getRow() * 5};
+    const int col{ tile->getColumn() - room->getColumn() * 5};
+    if ((row == 0 || row == 4) && (col == 0 || col == 4))
+      return true;
+  }
+  return false;
 }
 
 bool AI::ifCharacterAllowsToCollectTile(CharacterType character_type, const std::shared_ptr<Tile>& tile)
