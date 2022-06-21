@@ -76,9 +76,12 @@ class AI
     void checkifMonsterBlocksGoalRoom(std::shared_ptr<CharacterAI>& character);
     void runCharacter(std::shared_ptr<CharacterAI>& character);
 
-    bool ifDoorBlocksWay(const std::shared_ptr<Tile>& tile);
+    bool ifDoorBlocksWay(const std::shared_ptr<Tile>& tile, const std::shared_ptr<Room>& room);
+    bool ifDoorAtRoomsEdgeAccessable(const std::shared_ptr<Tile>& tile, const std::shared_ptr<Room>& room);
+
     bool checkIfCharactersBlockingWays(std::shared_ptr<CharacterAI>& character);
-    bool decideWhoLeavesTile(std::pair<std::shared_ptr<CharacterAI>, std::shared_ptr<CharacterAI>>& characters);
+    void decideWhoLeavesTile(std::pair<std::shared_ptr<CharacterAI>, std::shared_ptr<CharacterAI>>& characters,
+        bool& decision_made);
 
     void callFigherToFight();
 

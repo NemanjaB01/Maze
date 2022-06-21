@@ -186,17 +186,6 @@ namespace MagicMaze
 
       //----------------------------------------------------------------------------------------------------------------
       ///
-      /// Returns neighbor's room based on row and column.
-      ///
-      /// @param neighbor_room_row neighbor's room row
-      /// @param neighbor_room_column neighbor's room column
-      ///
-      /// @return neighbor room if exists, otherwise nullptr
-      //
-      std::shared_ptr<Room> getNeighborsRoom(int neighbor_room_row, int neighbor_room_column);
-
-      //----------------------------------------------------------------------------------------------------------------
-      ///
       /// Checks if all characters are on loot tiles.
       ///
       /// @return true, if game is over (with success), otherwise false
@@ -227,6 +216,18 @@ namespace MagicMaze
       void addRoomsInRow(const std::string& rooms_row_string);
 
       bool ifAllButtonsVisible() const;
+
+      //----------------------------------------------------------------------------------------------------------------
+      ///
+      /// Returns neighbor's room based on row and column.
+      ///
+      /// @param neighbor_room_row neighbor's room row
+      /// @param neighbor_room_column neighbor's room column
+      ///
+      /// @return neighbor room if exists, otherwise nullptr
+      //
+      std::shared_ptr<Room> getNeighborsRoom(int neighbor_room_row, int neighbor_room_column);
+
 
       //----------------------------------------------------------------------------------------------------------------
       ///
