@@ -209,6 +209,7 @@ void AI::runCharacter(std::shared_ptr<CharacterAI>& character)
   {
     character->setBlockedDirection(MagicMaze::DIRECTIONS::NONE);
   }
+  checkIfPowerCouldBeUsed(character);
 }
 
 bool AI::checkIfCharactersBlockingWays(std::shared_ptr<CharacterAI>& character)
@@ -775,8 +776,6 @@ void AI::optimizeGoals(std::shared_ptr<CharacterAI>& character, const std::share
 bool AI::checkIfInBetterPosition(std::shared_ptr<CharacterAI>& original_current_character,
       std::shared_ptr<CharacterAI>& original_other_character, const std::shared_ptr<Tile>& test_tile)
 {
-  std::shared_ptr<CharacterAI> current = std::make_shared<CharacterAI>(*original_current_character);
-  std::shared_ptr<CharacterAI> other = std::make_shared<CharacterAI>(*original_other_character);
   std::vector<std::vector<bool>> visited(gameboard_.size(), std::vector<bool>(gameboard_.at(0).size(), false));
 
   std::queue<std::shared_ptr<Tile>> q_tracker;
@@ -790,6 +789,8 @@ bool AI::checkIfInBetterPosition(std::shared_ptr<CharacterAI>& original_current_
 
   while(!q_tracker.empty())
   {
+    std::shared_ptr<CharacterAI> current = std::make_shared<CharacterAI>(*original_current_character);
+    std::shared_ptr<CharacterAI> other = std::make_shared<CharacterAI>(*original_other_character);
     std::shared_ptr<Tile> front = q_tracker.front();
     current->setGoalTile(front);
     other->setGoalTile(front);
