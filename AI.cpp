@@ -739,6 +739,7 @@ void AI::optimizePriority(std::shared_ptr<CharacterAI>& character, const std::sh
 
   if (test_tile->getTileType() == TileType::HOURGLASS || priority == PRIORITY::REVEAL)
     optimizeGoals(character, test_tile);
+
   else if (priority == PRIORITY::LOOT)
   {
     int counter{0};
