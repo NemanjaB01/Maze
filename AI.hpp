@@ -65,7 +65,7 @@ class AI
     bool checkIfInBetterPosition(std::shared_ptr<CharacterAI>& current_character,
                 std::shared_ptr<CharacterAI>& other_character, const std::shared_ptr<Tile>& test_tile);
 
-    bool ifDirectHit(const std::shared_ptr<CharacterAI>& character, const CUT_TYPE& cut);
+    bool ifDirectHit(const std::shared_ptr<CharacterAI>& character);
     void callCommand(MagicMaze::COMMANDS command);
     bool callScry();
     void getScryGoalRoom(std::shared_ptr<Room>& goal_room);

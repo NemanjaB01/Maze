@@ -260,10 +260,13 @@ void AI::decideWhoLeavesTile(std::pair<std::shared_ptr<CharacterAI>, std::shared
 
   invertDirection(direction);
 
-  if (!characters.second->hasGoal() && second_free_space)
+  if (!characters.second->hasGoal())
   {
-    callMove(characters.second, 1);
-    decision_made = true;
+    if (second_free_space)
+    {
+      callMove(characters.second, 1);
+      decision_made = true;
+    }
   }
   else if (first_free_space || second_free_space)
   {
@@ -319,7 +322,9 @@ bool AI::ifGoalCorrespondsToPriority(const std::shared_ptr<CharacterAI>& charact
 
   if (priority == PRIORITY::NONE)
     return false;
-  if (priority == PRIORITY::LOOT)
+  else if (goal_tile_type == TileType::HOURGLASS)
+    return true;
+  else if (priority == PRIORITY::LOOT)
   {
     if (goal_tile_type == TileType::LOOT)
       return true;
@@ -518,6 +523,8 @@ void AI::checkPriority(std::shared_ptr<CharacterAI> character, bool& goal_found,
     if (character->hasGoal())
       goal_found = true;
   }
+  if (goal_found)
+    return;
 
   switch(character->getCharacterType())
   {
@@ -705,7 +712,7 @@ bool AI::checkTilesWayForAvailability(const std::shared_ptr<CharacterAI>& charac
     else if (room->getNumOfMonsters() && character->getCharacterType() != CharacterType::FIGHTER)
       return false;
 
-    else if (tile->ifContainsCharacter() && i == distance - 1 && ifDirectHit(character, cut))
+    else if (tile->ifContainsCharacter() && i == distance - 1 && ifDirectHit(character))
     {
       character->setBlockingCharacter(tile->getCharacter()->getCharacterType());
       character->setBlockedWay(true);
@@ -871,14 +878,20 @@ bool AI::checkIfInBetterPosition(std::shared_ptr<CharacterAI>& original_current_
 
     if (current_cuts && other_cuts)
     {
-      if (!if_others_goal)
+      if (other_best_way && !current_best_way && MagicMaze::Game::getInstance().getFlipsNumber()
+        < 1)
+      {
+        original_other_character->setGoalTile(test_tile);
+        return false;
+      }
+      else if (!if_others_goal)
         return true;
       else if (if_others_goal && other_best_way)
         return false;
       else if (if_others_goal && current_best_way)
         return true;
     }
-    if (!current_cuts && other_cuts)
+    else if (!current_cuts && other_cuts)
       return false;
     else if (current_cuts && !other_cuts)
       return true;
@@ -890,14 +903,14 @@ bool AI::checkIfInBetterPosition(std::shared_ptr<CharacterAI>& original_current_
 }
 
 
-bool AI::ifDirectHit(const std::shared_ptr<CharacterAI>& character, const CUT_TYPE& cut)
+bool AI::ifDirectHit(const std::shared_ptr<CharacterAI>& character)
 {
   std::shared_ptr<Tile> goal = character->getGoalTile();
   std::shared_ptr<Tile> current = character->getCurrentile().lock();
 
-  if (goal->getRow() == current->getRow() && cut == CUT_TYPE::HORIZONTAL)
+  if (goal->getRow() == current->getRow())
     return true;
-  else if (goal->getColumn() == current->getColumn() && cut == CUT_TYPE::VERTICAL)
+  else if (goal->getColumn() == current->getColumn())
     return true;
   return false;
 }
