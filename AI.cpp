@@ -878,13 +878,7 @@ bool AI::checkIfInBetterPosition(std::shared_ptr<CharacterAI>& original_current_
 
     if (current_cuts && other_cuts)
     {
-      if (other_best_way && !current_best_way && MagicMaze::Game::getInstance().getFlipsNumber()
-        < 1)
-      {
-        original_other_character->setGoalTile(test_tile);
-        return false;
-      }
-      else if (!if_others_goal)
+      if (!if_others_goal)
         return true;
       else if (if_others_goal && other_best_way)
         return false;
