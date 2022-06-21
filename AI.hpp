@@ -64,7 +64,6 @@ class AI
                 std::shared_ptr<CharacterAI>& other_character, const std::shared_ptr<Tile>& test_tile);
 
     bool ifDirectHit(const std::shared_ptr<CharacterAI>& character, const CUT_TYPE& cut);
-    void callCommand(MagicMaze::COMMANDS command);
     bool callScry();
     void getScryGoalRoom(std::shared_ptr<Room>& goal_room);
     void getScryFromRoomId(const int& goal_row, const int& goal_col, std::vector<std::string>& scry_input);
@@ -92,6 +91,7 @@ class AI
     void copySpecificTile(std::shared_ptr<Tile>& tile);
     void copySpecificTile(std::shared_ptr<Tile>& tile, const std::shared_ptr<Character>& character);
     void play();
+    void callCommand(MagicMaze::COMMANDS command);
 
     std::vector<std::vector<std::shared_ptr<Tile> >> getGameboard() const { return gameboard_; }
     std::shared_ptr<CharacterAI> getCharacterAIById(const char& id);

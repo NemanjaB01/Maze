@@ -229,6 +229,10 @@ void MagicMaze::Game::run()
           break;
         case COMMANDS::PLAY:
           AI::getInstance().play();
+          if(endOfGame())
+            return;
+          else
+            AI::getInstance().callCommand(COMMANDS::FLIP);
           break;
         case COMMANDS::WHOAMI:
           std::cout << "Team: " + IO::WHOAMI << std::endl;
@@ -244,12 +248,10 @@ void MagicMaze::Game::run()
     }
     std::cout << *this << std::endl;
     if(endOfGame())
-    {
-      std::cout << "You win, congratulations! It took you "<< getFlipsNumber() <<" card flips to find the treasure.\n";
       break;
-    }
   }
 }
+
 
 std::shared_ptr<Character> MagicMaze::Game::getCharacter(CharacterType type) const
 {
@@ -737,7 +739,10 @@ bool MagicMaze::Game::endOfGame()
   std::shared_ptr<Character> seer = getCharacter(CharacterType::SEER);
 
   if((thief->isOnLoot() == true) && (fighter->isOnLoot() == true) && (seer->isOnLoot() == true))
+  {
+    std::cout << "You win, congratulations! It took you "<< getFlipsNumber() <<" card flips to find the treasure.\n";
     return true;
+  }
 
   return false;
 }

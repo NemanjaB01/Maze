@@ -284,8 +284,6 @@ void AI::play()
   for (auto& character : characters_)
     if (character->ifBlockedWay())
       checkIfCharactersBlockingWays(character);
-
-  callCommand(MagicMaze::COMMANDS::FLIP);
 }
 
 void AI::giveGoalsToCharacters()
