@@ -258,9 +258,9 @@ void AI::decideWhoLeavesTile(std::pair<std::shared_ptr<CharacterAI>, std::shared
     callMove(characters.second, 1);
     decision_made = true;
   }
-  else if (first_free_space || second_free_space)
+  else if ((first_free_space || second_free_space) && characters.second->hasGoal())
   {
-    !second_free_space ? callMove(characters.first, 1) : callMove(characters.second, 1);
+    second_free_space ? callMove(characters.second, 1) : callMove(characters.first, 1);
     decision_made = true;
   }
 

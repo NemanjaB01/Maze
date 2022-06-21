@@ -184,13 +184,6 @@ namespace MagicMaze
       void checkNeighborTile(const TileType tile_type, const int row, const int column,
        std::queue<std::shared_ptr<Tile>>& container, std::shared_ptr<Room> current_room, const int index);
 
-      //----------------------------------------------------------------------------------------------------------------
-      ///
-      /// Checks if all characters are on loot tiles.
-      ///
-      /// @return true, if game is over (with success), otherwise false
-      //
-      bool endOfGame();
 
       //----------------------------------------------------------------------------------------------------------------
       ///
@@ -214,6 +207,13 @@ namespace MagicMaze
       /// @param rooms_row_string string that contains room IDs
       //
       void addRoomsInRow(const std::string& rooms_row_string);
+      //----------------------------------------------------------------------------------------------------------------
+      ///
+      /// Checks if all characters are on loot tiles.
+      ///
+      /// @return true, if game is over (with success), otherwise false
+      //
+      bool endOfGame();
 
       bool ifAllButtonsVisible() const;
 

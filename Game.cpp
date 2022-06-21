@@ -230,9 +230,11 @@ void MagicMaze::Game::run()
         case COMMANDS::PLAY:
           AI::getInstance().play();
           if(endOfGame())
+          {
+            std::cout << *this << std::endl;
             return;
-          else
-            AI::getInstance().callCommand(COMMANDS::FLIP);
+          }
+          AI::getInstance().callCommand(COMMANDS::FLIP);
           break;
         case COMMANDS::WHOAMI:
           std::cout << "Team: " + IO::WHOAMI << std::endl;
