@@ -13,7 +13,6 @@ class CharacterAI : public Character
   private:
     std::weak_ptr<Tile> goal_tile_;
     PRIORITY priority_;
-    MagicMaze::DIRECTIONS blocked_direction_;
     bool blocked_way_;
     CharacterType blocking_character_;
 
@@ -27,10 +26,6 @@ class CharacterAI : public Character
     void updateCurrentTile(const std::shared_ptr<Character>& character);
     void setGoalTile(const std::shared_ptr<Tile>& goal_tile) { this->goal_tile_ = goal_tile; }
     void setPriority(PRIORITY priority) { priority_ = priority; }
-
-    MagicMaze::DIRECTIONS getBlockedDirection() const { return blocked_direction_; }
-    bool ifBlockedDirection() const { return blocked_direction_ == MagicMaze::DIRECTIONS::NONE ? false : true; }
-    void setBlockedDirection(MagicMaze::DIRECTIONS direction) { blocked_direction_ = direction; }
 
     void setBlockedWay(bool blocked_way) { blocked_way_ = blocked_way; };
     bool ifBlockedWay() const { return blocked_way_; }
