@@ -230,10 +230,7 @@ void MagicMaze::Game::run()
         case COMMANDS::PLAY:
           AI::getInstance().play();
           if(endOfGame())
-          {
-            std::cout << *this << std::endl;
             return;
-          }
           AI::getInstance().callCommand(COMMANDS::FLIP);
           break;
         case COMMANDS::WHOAMI:
@@ -248,9 +245,9 @@ void MagicMaze::Game::run()
       std::cout << e << std::endl;
       continue;
     }
-    std::cout << *this << std::endl;
     if(endOfGame())
       break;
+    std::cout << *this << std::endl;
   }
 }
 
@@ -742,6 +739,7 @@ bool MagicMaze::Game::endOfGame()
 
   if((thief->isOnLoot() == true) && (fighter->isOnLoot() == true) && (seer->isOnLoot() == true))
   {
+    std::cout << *this << std::endl;
     std::cout << "You win, congratulations! It took you "<< getFlipsNumber() <<" card flips to find the treasure.\n";
     return true;
   }

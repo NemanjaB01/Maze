@@ -305,9 +305,11 @@ bool AI::ifGoalCorrespondsToPriority(const std::shared_ptr<CharacterAI>& charact
   TileType goal_tile_type{ character->getGoalTile()->getTileType() };
   PRIORITY priority{ character->getPriority() };
 
-  if (priority == PRIORITY::NONE)
+  if (goal_tile_type == TileType::HOURGLASS)
+    return true;
+  else if (priority == PRIORITY::NONE)
     return false;
-  if (priority == PRIORITY::LOOT)
+  else if (priority == PRIORITY::LOOT)
   {
     if (goal_tile_type == TileType::LOOT)
       return true;
