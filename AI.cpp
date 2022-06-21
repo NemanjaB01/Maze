@@ -106,20 +106,27 @@ void AI::determineHighPriorities()
       characters_without_specific_goal.push_back(character);
     }
   }
-
-  if (!MagicMaze::Game::getInstance().getRoomById('L')->isRevealed() || !buttons_visible)
+  
+  if(!buttons_visible)
   {
     for (auto& character : characters_without_specific_goal)
       character->setPriority(PRIORITY::REVEAL);
   }
-  else if (buttons_visible && !MagicMaze::Game::getInstance().checkIfAllCharactersOnButton())
+  else if (buttons_visible && !buttons_used_)
   {
     for (auto& character : characters_without_specific_goal)
       character->setPriority(PRIORITY::BUTTON);
   }
-  else
+  else if (buttons_visible && buttons_used_)
+  {
     for (auto& character : characters_without_specific_goal)
-      character->setPriority(PRIORITY::LOOT);
+    {
+      if (MagicMaze::Game::getInstance().getRoomById('L')->isRevealed())
+        character->setPriority(PRIORITY::LOOT);
+      else
+        character->setPriority(PRIORITY::REVEAL);
+    }
+  }
 }
 
 void AI::callMove(std::shared_ptr<CharacterAI>& character, const int& distance)
@@ -275,6 +282,9 @@ void AI::decideWhoLeavesTile(std::pair<std::shared_ptr<CharacterAI>, std::shared
 
 void AI::play()
 {
+  if (!buttons_used_)
+    buttons_used_ = MagicMaze::Game::getInstance().checkIfAllCharactersOnButton();
+
   determineHighPriorities();
   giveGoalsToCharacters();
 

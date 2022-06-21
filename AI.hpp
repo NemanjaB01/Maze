@@ -28,9 +28,11 @@ const std::array<int, 4> COL_VALUES { 0, 1, 0, -1};
 class AI
 {
   private:
-    AI() = default;
+    AI() : buttons_used_{false} {};
     std::vector<std::vector<std::shared_ptr<Tile> >> gameboard_;
     std::array<std::shared_ptr<CharacterAI>, 3> characters_;
+    bool buttons_used_;
+
 
     void determineHighPriorities();
     void giveGoalsToCharacters();
