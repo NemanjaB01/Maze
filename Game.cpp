@@ -22,7 +22,8 @@ MagicMaze::Game::Game()
                 std::make_shared<Character>(CharacterType::THIEF),
                 std::make_shared<Character>(CharacterType::SEER) },
   flips_number_{0},
-  show_map_{true}
+  show_map_{true},
+  round_{0}
 {
   shuffleCards();
 }
@@ -102,6 +103,7 @@ void MagicMaze::Game::flip()
   cards_.pop();
 
   flips_number_++;
+  round_++;
 }
 
 void MagicMaze::Game::placeCharactersOnStartingPositions()
@@ -232,6 +234,8 @@ void MagicMaze::Game::run()
           if(endOfGame())
           {
             std::cout << *this << std::endl;
+            std::cout << "You win, congratulations! It took you "<< getFlipsNumber() <<" card flips to find the"
+                        " treasure.\n";
             return;
           }
           AI::getInstance().callCommand(COMMANDS::FLIP);
@@ -250,7 +254,10 @@ void MagicMaze::Game::run()
     }
     std::cout << *this << std::endl;
     if(endOfGame())
+    {
+      std::cout << "You win, congratulations! It took you "<< getFlipsNumber() <<" card flips to find the treasure.\n";
       break;
+    }
   }
 }
 
@@ -741,10 +748,7 @@ bool MagicMaze::Game::endOfGame()
   std::shared_ptr<Character> seer = getCharacter(CharacterType::SEER);
 
   if((thief->isOnLoot() == true) && (fighter->isOnLoot() == true) && (seer->isOnLoot() == true))
-  {
-    std::cout << "You win, congratulations! It took you "<< getFlipsNumber() <<" card flips to find the treasure.\n";
     return true;
-  }
 
   return false;
 }

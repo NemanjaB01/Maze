@@ -84,6 +84,7 @@ class AI
 
     void callFigherToFight();
     bool ifDoorAtRoomEdge(const std::shared_ptr<Room>& room, const std::shared_ptr<Tile>& tile);
+    void checkIfCharacterPaused();
 
   public:
     static AI& getInstance();

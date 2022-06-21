@@ -15,6 +15,7 @@ class CharacterAI : public Character
     PRIORITY priority_;
     bool blocked_way_;
     CharacterType blocking_character_;
+    MagicMaze::DIRECTIONS blocked_direction_;
 
   public:
     CharacterAI(const std::shared_ptr<Character>& character);
@@ -22,6 +23,9 @@ class CharacterAI : public Character
     PRIORITY getPriority() const { return priority_; }
     std::shared_ptr<Tile> getGoalTile() const { return goal_tile_.lock(); };
     bool hasGoal() const { return goal_tile_.expired() ? false : true; }
+
+    MagicMaze::DIRECTIONS getBlockedDirection() const { return blocked_direction_; }
+    void setBlockedDirection(MagicMaze::DIRECTIONS direction) { blocked_direction_ = direction; }
 
     void updateCurrentTile(const std::shared_ptr<Character>& character);
     void setGoalTile(const std::shared_ptr<Tile>& goal_tile) { this->goal_tile_ = goal_tile; }

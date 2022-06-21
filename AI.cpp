@@ -203,7 +203,9 @@ bool AI::playNextMove(std::shared_ptr<CharacterAI>& character)
 
 void AI::runCharacter(std::shared_ptr<CharacterAI>& character)
 {
-  while (character->hasGoal() && character->getBlockingCharacter() == CharacterType::NONE && playNextMove(character))
+  MagicMaze::DIRECTIONS current_dir{ MagicMaze::Game::getInstance().getCurrentDirection() };
+
+  while (character->hasGoal() && character->getBlockedDirection() != current_dir && playNextMove(character))
   {
     checkIfPowerCouldBeUsed(character);
     determineHighPriorities();
@@ -260,7 +262,16 @@ void AI::decideWhoLeavesTile(std::pair<std::shared_ptr<CharacterAI>, std::shared
   }
   else if ((first_free_space || second_free_space) && characters.second->hasGoal())
   {
-    second_free_space ? callMove(characters.second, 1) : callMove(characters.first, 1);
+    if (second_free_space)
+    {
+      callMove(characters.second, 1);
+      characters.second->setBlockedDirection(direction);
+    }
+    else if (first_free_space)
+    {
+      callMove(characters.first, 1);
+      characters.first->setBlockedDirection(direction);
+    }
     decision_made = true;
   }
 
@@ -284,6 +295,16 @@ void AI::play()
   for (auto& character : characters_)
     if (character->ifBlockedWay())
       checkIfCharactersBlockingWays(character);
+  checkIfCharacterPaused();
+}
+
+void AI::checkIfCharacterPaused()
+{
+  MagicMaze::DIRECTIONS current_dir{ MagicMaze::Game::getInstance().getCurrentDirection() };
+
+  for (auto& character : characters_)
+    if (character->getBlockedDirection() == current_dir)
+      character->setBlockedDirection(MagicMaze::DIRECTIONS::NONE);
 }
 
 void AI::giveGoalsToCharacters()
@@ -307,7 +328,9 @@ bool AI::ifGoalCorrespondsToPriority(const std::shared_ptr<CharacterAI>& charact
 
   if (priority == PRIORITY::NONE)
     return false;
-  if (priority == PRIORITY::LOOT)
+  else if (goal_tile_type == TileType::HOURGLASS)
+    return true;
+  else if (priority == PRIORITY::LOOT)
   {
     if (goal_tile_type == TileType::LOOT)
       return true;
@@ -325,10 +348,9 @@ bool AI::ifGoalCorrespondsToPriority(const std::shared_ptr<CharacterAI>& charact
   }
   else if (character->getCharacterType() == CharacterType::THIEF && priority == PRIORITY::UNLOCK)
   {
-    // if it is true, than thief would always go to that tile, but it could happen that some tile that reveals
-    // the room is closer to thief, so we return false here
-
-    return false;
+    if (goal_tile_type == TileType::HORIZONTAL_DOOR || goal_tile_type == TileType::VERTICAL_DOOR || 
+        ifTileReveals(character->getGoalTile()))
+      return true;
   }
   else if (priority == PRIORITY::BUTTON)
   {
@@ -392,20 +414,20 @@ bool AI::ifDoorAtRoomsEdgeAccessable(const std::shared_ptr<Tile>& tile, const st
   const int row{ tile->getRow() - room_row * 5};
   const int col{ tile->getColumn() - room_col * 5};
 
-  std::shared_ptr<Room> other{nullptr};
+  std::shared_ptr<Room> other_room{nullptr};
 
   if ((row == 0 || row == 4) && (col == 0 || col == 4))
   {
     if (row == 0 && col != 0 && col != 4)
-      other = Game::getInstance().getNeighborsRoom(room_row - 1, room_col);
+      other_room = Game::getInstance().getNeighborsRoom(room_row - 1, room_col);
     else if (row == 4 && col != 0 && col != 4)
-      other = Game::getInstance().getNeighborsRoom(room_row + 1, room_col);
+      other_room = Game::getInstance().getNeighborsRoom(room_row + 1, room_col);
     else if (col == 0 && row != 0 && row != 4)
-      other = Game::getInstance().getNeighborsRoom(room_row, room_col - 1);
+      other_room = Game::getInstance().getNeighborsRoom(room_row, room_col - 1);
     else if (col == 4 && row != 0 && row != 4)
-      other = Game::getInstance().getNeighborsRoom(room_row, room_col + 1);
+      other_room = Game::getInstance().getNeighborsRoom(room_row, room_col + 1);
   }
-  if (other && other->isRevealed())
+  if (other_room && other_room->isRevealed())
     return true;
 
   return false;
@@ -785,29 +807,25 @@ void AI::optimizePriority(std::shared_ptr<CharacterAI>& character, const std::sh
 
   else if (priority == PRIORITY::LOOT)
   {
-    int counter{0};
     for (auto& single_character : characters_)
     {
       if (single_character == character)
         continue;
-      else if (single_character->getPriority() != priority || !single_character->hasGoal())
-        counter++;
-      else if (single_character->getGoalTile() != test_tile)
-        counter++;
+      else if (single_character->getGoalTile() == test_tile)
+        return;
     }
-    if (counter == 2)
-      character->setGoalTile(test_tile);
+    character->setGoalTile(test_tile);
   }
 }
 
 
 void AI::optimizeGoals(std::shared_ptr<CharacterAI>& character, const std::shared_ptr<Tile>& test_tile)
 {
-  int counter{0};
   if (test_tile->getTileType() == TileType::HOURGLASS && MagicMaze::Game::getInstance().getRoomById(
       test_tile->getInsideRoomId())->getNumOfMonsters() && character->getCharacterType() != CharacterType::FIGHTER)
     return;
 
+  int counter{0};
   for (auto& single_character : characters_)
   {
     if (single_character == character)
@@ -838,8 +856,6 @@ bool AI::checkIfInBetterPosition(std::shared_ptr<CharacterAI>& original_current_
 
   const bool if_others_goal{ test_tile == original_other_character->getGoalTile() };
 
-  bool current_best_way{false};
-  bool other_best_way{false};
   int distance{0};
 
   while(!q_tracker.empty())
@@ -850,6 +866,8 @@ bool AI::checkIfInBetterPosition(std::shared_ptr<CharacterAI>& original_current_
     current->setGoalTile(front);
     other->setGoalTile(front);
 
+    bool current_best_way{false};
+    bool other_best_way{false};
     CUT_TYPE cut_current{CUT_TYPE::NONE};
     bool current_cuts = checkIfCuts(cut_current, current) && checkTilesWayForAvailability(current, cut_current,
                                                                                           current_best_way, distance);
@@ -859,6 +877,20 @@ bool AI::checkIfInBetterPosition(std::shared_ptr<CharacterAI>& original_current_
 
     if (current_cuts && other_cuts)
     {
+      if (MagicMaze::Game::getInstance().getCurrentRound() == 0)
+      {
+        if (current_best_way && !original_other_character->hasGoal())
+          return true;
+        if (other_best_way && if_others_goal)
+          return false;
+        else if (other_best_way && !if_others_goal)
+        {
+          original_other_character->setGoalTile(front);
+          return false;
+        }
+        else if (current_best_way)
+          return true;
+      }
       if (!if_others_goal)
         return true;
       else if (if_others_goal && other_best_way)
@@ -866,7 +898,7 @@ bool AI::checkIfInBetterPosition(std::shared_ptr<CharacterAI>& original_current_
       else if (if_others_goal && current_best_way)
         return true;
     }
-    if (!current_cuts && other_cuts)
+    else if (!current_cuts && other_cuts)
       return false;
     else if (current_cuts && !other_cuts)
       return true;

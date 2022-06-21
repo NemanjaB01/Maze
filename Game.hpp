@@ -36,6 +36,7 @@ namespace MagicMaze
       std::queue<DIRECTIONS> cards_;
       unsigned flips_number_;
       bool show_map_;
+      int round_;
 
       //----------------------------------------------------------------------------------------------------------------
       ///
@@ -327,6 +328,8 @@ namespace MagicMaze
       ///
       //
       void flip();
+
+      int getCurrentRound() const { return round_; }
       //----------------------------------------------------------------------------------------------------------------
       //
       /// Setter for map.
