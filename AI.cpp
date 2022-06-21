@@ -142,14 +142,19 @@ void AI::checkifMonsterBlocksGoalRoom(std::shared_ptr<CharacterAI>& character)
   if (MagicMaze::Game::getInstance().getRoomById(character->getGoalTile()->getInsideRoomId())->getNumOfMonsters() &&
       character->getCharacterType() != CharacterType::FIGHTER)
   {
-    std::shared_ptr<CharacterAI> fighter{ getCharacterAIById('F') };
+    callFigherToFight();
+  }
+}
+
+void AI::callFigherToFight()
+{
+  std::shared_ptr<CharacterAI> fighter{ getCharacterAIById('F') };
     if (fighter->getPriority() != PRIORITY::FIGHT)
     {
       fighter->setPriority(PRIORITY::FIGHT);
       findGoalTile(fighter);
       runCharacter(fighter);
     }
-  }
 }
 
 bool AI::playNextMove(std::shared_ptr<CharacterAI>& character)
@@ -391,9 +396,15 @@ void AI::collectNeighborTiles(std::queue<std::shared_ptr<Tile>>& tiles, std::vec
     try
     {
       std::shared_ptr<Tile> tile = gameboard_.at(row + ROW_VALUES.at(n)).at(column + COL_VALUES.at(n));
-
-      if(!visited.at(tile->getRow()).at(tile->getColumn()) && MagicMaze::Game::getInstance().getRoomById(
-                                                                tile->getInsideRoomId())->isRevealed())
+      std::shared_ptr<Room> room = MagicMaze::Game::getInstance().getRoomById(tile->getInsideRoomId());
+      if (!room->isRevealed())
+        continue;
+      if (room->getNumOfMonsters() && character_type != CharacterType::NONE && character_type != CharacterType::FIGHTER)
+      {
+        callFigherToFight();
+        continue;
+      }
+      if(!visited.at(tile->getRow()).at(tile->getColumn()))
       {
         if (tile->ifAvailable() || tile->ifContainsCharacter() || ifCharacterAllowsToCollectTile(character_type, tile))
         {
@@ -401,7 +412,7 @@ void AI::collectNeighborTiles(std::queue<std::shared_ptr<Tile>>& tiles, std::vec
           tiles.push(tile);
         }
         else if (!visited.at(tile->getRow()).at(tile->getColumn()) && ifDoorBlocksWay(tile))
-          return;
+          continue;
       }
     }
     catch(std::out_of_range& e)

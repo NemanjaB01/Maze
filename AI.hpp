@@ -80,6 +80,8 @@ class AI
     bool checkIfCharactersBlockingWays(std::shared_ptr<CharacterAI>& character);
     bool decideWhoLeavesTile(std::pair<std::shared_ptr<CharacterAI>, std::shared_ptr<CharacterAI>>& characters);
 
+    void callFigherToFight();
+
   public:
     static AI& getInstance();
     void copyGameboard();
