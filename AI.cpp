@@ -106,8 +106,8 @@ void AI::determineHighPriorities()
       characters_without_specific_goal.push_back(character);
     }
   }
-  
-  if(!buttons_visible)
+
+  if (!MagicMaze::Game::getInstance().getRoomById('L')->isRevealed() || !buttons_visible)
   {
     for (auto& character : characters_without_specific_goal)
       character->setPriority(PRIORITY::REVEAL);
@@ -117,16 +117,9 @@ void AI::determineHighPriorities()
     for (auto& character : characters_without_specific_goal)
       character->setPriority(PRIORITY::BUTTON);
   }
-  else if (buttons_visible && buttons_used_)
-  {
+  else
     for (auto& character : characters_without_specific_goal)
-    {
-      if (MagicMaze::Game::getInstance().getRoomById('L')->isRevealed())
-        character->setPriority(PRIORITY::LOOT);
-      else
-        character->setPriority(PRIORITY::REVEAL);
-    }
-  }
+      character->setPriority(PRIORITY::LOOT);
 }
 
 void AI::callMove(std::shared_ptr<CharacterAI>& character, const int& distance)
