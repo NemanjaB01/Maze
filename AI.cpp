@@ -814,8 +814,15 @@ void AI::countFreeSpaceInCertainDirection(const std::shared_ptr<CharacterAI>& ch
 
       if (!room->isRevealed() || (room->getNumOfMonsters() && character->getCharacterType() != CharacterType::FIGHTER))
         break;
-      else if (next_tile->ifAvailable())
+      else if (next_tile->ifAvailable() && i == 0)
         free_space++;
+      else if (next_tile->ifAvailable() && i == 1)
+      {
+        if (character_on_the_way)
+          free_space++;
+        else
+          break;
+      }
       else if (!next_tile->ifAvailable() && next_tile->ifContainsCharacter() && i == 0)
       {
         free_space++;
