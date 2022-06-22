@@ -319,7 +319,7 @@ void AI::giveGoalsToCharacters()
   }
 }
 
-bool AI::ifGoalCorrespondsToPriority(const std::shared_ptr<CharacterAI>& character)
+bool AI::ifGoalCorrespondsToPriority(std::shared_ptr<CharacterAI>& character)
 {
   if (!character->hasGoal())
     return false;
@@ -344,12 +344,19 @@ bool AI::ifGoalCorrespondsToPriority(const std::shared_ptr<CharacterAI>& charact
   else if (character->getCharacterType() == CharacterType::FIGHTER && priority == PRIORITY::FIGHT)
   {
     if (goal_tile_type == TileType::MONSTER)
+    {
+      optimizePower(character);
       return true;
+    }
   }
   else if (character->getCharacterType() == CharacterType::THIEF && priority == PRIORITY::UNLOCK)
   {
-    if (goal_tile_type == TileType::HORIZONTAL_DOOR || goal_tile_type == TileType::VERTICAL_DOOR || 
-        ifTileReveals(character->getGoalTile()))
+    if (goal_tile_type == TileType::HORIZONTAL_DOOR || goal_tile_type == TileType::VERTICAL_DOOR)
+    {
+      optimizePower(character);
+      return true;
+    }
+    else if (ifTileReveals(character->getGoalTile()))
       return true;
   }
   else if (priority == PRIORITY::BUTTON)
@@ -388,19 +395,30 @@ bool AI::ifDoorBlocksWay(const std::shared_ptr<Tile>& tile, const std::shared_pt
 {
   if (tile->getTileType() == TileType::HORIZONTAL_DOOR || tile->getTileType() == TileType::VERTICAL_DOOR)
   {
-    if (room->getNumOfMonsters() && !ifDoorAtRoomsEdgeAccessable(tile, room))
-      return false;
-
-    std::shared_ptr<CharacterAI> thief{ getCharacterAIById('T') };
-    if (thief->getPriority() != PRIORITY::UNLOCK)
+    if (ifDoorAtRoomEdge(room, tile))
     {
-      thief->setPriority(PRIORITY::UNLOCK);
-      findGoalTile(thief);
-      runCharacter(thief);
+      bool if_room_accessable{ ifDoorAtRoomsEdgeAccessable(tile, room) };
+
+      if (room->getNumOfMonsters() && !if_room_accessable)
+        return false;
+      else if (tile->getRow() == 0 || tile->getColumn() == 0 || tile->getRow() == static_cast<int>
+               (gameboard_.size() - 1) || tile->getColumn() == static_cast<int>(gameboard_.at(0).size() - 1))
+        return false;
     }
     return true;
   }
   return false;
+}
+
+void AI::callThief()
+{
+  std::shared_ptr<CharacterAI> thief{ getCharacterAIById('T') };
+  if (thief->getPriority() != PRIORITY::UNLOCK)
+  {
+    thief->setPriority(PRIORITY::UNLOCK);
+    findGoalTile(thief);
+    runCharacter(thief);
+  }
 }
 
 bool AI::ifDoorAtRoomsEdgeAccessable(const std::shared_ptr<Tile>& tile, const std::shared_ptr<Room>& room)
@@ -445,28 +463,27 @@ void AI::collectNeighborTiles(std::queue<std::shared_ptr<Tile>>& tiles, std::vec
     {
       std::shared_ptr<Tile> tile = gameboard_.at(row + ROW_VALUES.at(n)).at(column + COL_VALUES.at(n));
       std::shared_ptr<Room> room = MagicMaze::Game::getInstance().getRoomById(tile->getInsideRoomId());
-      if (!room->isRevealed())
+
+      if (!room->isRevealed() || visited.at(tile->getRow()).at(tile->getColumn()))
         continue;
-      if (room->getNumOfMonsters() && character_type != CharacterType::NONE && character_type != CharacterType::FIGHTER)
+
+      if (tile->ifAvailable() || tile->ifContainsCharacter() || ifCharacterAllowsToCollectTile(character_type, tile))
       {
-        if (ifDoorAtRoomEdge(room, tile) && ifCharacterAllowsToCollectTile(character_type, tile))
+        if (room->getNumOfMonsters() && character_type != CharacterType::NONE && character_type != CharacterType::FIGHTER)
         {
-          visited.at(tile->getRow()).at(tile->getColumn()) = true;
-          tiles.push(tile);
+          if (ifDoorAtRoomEdge(room, tile) && ifCharacterAllowsToCollectTile(character_type, tile))
+          {
+            visited.at(tile->getRow()).at(tile->getColumn()) = true;
+            tiles.push(tile);
+          }
+          callFigherToFight();
         }
-        callFigherToFight();
-        continue;
+        visited.at(tile->getRow()).at(tile->getColumn()) = true;
+        tiles.push(tile);
       }
-      if(!visited.at(tile->getRow()).at(tile->getColumn()))
-      {
-        if (tile->ifAvailable() || tile->ifContainsCharacter() || ifCharacterAllowsToCollectTile(character_type, tile))
-        {
-          visited.at(tile->getRow()).at(tile->getColumn()) = true;
-          tiles.push(tile);
-        }
-        else if (!visited.at(tile->getRow()).at(tile->getColumn()) && ifDoorBlocksWay(tile, room))
-          continue;
-      }
+      else if (ifDoorBlocksWay(tile, room))
+        callThief();
+
     }
     catch(std::out_of_range& e)
     {
@@ -481,7 +498,7 @@ bool AI::ifDoorAtRoomEdge(const std::shared_ptr<Room>& room, const std::shared_p
   {
     const int row{ tile->getRow() - room->getRow() * 5};
     const int col{ tile->getColumn() - room->getColumn() * 5};
-    if ((row == 0 || row == 4) && (col == 0 || col == 4))
+    if ((row == 0 || row == 4) || (col == 0 || col == 4))
       return true;
   }
   return false;
@@ -513,6 +530,7 @@ void AI::checkPriority(std::shared_ptr<CharacterAI> character, bool& goal_found,
 {
   const PRIORITY priority = character->getPriority();
   const TileType type = current_tile->getTileType();
+  const std::shared_ptr<Room> room = MagicMaze::Game::getInstance().getRoomById(current_tile->getInsideRoomId());
 
   if (type == TileType::HOURGLASS)
   {
@@ -534,10 +552,13 @@ void AI::checkPriority(std::shared_ptr<CharacterAI> character, bool& goal_found,
     case CharacterType::FIGHTER:
       if((type == TileType::FIGHTER_BUTTON && priority == PRIORITY::BUTTON) || type == TileType::MONSTER)
         {
-          if (type == TileType::MONSTER)
-            character->setPriority(PRIORITY::FIGHT);
           character->setGoalTile(current_tile);
-          goal_found = true;
+          if (type == TileType::MONSTER)
+          {
+            character->setPriority(PRIORITY::FIGHT);
+            goal_found = true;
+            optimizePower(character);
+          }
         }
       break;
     case CharacterType::SEER:
@@ -549,12 +570,15 @@ void AI::checkPriority(std::shared_ptr<CharacterAI> character, bool& goal_found,
       }
       break;
     case CharacterType::THIEF:
-      if((type == TileType::THIEF_BUTTON && priority == PRIORITY::BUTTON) || (TileType::HORIZONTAL_DOOR == type ||
-         TileType::VERTICAL_DOOR == type))
+      if((type == TileType::THIEF_BUTTON && priority == PRIORITY::BUTTON) || ((TileType::HORIZONTAL_DOOR == type ||
+         TileType::VERTICAL_DOOR == type) && ifDoorBlocksWay(current_tile, room)))
       {
-        if (TileType::HORIZONTAL_DOOR == type || TileType::VERTICAL_DOOR == type)
-          character->setPriority(PRIORITY::UNLOCK);
         character->setGoalTile(current_tile);
+        if (TileType::HORIZONTAL_DOOR == type || TileType::VERTICAL_DOOR == type)
+        {
+          character->setPriority(PRIORITY::UNLOCK);
+          optimizePower(character);
+        }
         goal_found = true;
       }
       break;
@@ -798,6 +822,37 @@ void AI::printCommand(const std::vector<std::string>& command_input) const noexc
   std::cout << std::endl;
 }
 
+void AI::optimizePower(std::shared_ptr<CharacterAI>& character)
+{
+  std::shared_ptr<CharacterAI> copied_character = std::make_shared<CharacterAI>(*character);
+  std::vector<std::vector<bool>> visited(gameboard_.size(), std::vector<bool>(gameboard_.at(0).size(), false));
+
+  CUT_TYPE cut{ CUT_TYPE::NONE };
+  int distance{0};
+  bool best_way{false};
+
+  std::queue<std::shared_ptr<Tile>> neighbors;
+  neighbors.push(character->getGoalTile());
+  collectNeighborTiles(neighbors, visited, character->getCharacterType());
+
+  std::shared_ptr<Tile> current_best_tile{nullptr};
+  neighbors.pop();
+  while(!neighbors.empty())
+  {
+    copied_character->setGoalTile(neighbors.front());
+    if(checkIfPossibleCut(copied_character, cut, best_way, distance))
+    {
+      current_best_tile = neighbors.front();
+      if (ifDirectHit(copied_character, cut))
+        break;
+    }
+    neighbors.pop();
+  }
+  if (current_best_tile)
+    character->setGoalTile(current_best_tile);
+}
+
+
 void AI::optimizePriority(std::shared_ptr<CharacterAI>& character, const std::shared_ptr<Tile>& test_tile)
 {
   PRIORITY priority{ character->getPriority() };
@@ -817,7 +872,6 @@ void AI::optimizePriority(std::shared_ptr<CharacterAI>& character, const std::sh
     character->setGoalTile(test_tile);
   }
 }
-
 
 void AI::optimizeGoals(std::shared_ptr<CharacterAI>& character, const std::shared_ptr<Tile>& test_tile)
 {

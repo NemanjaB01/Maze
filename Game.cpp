@@ -252,6 +252,9 @@ void MagicMaze::Game::run()
       std::cout << e << std::endl;
       continue;
     }
+    std::cin.get();
+    AI::getInstance().play();
+    flip();
     std::cout << *this << std::endl;
     if(endOfGame())
     {

@@ -34,7 +34,7 @@ class AI
 
     void determineHighPriorities();
     void giveGoalsToCharacters();
-    bool ifGoalCorrespondsToPriority(const std::shared_ptr<CharacterAI>& character);
+    bool ifGoalCorrespondsToPriority(std::shared_ptr<CharacterAI>& character);
     bool ifTileReveals(const std::shared_ptr<Tile>& tile);
 
     bool checkIfCutsInPossibleDirection(const CUT_TYPE& cut, const int& total_iterations);
@@ -85,6 +85,9 @@ class AI
     void callFigherToFight();
     bool ifDoorAtRoomEdge(const std::shared_ptr<Room>& room, const std::shared_ptr<Tile>& tile);
     void checkIfCharacterPaused();
+
+    void optimizePower(std::shared_ptr<CharacterAI>& character);
+    void callThief();
 
   public:
     static AI& getInstance();
