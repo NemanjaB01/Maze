@@ -228,6 +228,8 @@ bool AI::checkIfCharactersBlockingWays(std::shared_ptr<CharacterAI>& character)
 
   for (auto& single_character : characters_)
   {
+     std::pair<std::shared_ptr<CharacterAI>, std::shared_ptr<CharacterAI>> characters{character, single_character};
+
     if (single_character == character)
       continue;
     else if (single_character->ifBlockedWay() && single_character->getBlockingCharacter() != 
@@ -237,6 +239,12 @@ bool AI::checkIfCharactersBlockingWays(std::shared_ptr<CharacterAI>& character)
       break;
     }
     else if (blocking_character == single_character->getCharacterType() && single_character->getGoalTile() &&
+      !single_character->ifBlockedWay() && blocking_character != CharacterType::FIGHTER &&
+      MagicMaze::Game::getInstance().getRoomById(single_character->getGoalTile()->getInsideRoomId())->getNumOfMonsters())
+    {
+      decideWhoLeavesTile(characters, decision_made, characters.second);
+    }
+    else if (blocking_character == single_character->getCharacterType() && single_character->getGoalTile() &&
       !single_character->ifBlockedWay())
     {
       character->setBlockedWay(false);
@@ -244,8 +252,7 @@ bool AI::checkIfCharactersBlockingWays(std::shared_ptr<CharacterAI>& character)
     }
     else if (blocking_character == single_character->getCharacterType())
     {
-      std::pair<std::shared_ptr<CharacterAI>, std::shared_ptr<CharacterAI>> characters{character, single_character};
-      decideWhoLeavesTile(characters, decision_made);
+      decideWhoLeavesTile(characters, decision_made, nullptr);
     }
     if (decision_made)
     {
@@ -271,7 +278,7 @@ bool AI::ifBlockingSomeoneOther(CharacterType first_type, CharacterType second_t
 }
 
 void AI::decideWhoLeavesTile(std::pair<std::shared_ptr<CharacterAI>, std::shared_ptr<CharacterAI>>& characters,
-    bool& decision_made)
+    bool& decision_made, std::shared_ptr<CharacterAI> priority_character)
 {
   MagicMaze::DIRECTIONS direction{ MagicMaze::Game::getInstance().getCurrentDirection() };
   bool first_blocking_other{ ifBlockingSomeoneOther(characters.first->getCharacterType(), 
@@ -286,7 +293,7 @@ void AI::decideWhoLeavesTile(std::pair<std::shared_ptr<CharacterAI>, std::shared
 
   invertDirection(direction);
 
-  if (!characters.second->hasGoal())
+  if (!characters.second->hasGoal() || priority_character == characters.second)
   {
     if (second_free_space && !second_blocking_other)
     {
@@ -295,7 +302,7 @@ void AI::decideWhoLeavesTile(std::pair<std::shared_ptr<CharacterAI>, std::shared
       characters.second->setBlockedDirection(direction);
     }
   }
-  else if ((first_free_space || second_free_space) && characters.second->hasGoal())
+  else if ((first_free_space || second_free_space) && characters.second->hasGoal() && priority_character == nullptr)
   {
     if (second_free_space && !second_blocking_other)
     {

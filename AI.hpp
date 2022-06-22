@@ -82,7 +82,7 @@ class AI
 
     bool checkIfCharactersBlockingWays(std::shared_ptr<CharacterAI>& character);
     void decideWhoLeavesTile(std::pair<std::shared_ptr<CharacterAI>, std::shared_ptr<CharacterAI>>& characters,
-        bool& decision_made);
+        bool& decision_made, std::shared_ptr<CharacterAI> priority_character);
 
     void callFigherToFight();
     bool ifDoorAtRoomEdge(const std::shared_ptr<Room>& room, const std::shared_ptr<Tile>& tile);
