@@ -106,8 +106,8 @@ void AI::determineHighPriorities()
       characters_without_specific_goal.push_back(character);
     }
   }
-
-  if (!MagicMaze::Game::getInstance().getRoomById('L')->isRevealed() || !buttons_visible)
+  
+  if(!buttons_visible)
   {
     for (auto& character : characters_without_specific_goal)
       character->setPriority(PRIORITY::REVEAL);
@@ -117,9 +117,16 @@ void AI::determineHighPriorities()
     for (auto& character : characters_without_specific_goal)
       character->setPriority(PRIORITY::BUTTON);
   }
-  else
+  else if (buttons_visible && buttons_used_)
+  {
     for (auto& character : characters_without_specific_goal)
-      character->setPriority(PRIORITY::LOOT);
+    {
+      if (MagicMaze::Game::getInstance().getRoomById('L')->isRevealed())
+        character->setPriority(PRIORITY::LOOT);
+      else
+        character->setPriority(PRIORITY::REVEAL);
+    }
+  }
 }
 
 void AI::callMove(std::shared_ptr<CharacterAI>& character, const int& distance)
@@ -259,7 +266,7 @@ void AI::decideWhoLeavesTile(std::pair<std::shared_ptr<CharacterAI>, std::shared
   {
     if (second_free_space)
     {
-      callMove(characters.second, 1);
+      second_free_space == 1 ? callMove(characters.second, 1) : callMove(characters.second, 2);
       decision_made = true;
     }
   }
@@ -267,12 +274,12 @@ void AI::decideWhoLeavesTile(std::pair<std::shared_ptr<CharacterAI>, std::shared
   {
     if (second_free_space)
     {
-      callMove(characters.second, 1);
+      second_free_space == 1 ? callMove(characters.second, 1) : callMove(characters.second, 2);
       characters.second->setBlockedDirection(direction);
     }
     else if (first_free_space)
     {
-      callMove(characters.first, 1);
+      first_free_space == 1 ? callMove(characters.first, 1) : callMove(characters.first, 2);
       characters.first->setBlockedDirection(direction);
     }
     decision_made = true;
