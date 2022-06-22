@@ -106,20 +106,27 @@ void AI::determineHighPriorities()
       characters_without_specific_goal.push_back(character);
     }
   }
-
-  if (!MagicMaze::Game::getInstance().getRoomById('L')->isRevealed() || !buttons_visible)
+  
+  if(!buttons_visible)
   {
     for (auto& character : characters_without_specific_goal)
       character->setPriority(PRIORITY::REVEAL);
   }
-  else if (buttons_visible && !MagicMaze::Game::getInstance().checkIfAllCharactersOnButton())
+  else if (buttons_visible && !buttons_used_)
   {
     for (auto& character : characters_without_specific_goal)
       character->setPriority(PRIORITY::BUTTON);
   }
-  else
+  else if (buttons_visible && buttons_used_)
+  {
     for (auto& character : characters_without_specific_goal)
-      character->setPriority(PRIORITY::LOOT);
+    {
+      if (MagicMaze::Game::getInstance().getRoomById('L')->isRevealed())
+        character->setPriority(PRIORITY::LOOT);
+      else
+        character->setPriority(PRIORITY::REVEAL);
+    }
+  }
 }
 
 void AI::callMove(std::shared_ptr<CharacterAI>& character, const int& distance)
@@ -255,10 +262,13 @@ void AI::decideWhoLeavesTile(std::pair<std::shared_ptr<CharacterAI>, std::shared
 
   invertDirection(direction);
 
-  if (!characters.second->hasGoal() && second_free_space)
+  if (!characters.second->hasGoal())
   {
-    callMove(characters.second, 1);
-    decision_made = true;
+    if (second_free_space)
+    {
+      callMove(characters.second, 1);
+      decision_made = true;
+    }
   }
   else if ((first_free_space || second_free_space) && characters.second->hasGoal())
   {
@@ -286,6 +296,9 @@ void AI::decideWhoLeavesTile(std::pair<std::shared_ptr<CharacterAI>, std::shared
 
 void AI::play()
 {
+  if (!buttons_used_)
+    buttons_used_ = MagicMaze::Game::getInstance().checkIfAllCharactersOnButton();
+
   determineHighPriorities();
   giveGoalsToCharacters();
 
@@ -326,10 +339,10 @@ bool AI::ifGoalCorrespondsToPriority(std::shared_ptr<CharacterAI>& character)
   TileType goal_tile_type{ character->getGoalTile()->getTileType() };
   PRIORITY priority{ character->getPriority() };
 
-  if (priority == PRIORITY::NONE)
-    return false;
-  else if (goal_tile_type == TileType::HOURGLASS)
+  if (goal_tile_type == TileType::HOURGLASS)
     return true;
+  else if (priority == PRIORITY::NONE)
+    return false;
   else if (priority == PRIORITY::LOOT)
   {
     if (goal_tile_type == TileType::LOOT)
@@ -546,6 +559,8 @@ void AI::checkPriority(std::shared_ptr<CharacterAI> character, bool& goal_found,
     if (character->hasGoal())
       goal_found = true;
   }
+  if (goal_found)
+    return;
 
   switch(character->getCharacterType())
   {
@@ -739,7 +754,7 @@ bool AI::checkTilesWayForAvailability(const std::shared_ptr<CharacterAI>& charac
     else if (room->getNumOfMonsters() && character->getCharacterType() != CharacterType::FIGHTER)
       return false;
 
-    else if (tile->ifContainsCharacter() && i == distance - 1 && ifDirectHit(character, cut))
+    else if (tile->ifContainsCharacter() && i == distance - 1 && ifDirectHit(character))
     {
       character->setBlockingCharacter(tile->getCharacter()->getCharacterType());
       character->setBlockedWay(true);
@@ -843,7 +858,7 @@ void AI::optimizePower(std::shared_ptr<CharacterAI>& character)
     if(checkIfPossibleCut(copied_character, cut, best_way, distance))
     {
       current_best_tile = neighbors.front();
-      if (ifDirectHit(copied_character, cut))
+      if (ifDirectHit(copied_character))
         break;
     }
     neighbors.pop();
@@ -964,14 +979,14 @@ bool AI::checkIfInBetterPosition(std::shared_ptr<CharacterAI>& original_current_
 }
 
 
-bool AI::ifDirectHit(const std::shared_ptr<CharacterAI>& character, const CUT_TYPE& cut)
+bool AI::ifDirectHit(const std::shared_ptr<CharacterAI>& character)
 {
   std::shared_ptr<Tile> goal = character->getGoalTile();
   std::shared_ptr<Tile> current = character->getCurrentile().lock();
 
-  if (goal->getRow() == current->getRow() && cut == CUT_TYPE::HORIZONTAL)
+  if (goal->getRow() == current->getRow())
     return true;
-  else if (goal->getColumn() == current->getColumn() && cut == CUT_TYPE::VERTICAL)
+  else if (goal->getColumn() == current->getColumn())
     return true;
   return false;
 }

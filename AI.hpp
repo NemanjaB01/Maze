@@ -28,9 +28,11 @@ const std::array<int, 4> COL_VALUES { 0, 1, 0, -1};
 class AI
 {
   private:
-    AI() = default;
+    AI() : buttons_used_{false} {};
     std::vector<std::vector<std::shared_ptr<Tile> >> gameboard_;
     std::array<std::shared_ptr<CharacterAI>, 3> characters_;
+    bool buttons_used_;
+
 
     void determineHighPriorities();
     void giveGoalsToCharacters();
@@ -63,7 +65,7 @@ class AI
     bool checkIfInBetterPosition(std::shared_ptr<CharacterAI>& current_character,
                 std::shared_ptr<CharacterAI>& other_character, const std::shared_ptr<Tile>& test_tile);
 
-    bool ifDirectHit(const std::shared_ptr<CharacterAI>& character, const CUT_TYPE& cut);
+    bool ifDirectHit(const std::shared_ptr<CharacterAI>& character);
     bool callScry();
     void getScryGoalRoom(std::shared_ptr<Room>& goal_room);
     void getScryFromRoomId(const int& goal_row, const int& goal_col, std::vector<std::string>& scry_input);
