@@ -268,6 +268,7 @@ void AI::decideWhoLeavesTile(std::pair<std::shared_ptr<CharacterAI>, std::shared
     {
       second_free_space == 1 ? callMove(characters.second, 1) : callMove(characters.second, 2);
       decision_made = true;
+      characters.second->setBlockedDirection(direction);
     }
   }
   else if ((first_free_space || second_free_space) && characters.second->hasGoal())
@@ -324,7 +325,10 @@ void AI::checkIfCharacterPaused()
 
 void AI::giveGoalToCharacter(std::shared_ptr<CharacterAI>& character)
 {
-  if (!ifGoalCorrespondsToPriority(character))
+  if (character->hasGoal() && character->getGoalTile() == character->getCurrentile().lock())
+    character->setGoalTile(nullptr);
+
+  else if (!ifGoalCorrespondsToPriority(character))
   {
     character->setGoalTile(nullptr);
     findGoalTile(character);
@@ -335,6 +339,7 @@ bool AI::ifGoalCorrespondsToPriority(std::shared_ptr<CharacterAI>& character)
 {
   if (!character->hasGoal())
     return false;
+
   TileType goal_tile_type{ character->getGoalTile()->getTileType() };
   PRIORITY priority{ character->getPriority() };
 
