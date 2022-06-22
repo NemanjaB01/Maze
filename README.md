@@ -42,7 +42,7 @@ Auch wenn die benötigten 50 % der öffentlichen Test Cases am Ende der Abgabefr
 
 ### Assignment 3
 
-Da Assignment 3 (A3) auf Assignment 2 aufbauen wird, gibt es eine Teilnahmevoraussetzung für A3. Für eine Teilnahme an A3 sind zumindest **zwei Drittel aller Test Cases** in A2 zu bestehen.
+Da Assignment 3 (A3) auf Assignment 2 aufbaut, gibt es eine Teilnahmevoraussetzung für A3. Für eine Teilnahme an A3 sind zumindest **zwei Drittel aller Test Cases** in A2 zu bestehen. Die Angabe zu A3 findest du unter [description/A3.md](description/A3.md).
 
 ### Ende der KU mit den in A1 und A2 erreichten Punkten
 A3 ist ebenso wie die Ausbesserung optional. Wer sich mit den in A1 und A2 erreichten Punkten zufrieden gibt, muss nach A2 keine weitere Aufgabe machen.
@@ -74,7 +74,7 @@ Die\*der Spieler\*in kann:
 
 ### 1. Charakter bewegen
 
-Ein Zug kann dafür verwendet werden, einen Charakter um ein beliebige Anzahl an Feldern in eine bestimmte Richtung zu bewegen. 
+Ein Zug kann dafür verwendet werden, einen Charakter um eine beliebige Anzahl an Feldern in eine bestimmte Richtung zu bewegen. 
 Es ist jedoch nicht immer möglich, die Charaktere in jede beliebige Richtung zu bewegen. Die\*der Spieler\*in darf nur Bewegungen in jene Richtung durchführen, deren Bewegungskärtchen gerade aufgedeckt ist. Dies kann sie\*er jedoch *beliebig oft* für *alle* Charaktere tun.  
 
 Hierbei sind Hindernisse (z. B. Wände und Monster) zu beachten. Es gibt bestimmte Bonusfelder (z. B. Sanduhr, Monster, Kristallkugel, Schalter), die entweder automatisch eingesetzt werden, wenn ein Charakter seine Bewegung auf diesem Feld beendet, oder es dem Charakter ermöglichen, seine Spezialfähigkeit einzusetzen, wenn sie\*er sich auf einem benachbarten Feld befindet.

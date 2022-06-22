@@ -224,16 +224,18 @@ Jeder Raum ('Room') besteht dabei aus 5\*5 Feldern ('Tile'). Jedes dieser Felder
 
 Das Feld in der linken oberen Ecke jedes Raumes ist immer eine Wand ('Wall'). Hier soll mittig als Zusatzinformation ein Buchstabe ausgegeben werden, um den Raum zu kennzeichnen (`room_id_` A-Z). Solange ein Raum noch nicht aufgedeckt wurde, werden alle seine Felder als unbekannt dargestellt.
 
-Um die Raumgrenzen anzuzeigen, wird eine doppelte Trennlinie verwendet. Die Charaktere starten immer in Raum 'S' in der in [Beispiel 1](#beispiel-1) gezeigten Anordnung. Über dem Spielplan wird angezeigt, wie oft bereits ein Bewegungskärtchen aufgedeckt wurde (rechtsbündig, mit Platz für 3 Stellen) (siehe [Beispiel-Spielpläne](#beispiel-spielpläne)). Dieser Zähler startet bei 1, da bereits zu Spielbeginn das erste Kärtchen aufgedeckt wird.
+Um die Raumgrenzen anzuzeigen, wird eine doppelte Trennlinie verwendet. Die Charaktere starten immer in Raum 'S' in der in [Beispiel 1](#beispiel-1) gezeigten Anordnung. Über dem Spielplan wird angezeigt, wie oft bereits ein Bewegungskärtchen aufgedeckt wurde (rechtsbündig, mit Platz für 3 Stellen) (siehe [Beispiel-Spielpläne](#beispiel-spielpläne)).
 
 Zu Spielbeginn sind alle Türen (geheime und normale) geschlossen. Im Laufe des Spiels benutzte Bonusfelder und Schalter, besiegte Monster und geöffnete Türen werden gleich dargestellt wie ein normaler Gang.
 
 *Hinweis:* Die Schalter dienen dem Öffnen der Schatzkammer. Jedem Charakter ist ein individueller Schalter zugeordnet (Siehe [Spielende](../README.md#spielende) oder [Charakter bewegen](Milestone_2.md#charakter-bewegen)).
 
 ### Felder
-Die einzelnen ASCII-Felder werden nachfolgend dargestellt (bitte markieren, um die Leerzeichen sichtbar zu machen). Zusätzlich wird angeführt, welches Kürzel verwendet wird, um ein Feld dieser Art in einem Raum zu symbolisieren (siehe [Erstellen der einzelnen Räume](#erstellen-der-einzelnen-räume)).  
-Weiters ist angegeben, ob das Feld (in seinem derzeitigen Zustand) betretbar und/oder übertretbar ist. Betretbar bedeutet, dass ein Charakter auf diesem Feld seine Bewegung beenden kann, übertretbar, dass das Feld überquert werden kann.
-Die Zeile 'veränderbar' gibt an, ob und wann das Feld seine Darstellung ändert. Dies sind Zusatzinformationen, die für Milestone 2 relevant sind. Sie könnten jedoch vielleicht eure Gestaltung der Klasse MagicTile beeinflussen, daher haben wir sie bereits in Milestone 1 angegeben.
+Die einzelnen ASCII-Felder werden nachfolgend dargestellt (bitte markieren, um die Leerzeichen sichtbar zu machen). Zusätzlich wird angeführt, welches Kürzel verwendet wird, um ein Feld dieser Art in einem Raum zu symbolisieren (siehe [Erstellen der einzelnen Räume](#erstellen-der-einzelnen-räume)).
+
+Weiters ist angegeben, ob das Feld (in seinem derzeitigen Zustand) betretbar und/oder übertretbar ist. Betretbar bedeutet, dass ein Charakter auf diesem Feld seine Bewegung beenden kann, übertretbar, dass das Feld überquert werden kann. Die Zeile 'veränderbar' gibt an, ob und wann das Feld seine Darstellung ändert. Betretbare Felder können in Feldmitte zusätzlich den Buchstaben eines Charakters enthalten, unabhängig davon ob das Feld selbst veränderbar ist oder nicht.
+
+Dies sind Zusatzinformationen, die für Milestone 2 relevant sind. Sie könnten jedoch vielleicht eure Gestaltung der Klasse MagicTile beeinflussen, daher haben wir sie bereits in Milestone 1 angegeben.
 
 **Unbekanntes Feld**  
 Kürzel: keines  
@@ -281,7 +283,7 @@ veränderbar: nein
 Kürzel: P ('Passage')  
 betretbar: ja  
 übertretbar: ja  
-veränderbar: ja, durch Betreten mit Charakter  
+veränderbar: nein (außer durch Betreten mit einem Charakter)
 
 ```
        
@@ -295,7 +297,7 @@ veränderbar: ja, durch Betreten mit Charakter
 Kürzel: P ('Passage')  
 betretbar: nein (Es kann sich nur ein einzelner Charakter auf einem Feld befinden.)  
 übertretbar: ja (Charaktere können sich gegenseitig überspringen.)  
-veränderbar: ja, durch Verlassen mit Charakter  
+veränderbar: nein (außer durch Verlassen mit einem Charakter) 
 
 ```
        
@@ -323,7 +325,7 @@ veränderbar: ja, durch Öffnen
 Kürzel: X  
 betretbar: ja  
 übertretbar: ja  
-veränderbar: nein  
+veränderbar: nein (außer durch Betreten mit einem Charakter)
 
 ```
        
@@ -351,7 +353,7 @@ veränderbar: ja, durch Besiegen des Monsters
 Kürzel: G ('hourGlass')  
 betretbar: ja  
 übertretbar: ja  
-veränderbar: ja, durch Verwendung des Bonusfelds  
+veränderbar: ja, durch Verwendung des Bonusfelds
 
 ```
  \   / 
@@ -407,7 +409,7 @@ veränderbar: ja, durch Öffnen
 Kürzel: H bzw. V  
 betretbar: ja  
 übertretbar: ja  
-veränderbar: nein  
+veränderbar: nein (außer durch Betreten mit einem Charakter)
 
 ```
        
@@ -421,7 +423,7 @@ veränderbar: nein
 Kürzel: L ('Loot')  
 betretbar: ja  
 übertretbar: ja  
-veränderbar: nein  
+veränderbar: nein (außer durch Betreten mit einem Charakter)
 
 ```
 $$$$$$$
@@ -478,7 +480,7 @@ Spielstart mit einem Spielplan, der nur aus zwei Räumen besteht (2 Spalten, 1 R
 Über dem Spielplan befindet sich der Card Flip Counter, unter dem Spielplan wird angezeigt, dass zu Spielstart das Bewegungskärtchen `right` aufgedeckt wurde und jetzt aktiv ist.
 
 ```
-Card Flip Counter:   1
+Card Flip Counter:   0
 ╬═══════════════════════════════════╬═══════════════════════════════════╬
 ║██████████████       ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
 ║███S██████████       ██████████████║UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU║
