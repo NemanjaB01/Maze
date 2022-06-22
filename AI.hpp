@@ -90,6 +90,8 @@ class AI
 
     void optimizePower(std::shared_ptr<CharacterAI>& character);
     void callThief();
+    bool checkIfAlreadyOnGoalTile(const std::shared_ptr<CharacterAI>& character);
+    bool ifBlockingSomeoneOther(CharacterType first_type, CharacterType secound_type) const;
 
   public:
     static AI& getInstance();

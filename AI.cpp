@@ -230,11 +230,11 @@ bool AI::checkIfCharactersBlockingWays(std::shared_ptr<CharacterAI>& character)
   {
     if (single_character == character)
       continue;
-    else if (single_character->ifBlockedWay() || (blocking_character == single_character->getCharacterType() &&
-      !single_character->getGoalTile()))
+    else if (single_character->ifBlockedWay() && single_character->getBlockingCharacter() != 
+            character->getCharacterType() && !getCharacterAIById(MagicMaze::Game::getInstance().getCharacter(
+            single_character->getBlockingCharacter())->getCharacterTypeAsChar())->ifBlockedWay())
     {
-      std::pair<std::shared_ptr<CharacterAI>, std::shared_ptr<CharacterAI>> characters{character, single_character};
-      decideWhoLeavesTile(characters, decision_made);
+      break;
     }
     else if (blocking_character == single_character->getCharacterType() && single_character->getGoalTile() &&
       !single_character->ifBlockedWay())
@@ -242,11 +242,31 @@ bool AI::checkIfCharactersBlockingWays(std::shared_ptr<CharacterAI>& character)
       character->setBlockedWay(false);
       character->setBlockingCharacter(CharacterType::NONE);
     }
-    runCharacter(character);
-    runCharacter(single_character);
+    else if (blocking_character == single_character->getCharacterType())
+    {
+      std::pair<std::shared_ptr<CharacterAI>, std::shared_ptr<CharacterAI>> characters{character, single_character};
+      decideWhoLeavesTile(characters, decision_made);
+    }
     if (decision_made)
+    {
+      runCharacter(character);
+      runCharacter(single_character);
+      return true;
+    }
+  }
+  return false;
+}
+
+bool AI::ifBlockingSomeoneOther(CharacterType first_type, CharacterType second_type) const
+{
+  for (auto& character : characters_)
+  {
+    if (character->getCharacterType() == first_type || character->getCharacterType() == second_type)
+      continue;
+    if (character->getBlockingCharacter() == first_type)
       return true;
   }
+
   return false;
 }
 
@@ -254,6 +274,10 @@ void AI::decideWhoLeavesTile(std::pair<std::shared_ptr<CharacterAI>, std::shared
     bool& decision_made)
 {
   MagicMaze::DIRECTIONS direction{ MagicMaze::Game::getInstance().getCurrentDirection() };
+  bool first_blocking_other{ ifBlockingSomeoneOther(characters.first->getCharacterType(), 
+                                                    characters.second->getCharacterType()) };
+  bool second_blocking_other{ ifBlockingSomeoneOther(characters.second->getCharacterType(), 
+                                                     characters.first->getCharacterType()) };
 
   int first_free_space{0};
   countFreeSpaceInCertainDirection(characters.first, direction, first_free_space);
@@ -264,7 +288,7 @@ void AI::decideWhoLeavesTile(std::pair<std::shared_ptr<CharacterAI>, std::shared
 
   if (!characters.second->hasGoal())
   {
-    if (second_free_space)
+    if (second_free_space && !second_blocking_other)
     {
       second_free_space == 1 ? callMove(characters.second, 1) : callMove(characters.second, 2);
       decision_made = true;
@@ -273,12 +297,12 @@ void AI::decideWhoLeavesTile(std::pair<std::shared_ptr<CharacterAI>, std::shared
   }
   else if ((first_free_space || second_free_space) && characters.second->hasGoal())
   {
-    if (second_free_space)
+    if (second_free_space && !second_blocking_other)
     {
       second_free_space == 1 ? callMove(characters.second, 1) : callMove(characters.second, 2);
       characters.second->setBlockedDirection(direction);
     }
-    else if (first_free_space)
+    else if (first_free_space && !first_blocking_other)
     {
       first_free_space == 1 ? callMove(characters.first, 1) : callMove(characters.first, 2);
       characters.first->setBlockedDirection(direction);
@@ -606,9 +630,22 @@ void AI::checkPriority(std::shared_ptr<CharacterAI> character, bool& goal_found,
   }
 }
 
+bool AI::checkIfAlreadyOnGoalTile(const std::shared_ptr<CharacterAI>& character)
+{
+  if (character->getPriority() == PRIORITY::BUTTON)
+  {
+    if (character->ifOnButton())
+      return true;
+  }
+  return false;
+}
+
 void AI::findGoalTile(const std::shared_ptr<CharacterAI>& character)
 {
   std::shared_ptr<Tile> tile = character->getCurrentile().lock();
+  if (checkIfAlreadyOnGoalTile(character))
+    return;
+
   const int row = tile->getRow();
   const int column = tile->getColumn();
   bool goal_found = false;
@@ -739,6 +776,8 @@ bool AI::checkTilesWayForAvailability(const std::shared_ptr<CharacterAI>& charac
 
   distance = (total_iterations > 0) ? total_iterations : -total_iterations;
 
+  bool character_blocking{false};
+  std::shared_ptr<Tile> tile{ nullptr };
   for (int i{0}; i < distance; i++)
   {
     if (cut == CUT_TYPE::HORIZONTAL && total_iterations < 0)
@@ -750,7 +789,7 @@ bool AI::checkTilesWayForAvailability(const std::shared_ptr<CharacterAI>& charac
     else if (cut == CUT_TYPE::VERTICAL && total_iterations > 0)
       next_row++;
 
-    std::shared_ptr<Tile> tile{ gameboard_.at(next_row).at(next_col) };
+    tile = gameboard_.at(next_row).at(next_col);
     std::shared_ptr<Room> room{ MagicMaze::Game::getInstance().getRoomById(tile->getInsideRoomId()) };
 
     if (!tile->ifAvailable() && !tile->ifContainsCharacter())
@@ -759,15 +798,18 @@ bool AI::checkTilesWayForAvailability(const std::shared_ptr<CharacterAI>& charac
       return false;
 
     else if (tile->ifContainsCharacter() && i == distance - 1 && ifDirectHit(character))
-    {
+      character_blocking = true;
+  }
+  if (checkIfCutsInPossibleDirection(cut, total_iterations))
+  {
+    currently_best_way = true;
+  }
+  if (character_blocking)
+  {
       character->setBlockingCharacter(tile->getCharacter()->getCharacterType());
       character->setBlockedWay(true);
       return false;
-    }
   }
-  if (checkIfCutsInPossibleDirection(cut, total_iterations))
-    currently_best_way = true;
-
   return true;
 }
 
