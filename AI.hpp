@@ -35,7 +35,7 @@ class AI
 
 
     void determineHighPriorities();
-    void giveGoalsToCharacters();
+    void giveGoalToCharacter(std::shared_ptr<CharacterAI>& character);
     bool ifGoalCorrespondsToPriority(std::shared_ptr<CharacterAI>& character);
     bool ifTileReveals(const std::shared_ptr<Tile>& tile);
 

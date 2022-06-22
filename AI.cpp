@@ -216,7 +216,7 @@ void AI::runCharacter(std::shared_ptr<CharacterAI>& character)
   {
     checkIfPowerCouldBeUsed(character);
     determineHighPriorities();
-    findGoalTile(character);
+    giveGoalToCharacter(character);
   }
   checkIfPowerCouldBeUsed(character);
 }
@@ -300,10 +300,12 @@ void AI::play()
     buttons_used_ = MagicMaze::Game::getInstance().checkIfAllCharactersOnButton();
 
   determineHighPriorities();
-  giveGoalsToCharacters();
 
   for(auto& character : characters_)
+  {
+    giveGoalToCharacter(character);
     runCharacter(character);
+  }
 
   for (auto& character : characters_)
     if (character->ifBlockedWay())
@@ -320,15 +322,12 @@ void AI::checkIfCharacterPaused()
       character->setBlockedDirection(MagicMaze::DIRECTIONS::NONE);
 }
 
-void AI::giveGoalsToCharacters()
+void AI::giveGoalToCharacter(std::shared_ptr<CharacterAI>& character)
 {
-  for (auto& character : characters_)
+  if (!ifGoalCorrespondsToPriority(character))
   {
-    if (!ifGoalCorrespondsToPriority(character))
-    {
-      character->setGoalTile(nullptr);
-      findGoalTile(character);
-    }
+    character->setGoalTile(nullptr);
+    findGoalTile(character);
   }
 }
 
@@ -566,15 +565,15 @@ void AI::checkPriority(std::shared_ptr<CharacterAI> character, bool& goal_found,
   {
     case CharacterType::FIGHTER:
       if((type == TileType::FIGHTER_BUTTON && priority == PRIORITY::BUTTON) || type == TileType::MONSTER)
+      {
+        character->setGoalTile(current_tile);
+        if (type == TileType::MONSTER)
         {
-          character->setGoalTile(current_tile);
-          if (type == TileType::MONSTER)
-          {
-            character->setPriority(PRIORITY::FIGHT);
-            goal_found = true;
-            optimizePower(character);
-          }
+          character->setPriority(PRIORITY::FIGHT);
+          optimizePower(character);
         }
+        goal_found = true;
+      }
       break;
     case CharacterType::SEER:
       if((type == TileType::SEER_BUTTON && priority == PRIORITY::BUTTON) ||
