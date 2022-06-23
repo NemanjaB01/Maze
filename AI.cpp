@@ -1010,7 +1010,9 @@ bool AI::checkIfInBetterPosition(std::shared_ptr<CharacterAI>& original_current_
     {
       if (MagicMaze::Game::getInstance().getCurrentRound() == 0)
       {
-        if (current_best_way && !original_other_character->hasGoal())
+        if (!current_best_way)
+          return false;
+        if (!other_best_way)
           return true;
         if (other_best_way && if_others_goal)
           return false;
@@ -1019,8 +1021,6 @@ bool AI::checkIfInBetterPosition(std::shared_ptr<CharacterAI>& original_current_
           original_other_character->setGoalTile(front);
           return false;
         }
-        else if (current_best_way)
-          return true;
       }
       if (!if_others_goal)
         return true;
