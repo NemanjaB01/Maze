@@ -40,7 +40,7 @@ class Room
     const int col_;
     int num_of_monsters_;
     std::vector<std::shared_ptr<MagicTile>> secret_doors_;
-    bool contains_button_;
+    int num_buttons_;
 
   public:
     //------------------------------------------------------------------------------------------------------------------
@@ -54,7 +54,8 @@ class Room
     //
     Room(char room_id, const std::string& room_info_str, int row_, int column);
 
-    bool ifContainsButton() const { return contains_button_; }
+    int getNumberOfButtons() const { return num_buttons_; }
+    void decreaseNumberOfButtons() { num_buttons_--; }
 
     //------------------------------------------------------------------------------------------------------------------
     ///

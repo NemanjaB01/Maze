@@ -66,9 +66,11 @@ class AI
                 std::shared_ptr<CharacterAI>& other_character, const std::shared_ptr<Tile>& test_tile);
 
     bool ifDirectHit(const std::shared_ptr<CharacterAI>& character);
+
     bool callScry();
-    void getScryGoalRoom(std::shared_ptr<Room>& goal_room);
-    void getScryFromRoomId(const int& goal_row, const int& goal_col, std::vector<std::string>& scry_input);
+    bool findScryFromRoom(const int& goal_row, const int& goal_col, std::vector<std::string>& scry_input);
+    void findRoomToScry(std::shared_ptr<Room>& room_to_scry, std::vector<std::string>& scry_input);
+
     void invertDirection(MagicMaze::DIRECTIONS& direction);
     bool checkIfPowerCouldBeUsed(std::shared_ptr<CharacterAI>& character);
 
@@ -93,6 +95,8 @@ class AI
     bool checkIfAlreadyOnGoalTile(const std::shared_ptr<CharacterAI>& character);
     bool ifBlockingSomeoneOther(CharacterType first_type, CharacterType secound_type) const;
 
+    void checkifTileSameAsGameboardTile(std::shared_ptr<Tile>& tile);
+
   public:
     static AI& getInstance();
     void copyGameboard();
@@ -100,6 +104,7 @@ class AI
     void copySpecificTile(std::shared_ptr<Tile>& tile, const std::shared_ptr<Character>& character);
     void play();
     void callCommand(MagicMaze::COMMANDS command);
+    void setButtonsUsed() { buttons_used_ = true; }
 
     std::vector<std::vector<std::shared_ptr<Tile> >> getGameboard() const { return gameboard_; }
     std::shared_ptr<CharacterAI> getCharacterAIById(const char& id);

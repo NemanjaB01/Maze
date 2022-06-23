@@ -734,11 +734,13 @@ void MagicMaze::Game::setAllButtonsToPassage()
     {
       std::shared_ptr<Room> room = getRoomById(button->getInsideRoomId());
       room->setTileToPassage(button->getRow(), button->getColumn(), characters_.at(index));
+      room->decreaseNumberOfButtons();
 
       AI::getInstance().copySpecificTile(room->getRoomMap().at(button->getRow()).at(button->getColumn()),
                                          characters_.at(index));
     }
   }
+  AI::getInstance().setButtonsUsed();
 }
 
 bool MagicMaze::Game::endOfGame()
@@ -757,7 +759,7 @@ bool MagicMaze::Game::ifAllButtonsVisible() const
 {
   for (auto& row_of_rooms : rooms_)
     for (auto& room : row_of_rooms)
-      if (room->ifContainsButton() && !room->isRevealed())
+      if (room->getNumberOfButtons() && !room->isRevealed())
         return false;
 
   return true;
