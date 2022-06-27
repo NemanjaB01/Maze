@@ -351,6 +351,8 @@ void AI::giveGoalToCharacter(std::shared_ptr<CharacterAI>& character)
 {
   if (character->hasGoal() && character->getGoalTile() == character->getCurrentile().lock())
     character->setGoalTile(nullptr);
+  if (character->isOnLoot() && character->getPriority() == PRIORITY::LOOT)
+    return;
 
   else if (!ifGoalCorrespondsToPriority(character))
   {
@@ -374,7 +376,10 @@ bool AI::ifGoalCorrespondsToPriority(std::shared_ptr<CharacterAI>& character)
   else if (priority == PRIORITY::LOOT)
   {
     if (goal_tile_type == TileType::LOOT)
+    {
+      optimizeLootTile(character);
       return true;
+    }
   }
   else if (priority == PRIORITY::REVEAL)
   {
@@ -1205,6 +1210,38 @@ bool AI::findScryFromRoom(const int& goal_row, const int& goal_col, std::vector<
     }
   }
   return false;
+}
+
+void AI::optimizeLootTile(std::shared_ptr<CharacterAI>& character)
+{
+  if (character->getCurrentile().lock()->getInsideRoomId() != 'L')
+    return;
+
+  std::shared_ptr<Tile> current_tile{ character->getCurrentile().lock() };
+  int next_row{ current_tile->getRow() };
+  int next_col{ current_tile->getColumn() };
+
+  MagicMaze::Game::changeNextRowCol(next_row, next_col, MagicMaze::Game::getInstance().getCurrentDirection());
+
+  if (gameboard_.at(next_row).at(next_col)->getTileType() == TileType::LOOT)
+  {
+    std::shared_ptr<Tile> wanted_tile{ gameboard_.at(next_row).at(next_col) };
+    if (character->getGoalTile() == wanted_tile)
+      return;
+    for (auto& single_character : characters_)
+    {
+      if (single_character == character)
+        continue;
+      else if (single_character->getCurrentile().lock() == wanted_tile)
+        return;
+      else if (single_character->getGoalTile() == wanted_tile)
+      {
+        single_character->setGoalTile(nullptr);
+        character->setGoalTile(wanted_tile);
+        return;
+      }
+    }
+  }
 }
 
 void AI::invertDirection(MagicMaze::DIRECTIONS& direction)
