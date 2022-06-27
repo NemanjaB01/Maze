@@ -343,7 +343,7 @@ void AI::checkIfCharacterPaused()
   MagicMaze::DIRECTIONS current_dir{ MagicMaze::Game::getInstance().getCurrentDirection() };
 
   for (auto& character : characters_)
-    if (character->getBlockedDirection() == current_dir)
+    if (character->getBlockedDirection() == current_dir) 
       character->setBlockedDirection(MagicMaze::DIRECTIONS::NONE);
 }
 
