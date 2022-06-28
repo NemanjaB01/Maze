@@ -840,7 +840,10 @@ bool AI::checkTilesWayForAvailability(const std::shared_ptr<CharacterAI>& charac
     if (!tile->ifAvailable() && !tile->ifContainsCharacter())
       return false;
     else if (room->getNumOfMonsters() && character->getCharacterType() != CharacterType::FIGHTER)
-      return false;
+    {
+      currently_best_way = false;
+      return true;
+    }
 
     else if (tile->ifContainsCharacter() && i == distance - 1 && ifDirectHit(character))
       character_blocking = true;
