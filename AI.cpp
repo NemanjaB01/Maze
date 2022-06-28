@@ -110,7 +110,7 @@ void AI::determineHighPriorities()
   if(!MagicMaze::Game::getInstance().getRoomById('L')->isRevealed() || !buttons_visible)
   {
     for (auto& character : characters_without_specific_goal)
-      character->setPriority(PRIORITY::REVEAL);
+      character->setPriority(PRIORITY::REVEAL); 
   }
   else if (buttons_visible && !buttons_used_)
   {
