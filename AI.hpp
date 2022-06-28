@@ -97,6 +97,7 @@ class AI
 
     void checkifTileSameAsGameboardTile(std::shared_ptr<Tile>& tile);
     void optimizeLootTile(std::shared_ptr<CharacterAI>& character);
+    void checkIfCharacterBlockedWay(std::shared_ptr<CharacterAI>& character);
 
   public:
     static AI& getInstance();

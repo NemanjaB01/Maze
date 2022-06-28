@@ -185,6 +185,7 @@ bool AI::playNextMove(std::shared_ptr<CharacterAI>& character)
       if(cut == CUT_TYPE::HORIZONTAL || cut == CUT_TYPE::VERTICAL)
       {
         character->setGoalTile( copied_character->getGoalTile() );
+        checkIfCharacterBlockedWay(character);
         callMove(character, distance);
         return true;
       }
@@ -199,6 +200,21 @@ bool AI::playNextMove(std::shared_ptr<CharacterAI>& character)
     q_finder.pop();
   }
   return false;
+}
+
+void AI::checkIfCharacterBlockedWay(std::shared_ptr<CharacterAI>& character)
+{
+  for (auto& single_character : characters_)
+  {
+    if (single_character == character)
+      continue;
+    else if (single_character->ifBlockedWay() && single_character->getBlockingCharacter() == 
+      character->getCharacterType())
+    {
+      single_character->setBlockedWay(false);
+      single_character->setBlockingCharacter(CharacterType::NONE);
+    }
+  }
 }
 
 void AI::runCharacter(std::shared_ptr<CharacterAI>& character)
