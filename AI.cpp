@@ -529,6 +529,11 @@ void AI::collectNeighborTiles(std::queue<std::shared_ptr<Tile>>& tiles, std::vec
         visited.at(tile->getRow()).at(tile->getColumn()) = true;
         tiles.push(tile);
       }
+      else if (room->getNumOfMonsters() && character_type != CharacterType::NONE && character_type != CharacterType::FIGHTER)
+      {
+        visited.at(tile->getRow()).at(tile->getColumn()) = true;
+        tiles.push(tile);
+      }
       else if (ifDoorBlocksWay(tile, room))
         callThief();
 
@@ -666,6 +671,14 @@ void AI::findGoalTile(const std::shared_ptr<CharacterAI>& character)
   while(!goal_found && !current_tiles.empty())
   {
     checkifTileSameAsGameboardTile(current_tiles.front());
+    TileType type { current_tiles.front()->getTileType() };
+    if ((type == TileType::MONSTER && character->getCharacterType() != CharacterType::FIGHTER) ||
+    ((type == TileType::HORIZONTAL_DOOR || type == TileType::VERTICAL_DOOR) && character->getCharacterType() !=
+       CharacterType::THIEF) )
+    {
+      current_tiles.pop();
+      continue;
+    }
     checkPriority(character, goal_found, current_tiles.front());
     collectNeighborTiles(current_tiles, visited, character->getCharacterType());
     current_tiles.pop();
