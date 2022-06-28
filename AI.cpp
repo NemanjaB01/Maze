@@ -117,7 +117,7 @@ void AI::determineHighPriorities()
     for (auto& character : characters_without_specific_goal)
       character->setPriority(PRIORITY::BUTTON);
   }
-  else // (buttons_used_ && MagicMaze::Game::getInstance().getRoomById('L')->isRevealed())
+  else
   {
     for (auto& character : characters_without_specific_goal)
         character->setPriority(PRIORITY::LOOT);
