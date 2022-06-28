@@ -100,6 +100,7 @@ class AI
     void checkIfCharacterBlockedWay(std::shared_ptr<CharacterAI>& character);
 
     void whichDirectionToCheckFirst(CUT_TYPE& cut_first, CUT_TYPE& cut_second);
+    void useBetterLootTile(std::shared_ptr<CharacterAI>& character);
 
   public:
     static AI& getInstance();

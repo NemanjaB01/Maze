@@ -611,6 +611,8 @@ void AI::checkPriority(std::shared_ptr<CharacterAI> character, bool& goal_found,
      priority == PRIORITY::UNLOCK) && (type != TileType::CRYSTAL_BALL && type != TileType::MONSTER && 
      type != TileType::HORIZONTAL_DOOR && type != TileType::VERTICAL_DOOR && ifTileReveals(current_tile))))
   {
+    if(type == TileType::LOOT)
+      useBetterLootTile(character);
     optimizePriority(character, current_tile);
     if (character->hasGoal())
       goal_found = true;
@@ -838,7 +840,10 @@ bool AI::checkTilesWayForAvailability(const std::shared_ptr<CharacterAI>& charac
     if (!tile->ifAvailable() && !tile->ifContainsCharacter())
       return false;
     else if (room->getNumOfMonsters() && character->getCharacterType() != CharacterType::FIGHTER)
-      return false;
+    {
+      currently_best_way = false;
+      return true;
+    }
 
     else if (tile->ifContainsCharacter() && i == distance - 1 && ifDirectHit(character))
       character_blocking = true;
@@ -1309,5 +1314,34 @@ void AI::invertDirection(MagicMaze::DIRECTIONS& direction)
       break;
     case MagicMaze::DIRECTIONS::NONE:
       break;
+  }
+}
+
+
+void AI::useBetterLootTile(std::shared_ptr<CharacterAI>& character)
+{
+  std::shared_ptr<Tile> current_tile{ character->getCurrentile().lock() };
+  if (current_tile->getInsideRoomId() != 'L')
+    return;
+
+  int next_row{ current_tile->getRow() };
+  int next_col{ current_tile->getColumn() };
+  MagicMaze::Game::changeNextRowCol(next_row, next_col, MagicMaze::Game::getInstance().getCurrentDirection());
+
+  std::shared_ptr<Tile> searched_tile{ gameboard_.at(next_row).at(next_col) };
+
+  if (searched_tile->getTileType() == TileType::LOOT && !searched_tile->ifContainsCharacter())
+    character->setGoalTile(searched_tile);
+
+  for (auto& single_character : characters_)
+  {
+    if (single_character == character)
+      continue;
+    else if (single_character->getGoalTile() == searched_tile)
+    {
+      single_character->setGoalTile(nullptr);
+      findGoalTile(single_character);
+      return;
+    }
   }
 }
