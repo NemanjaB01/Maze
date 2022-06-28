@@ -118,7 +118,7 @@ void AI::determineHighPriorities()
       character->setPriority(PRIORITY::BUTTON);
   }
   else
-    for (auto& character : characters_without_specific_goal)
+    for (auto& character : characters_without_specific_goal) 
         character->setPriority(PRIORITY::LOOT);
 }
 
