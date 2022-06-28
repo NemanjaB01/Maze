@@ -99,6 +99,8 @@ class AI
     void optimizeLootTile(std::shared_ptr<CharacterAI>& character);
     void checkIfCharacterBlockedWay(std::shared_ptr<CharacterAI>& character);
 
+    void whichDirectionToCheckFirst(CUT_TYPE& cut_first, CUT_TYPE& cut_second);
+
   public:
     static AI& getInstance();
     void copyGameboard();

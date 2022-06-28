@@ -863,14 +863,18 @@ bool AI::checkIfPossibleCut(const std::shared_ptr<CharacterAI>& character, CUT_T
   {
     if (cut == CUT_TYPE::BOTH)
     {
-      if (checkTilesWayForAvailability(character, CUT_TYPE::HORIZONTAL, currently_best_way, distance))
+      CUT_TYPE cut_first{ CUT_TYPE::NONE };
+      CUT_TYPE cut_second{ CUT_TYPE::NONE };
+      whichDirectionToCheckFirst(cut_first, cut_second);
+
+      if (checkTilesWayForAvailability(character, cut_first, currently_best_way, distance))
       {
-        cut = CUT_TYPE::HORIZONTAL;
+        cut = cut_first;
         return true;
       }
-      else if (checkTilesWayForAvailability(character, CUT_TYPE::VERTICAL, currently_best_way, distance))
+      else if (checkTilesWayForAvailability(character, cut_second, currently_best_way, distance))
       {
-        cut = CUT_TYPE::VERTICAL;
+        cut = cut_second;
         return true;
       }
     }
@@ -880,6 +884,20 @@ bool AI::checkIfPossibleCut(const std::shared_ptr<CharacterAI>& character, CUT_T
   return false;
 }
 
+void AI::whichDirectionToCheckFirst(CUT_TYPE& cut_first, CUT_TYPE& cut_second)
+{
+  MagicMaze::DIRECTIONS current_dir{ MagicMaze::Game::getInstance().getCurrentDirection() };
+  if (current_dir == MagicMaze::DIRECTIONS::RIGHT || current_dir == MagicMaze::DIRECTIONS::LEFT)
+  {
+    cut_first = CUT_TYPE::HORIZONTAL;
+    cut_second = CUT_TYPE::VERTICAL;
+  }
+  else
+  {
+    cut_first = CUT_TYPE::VERTICAL;
+    cut_second = CUT_TYPE::HORIZONTAL;
+  }
+}
 
 void AI::countFreeSpaceInCertainDirection(const std::shared_ptr<CharacterAI>& character,
                                           MagicMaze::DIRECTIONS direction, int& free_space)
