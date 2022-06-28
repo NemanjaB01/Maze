@@ -516,7 +516,7 @@ void AI::collectNeighborTiles(std::queue<std::shared_ptr<Tile>>& tiles, std::vec
         {
           if (ifDoorAtRoomEdge(room, tile) && ifCharacterAllowsToCollectTile(character_type, tile))
           {
-            visited.at(tile->getRow()).at(tile->getColumn()) = true;
+            visited.at(tile->getRow()).at(tile->getColumn()) = true; 
             tiles.push(tile);
           }
           callFigherToFight();
