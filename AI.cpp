@@ -185,6 +185,7 @@ bool AI::playNextMove(std::shared_ptr<CharacterAI>& character)
       if(cut == CUT_TYPE::HORIZONTAL || cut == CUT_TYPE::VERTICAL)
       {
         character->setGoalTile( copied_character->getGoalTile() );
+        checkIfCharacterBlockedWay(character);
         callMove(character, distance);
         return true;
       }
@@ -199,6 +200,21 @@ bool AI::playNextMove(std::shared_ptr<CharacterAI>& character)
     q_finder.pop();
   }
   return false;
+}
+
+void AI::checkIfCharacterBlockedWay(std::shared_ptr<CharacterAI>& character)
+{
+  for (auto& single_character : characters_)
+  {
+    if (single_character == character)
+      continue;
+    else if (single_character->ifBlockedWay() && single_character->getBlockingCharacter() == 
+      character->getCharacterType())
+    {
+      single_character->setBlockedWay(false);
+      single_character->setBlockingCharacter(CharacterType::NONE);
+    }
+  }
 }
 
 void AI::runCharacter(std::shared_ptr<CharacterAI>& character)
@@ -351,6 +367,8 @@ void AI::giveGoalToCharacter(std::shared_ptr<CharacterAI>& character)
 {
   if (character->hasGoal() && character->getGoalTile() == character->getCurrentile().lock())
     character->setGoalTile(nullptr);
+  if (character->isOnLoot() && character->getPriority() == PRIORITY::LOOT)
+    return;
 
   else if (!ifGoalCorrespondsToPriority(character))
   {
@@ -374,7 +392,10 @@ bool AI::ifGoalCorrespondsToPriority(std::shared_ptr<CharacterAI>& character)
   else if (priority == PRIORITY::LOOT)
   {
     if (goal_tile_type == TileType::LOOT)
+    {
+      optimizeLootTile(character);
       return true;
+    }
   }
   else if (priority == PRIORITY::REVEAL)
   {
@@ -524,6 +545,11 @@ void AI::collectNeighborTiles(std::queue<std::shared_ptr<Tile>>& tiles, std::vec
         visited.at(tile->getRow()).at(tile->getColumn()) = true;
         tiles.push(tile);
       }
+      else if (room->getNumOfMonsters() && character_type != CharacterType::NONE && character_type != CharacterType::FIGHTER)
+      {
+        visited.at(tile->getRow()).at(tile->getColumn()) = true;
+        tiles.push(tile);
+      }
       else if (ifDoorBlocksWay(tile, room))
         callThief();
 
@@ -661,6 +687,14 @@ void AI::findGoalTile(const std::shared_ptr<CharacterAI>& character)
   while(!goal_found && !current_tiles.empty())
   {
     checkifTileSameAsGameboardTile(current_tiles.front());
+    TileType type { current_tiles.front()->getTileType() };
+    if ((type == TileType::MONSTER && character->getCharacterType() != CharacterType::FIGHTER) ||
+    ((type == TileType::HORIZONTAL_DOOR || type == TileType::VERTICAL_DOOR) && character->getCharacterType() !=
+       CharacterType::THIEF) )
+    {
+      current_tiles.pop();
+      continue;
+    }
     checkPriority(character, goal_found, current_tiles.front());
     collectNeighborTiles(current_tiles, visited, character->getCharacterType());
     current_tiles.pop();
@@ -1205,6 +1239,38 @@ bool AI::findScryFromRoom(const int& goal_row, const int& goal_col, std::vector<
     }
   }
   return false;
+}
+
+void AI::optimizeLootTile(std::shared_ptr<CharacterAI>& character)
+{
+  if (character->getCurrentile().lock()->getInsideRoomId() != 'L')
+    return;
+
+  std::shared_ptr<Tile> current_tile{ character->getCurrentile().lock() };
+  int next_row{ current_tile->getRow() };
+  int next_col{ current_tile->getColumn() };
+
+  MagicMaze::Game::changeNextRowCol(next_row, next_col, MagicMaze::Game::getInstance().getCurrentDirection());
+
+  if (gameboard_.at(next_row).at(next_col)->getTileType() == TileType::LOOT)
+  {
+    std::shared_ptr<Tile> wanted_tile{ gameboard_.at(next_row).at(next_col) };
+    if (character->getGoalTile() == wanted_tile)
+      return;
+    for (auto& single_character : characters_)
+    {
+      if (single_character == character)
+        continue;
+      else if (single_character->getCurrentile().lock() == wanted_tile)
+        return;
+      else if (single_character->getGoalTile() == wanted_tile)
+      {
+        single_character->setGoalTile(nullptr);
+        character->setGoalTile(wanted_tile);
+        return;
+      }
+    }
+  }
 }
 
 void AI::invertDirection(MagicMaze::DIRECTIONS& direction)
