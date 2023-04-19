@@ -1,102 +1,102 @@
 # Assignment 2 - OOP1 Maze
 
-## Einleitung
+## Introduction
 
-In Assignment 2 (A2) der Konstruktionsübung (KU) wird ein Spiel programmiert, welches lose vom Brettspiel [Magic Maze](https://de.wikipedia.org/wiki/Magic_Maze) inspiriert wurde. Achte bitte genau auf die Angabe, auch wenn du das Original
-schon kennst, denn *OOP1 Maze* unterscheidet sich von Magic Maze auch in vielen Punkten.
-Das Spielprinzip wird auf dieser Seite allgemein beschrieben.
+In Assignment 2 (A2) of the construction exercise (KU), a game loosely inspired by the board game [Magic Maze](https://de.wikipedia.org/wiki/Magic_Maze) is programmed. Please pay close attention to the information, even if you have the original
+already know, because *OOP1 Maze* differs from Magic Maze in many ways.
+The game principle is described in general on this page.
 
-Assignment 2 ist in zwei Milestones unterteilt. Wir empfehlen, zuerst Milestone 1 abzuschließen, bevor mit Milestone 2 begonnen wird, da Milestone 2 auf Milestone 1 aufbaut.
+Assignment 2 is divided into two milestones. We recommend completing Milestone 1 first before starting Milestone 2 as Milestone 2 builds on Milestone 1.
 
-- [Milestone 1 - Grundstruktur und Ausgabe](description/Milestone_1.md)
-- [Milestone 2 - Spiellogik](description/Milestone_2.md)
+- [Milestone 1 - Basic structure and output](description/Milestone_1.md)
+- [Milestone 2 - Game Logic](description/Milestone_2.md)
 
-## Spezifikation
+## specification
 
-- nur geforderte Ausgaben
-- Die zur Verfügung gestellten Klassen (`RoomInfoString` und `Random`) dürfen nicht verändert werden.
-- Es muss eine Ableitungshierarchie (Klassen mit Vererbung) implementiert werden.
-- Alle Bibliotheken der C++ Standard Library sind erlaubt.
+- Only requested expenses
+- The provided classes (`RoomInfoString` and `Random`) may not be changed.
+- A derivation hierarchy (classes with inheritance) must be implemented.
+- All libraries of the C++ Standard Library are allowed.
 
-### Abgabe
+### levy
 
-- Push auf das Gitlab-Repository des Teams **auf einen Branch namens `submission`**
-- **Abzugeben bis: 04.06.2022 um 23:59 Uhr**
-- Eine der Voraussetzungen für das positive Absolvieren der KU ist das Bestehen von **mindestens 50 % der öffentlichen Test Cases** von A2. (Es gibt jedoch die Möglichkeit einer [Ausbesserung](#ausbesserung).)
+- Push to the team's gitlab repository **to a branch called `submission`**
+- **To be handed in by: 04.06.2022 at 23:59**
+- One of the requirements for passing the KU is passing **at least 50% of the public test cases** of A2. (However, there is a possibility of [repair](#repair).)
 
-## Bewertung
-- Bei Assignment 2 können 60 Punkte erreicht werden.
-- Die Kriterien, nach welchen das Programm bewertet wird, können folgenden Dokumenten entnommen werden:
-  - [Beurteilungsschema](https://tc.tugraz.at/main/mod/page/view.php?id=256924)
-  - [Bewertung von Übungsbeispielen](https://tc.tugraz.at/main/mod/page/view.php?id=138898)
-    - In diesem Assignment werden von jedem Teammitglied mindestens **zehn Commits** und **fünf Tage mit Commits** gefordert.
-  - [Coding Standard](https://tc.tugraz.at/main/mod/page/view.php?id=260668)
-- Ein Teil der Punkte kann in A2 nur dann erreicht werden, wenn bestimmte C++-Features verwendet werden. Um die Punkte für eines der folgenden Features zu erhalten, muss dieses in bestandenen Test Cases genutzt werden.
-  - 5 % der Gesamtpunkte sind an die Verwendung von Smart Pointern gebunden.
-  - 5 % der Gesamtpunkte sind an die Definition und Verwendung einer eigenen Exception-Klasse gebunden. 
+## Evaluation
+- In Assignment 2, 60 points can be achieved.
+- The criteria according to which the program is evaluated can be found in the following documents:
+   - [Rating scheme](https://tc.tugraz.at/main/mod/page/view.php?id=256924)
+   - [Evaluation of exercise examples](https://tc.tugraz.at/main/mod/page/view.php?id=138898)
+     - In this assignment, each team member is required to have at least **ten commits** and **five days of commits**.
+   - [Coding Standard](https://tc.tugraz.at/main/mod/page/view.php?id=260668)
+- Some of the points can only be achieved in A2 if certain C++ features are used. In order to receive points for one of the following features, it must be used in passed test cases.
+   - 5% of the total points are tied to the use of smart pointers.
+   - 5% of the total points are tied to the definition and use of your own exception class.
 
-## Optionen nach A2
-### Ausbesserung
+## Options after A2
+### Repair
 
-Auch wenn die benötigten 50 % der öffentlichen Test Cases am Ende der Abgabefrist noch nicht bestanden werden, bedeutet das noch nicht das Ausscheiden aus der KU. Es gibt die Möglichkeit einer **Ausbesserung**, welche anstelle von Assignment 3 gemacht werden kann. Diese Ausbesserung _ersetzt_ die bei A2 erreichten Punkte. Informationen dazu gab es im ersten Stream des Semesters am 3. März.
+Even if the required 50% of the public test cases are not passed by the end of the submission deadline, this does not mean that you have left the KU. There is an option of a **fix** that can be done in place of Assignment 3. This fix _replaces_ the points scored at A2. There was information about this in the first stream of the semester on March 3rd.
 
 ### Assignment 3
 
-Da Assignment 3 (A3) auf Assignment 2 aufbauen wird, gibt es eine Teilnahmevoraussetzung für A3. Für eine Teilnahme an A3 sind zumindest **zwei Drittel aller Test Cases** in A2 zu bestehen.
+Since Assignment 3 (A3) will build on Assignment 2, there is a participation requirement for A3. To participate in A3, at least **two thirds of all test cases** in A2 must be passed.
 
-### Ende der KU mit den in A1 und A2 erreichten Punkten
-A3 ist ebenso wie die Ausbesserung optional. Wer sich mit den in A1 und A2 erreichten Punkten zufrieden gibt, muss nach A2 keine weitere Aufgabe machen.
+### End of the KU with the points achieved in A1 and A2
+A3 is optional, as is the touch-up. Anyone who is satisfied with the points achieved in A1 and A2 does not have to do any further tasks after A2.
 
-## Spielaufbau
+## Setup
 
-*OOP1 Maze* ist ein Single-Player-Spiel im Stil eines [Dungeon Crawlers](https://de.wikipedia.org/wiki/Dungeon_(Rollenspiele)). Die\*der Spieler\*in steuert dabei drei Charaktere durch ein Labyrinth, wobei der Spielplan durch die Bewegungen der Charaktere erst nach und nach sichtbar wird.
+*OOP1 Maze* is a [Dungeon Crawler] style single player game. The player controls three characters through a labyrinth, whereby the game board only gradually becomes visible through the movements of the characters.
 
-Im Labyrinth verteilt befinden sich Hindernisse und Bonusfelder, die bewältigt werden müssen bzw. spezielle Effekte auslösen.
+Distributed in the labyrinth are obstacles and bonus fields that have to be overcome or trigger special effects.
 
-Es gibt die folgenden Charaktere:
-- Krieger\*in ('Fighter')
-- Dieb\*in ('Thief')
-- Wahrsager\*in ('Seer')
+There are the following characters:
+- Warrior ('Fighter')
+- Thief\*in ('Thief')
+- Fortune Teller ('Seer')
 
-## Spielbeginn
+## Start of game
 
-Zu Beginn des Spiels ist nur ein Raum (der Startraum 'S') sichtbar, in dem sich alle Charaktere befinden. Der Rest des Spielplans ist unbekannt. Die Anordnung und Darstellung der Räume (sowie der einzelnen Felder, aus denen Räume bestehen können) wird in [Milestone 1](description/Milestone_1.md) beschrieben.
+At the beginning of the game only one room (the starting room 'S') is visible, in which all the characters are located. The rest of the game plan is unknown. The arrangement and representation of the rooms (and the individual fields that rooms can consist of) are described in [Milestone 1](description/Milestone_1.md).
 
-Die\*der Spieler\*in hat vier Kärtchen, auf denen jeweils eine Bewegungsrichtung (hinunter, hinauf, rechts, links) abgebildet ist. Diese werden gemischt und das oberste Kärtchen aufgedeckt.
+The player has four cards, each showing a direction of movement (down, up, right, left). These are shuffled and the top card is revealed.
 
-## Spielablauf
+## Gameplay
 
-Die\*der Spieler\*in führt nacheinander Spielzüge durch, um das Spielziel zu erreichen. Hier gibt es verschiedene Möglichkeiten.
-Die\*der Spieler\*in kann:
+The player takes turns one after the other in order to reach the goal of the game. There are different ways.
+The\*the player\*in can:
 
-1. einen Charakter bewegen
-2. die Spezialfähigkeit eines Charakters einsetzen
+1. move a character
+2. Use a character's special ability
 
-### 1. Charakter bewegen
+### 1. Move character
 
-Ein Zug kann dafür verwendet werden, einen Charakter um ein beliebige Anzahl an Feldern in eine bestimmte Richtung zu bewegen. 
-Es ist jedoch nicht immer möglich, die Charaktere in jede beliebige Richtung zu bewegen. Die\*der Spieler\*in darf nur Bewegungen in jene Richtung durchführen, deren Bewegungskärtchen gerade aufgedeckt ist. Dies kann sie\*er jedoch *beliebig oft* für *alle* Charaktere tun.  
+A move can be used to move a character any number of spaces in a given direction.
+However, it is not always possible to move the characters in any direction. The player may only move in the direction whose movement tile is currently face up. However, she\*he can do this *any* number of times for *all* characters.
 
-Hierbei sind Hindernisse (z. B. Wände und Monster) zu beachten. Es gibt bestimmte Bonusfelder (z. B. Sanduhr, Monster, Kristallkugel, Schalter), die entweder automatisch eingesetzt werden, wenn ein Charakter seine Bewegung auf diesem Feld beendet, oder es dem Charakter ermöglichen, seine Spezialfähigkeit einzusetzen, wenn sie\*er sich auf einem benachbarten Feld befindet.
+Obstacles (e.g. walls and monsters) must be taken into account. There are certain bonus spaces (e.g. Hourglass, Monster, Crystal Ball, Switch) that either deploy automatically when a character ends their movement on that space, or allow the character to use their special ability when they\*he moves is on an adjacent square.
 
-Kommt ein Charakter auf einem Durchgang zu einem noch unbekannten Nachbarraum zu stehen, wird dieser Raum automatisch aufgedeckt.
+If a character comes to a passage to an unknown neighboring room, this room is automatically revealed.
 
-Wenn die\*der Spieler\*in keine Bewegungen in die derzeit erlaubte Richtung mehr durchführen will oder kann, fügt sie\*er das derzeitige Bewegungskärtchen an letzter Stelle in der Reihenfolge hinzu und deckt das nächste auf.
+When the player\*in no longer wants or can move in the currently allowed direction, he\*he adds the current movement tile at the end of the sequence and reveals the next one.
 
-### 2. Spezialfähigkeit einsetzen
+### 2. Use special ability
 
-Jeder der Charaktere hat eine Spezialfähigkeit, die sie\*er unter bestimmten Umständen einsetzen kann.
-- Krieger\*in ('Fighter') -> Monster bekämpfen ('fight')
-- Dieb\*in ('Thief')      -> verschlossene Türe aufsperren ('unlock')
-- Wahrsager\*in ('Seer')  -> unbekannten Raum aus Entfernung aufdecken ('scry')
+Each of the characters has a special ability that they can use under certain circumstances.
+- Warrior\*in ('Fighter') -> Fight monsters ('fight')
+- Thief\*in ('Thief') -> unlock locked door ('unlock')
+- 'Seer' -> reveal unknown space from a distance ('scry')
 
-Spezialfähigkeiten können jederzeit und beliebig oft eingesetzt werden, solange ihre Voraussetzungen erfüllt sind (siehe [Milestone 2](description/Milestone_2.md)).
+Special abilities can be used at any time and any number of times as long as their requirements are met (see [Milestone 2](description/Milestone_2.md)).
 
-## Spielende
+## Playing
 
-Jeder der Charaktere muss einen ihm zugewiesenen Schalter erreichen. Wenn sich alle Charaktere gleichzeitig auf ihrem Schalter befinden, öffnen sich die geheimen Türen zur Schatzkammer. Alle Charaktere müssen sich nun zur Schatzkammer bewegen, um das Spiel zu gewinnen.
+Each of the characters must reach a switch assigned to them. When all characters are on their switch at the same time, the secret doors to the treasury will open. All characters must now move to the treasury to win the game.
 
 
-## Spielziel
+## Aim of the game
 
-Ziel des Spiels ist es, möglichst wenige neue Bewegungskärtchen aufzudecken, also die Schatzkammer möglichst effizient zu erreichen.
+The aim of the game is to uncover as few new movement tiles as possible, i.e. to reach the treasury as efficiently as possible.
